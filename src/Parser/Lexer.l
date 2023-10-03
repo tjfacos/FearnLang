@@ -52,9 +52,10 @@ whitespace	[ \t\v\n\f]+
 "return"					{ count(); return(RETURN); 				}
 "let"						{ count(); return(LET); 				}
 
+"true"						{ count(); return(BOOL_LITERAL);		}
+"false"						{ count(); return(BOOL_LITERAL);		}
 
 {letter}({letter}|{digit})* { count(); return(IDENTIFIER);			}
-("true"|"false")			{ count(); return(BOOL_LITERAL);		}
 {digit}+ 					{ count(); return(INT_LITERAL);			}
 {digit}+\.{digit}+			{ count(); return(FLOAT_LITERAL);		}
 \".*\"						{ count(); return(STRING_LITERAL);		}
