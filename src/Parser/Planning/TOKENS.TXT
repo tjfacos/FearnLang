@@ -1,0 +1,58 @@
+	// User-defined name
+	Identifier,
+
+	// Mathematical Operators
+	Mult, // *
+	Div, // /
+	Add, // +
+	Sub, // -
+	Mod, // %
+	AddEquals, // +=
+	SubEquals,  // -=
+	MultEquals, // *=
+	DivEquals, // /=
+	ModEquals, // %=
+	Increment, // ++
+	Decrement, // --
+
+	// Comparison
+	Greater, // >
+	GreaterEqual, // >=
+	Less, // <
+	LessEqual, // <=
+	Equivalent, // ==
+	NotEquavalent, // !=
+
+	// Boolean Operators
+	And, // &&
+	Or, // ||
+	Not, // !
+
+	// Punctuators
+	Assign, // =
+	Semicolon, // ;
+	Colon, // :
+	Comma, // ,
+	OpenParen, // (
+	CloseParen, // )
+	OpenCurly, // {
+	CloseCurly, // }
+	OpenSquare, // [
+	CloseSquare, // ]
+	FullStop, // .
+
+
+	// Keywords
+	Let, // let
+	IntType, // int
+	StringType, // string
+	FloatType, // float
+	If, // if
+	While, // while
+	Fn, // fn
+	Return, // return
+
+	IntLiteral, // e.g. 123
+	StringLiteral, // e.g. "Hello, World!"
+	BoolLiteral, // e.g. true, false
+	FloatLiteral, // e.g. 0.5

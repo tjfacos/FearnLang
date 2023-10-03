@@ -1,0 +1,61 @@
+Program = [{Function}].
+
+Function = "Fn" Identifier "(" { Parameter } ")" "{" Statement "}".
+
+Statement = 
+    | "{" {Statement} "}" 
+    | "if" "(" Expression ")" Statement
+    | "while" "(" Expression ")" Statement
+    | "return" Expression ";"
+    | "let" Identifer ":" Type "=" Expression ";"
+    | Expression ";"
+    | ";".
+
+Parameter = Identifer ":" Type.
+
+Type = PointerType | PrimitiveType.
+
+PrimitiveType = "Int"|"String"|"Float".
+
+PointerType = PrimitiveType "*".
+
+Literal = PrimitiveLiteral | CompositeLiteral.
+
+PrimitiveLiteral = 
+    | IntLiteral
+    | StringLiteral
+    | FloatLiteral.
+
+CompositeLiteral = PrimitiveType "[" Expression "]".
+
+Expression = 
+    | Literal
+    | Identifer
+    | "(" Expression ")"
+    | Expression "[" Expression "]"
+    | Expression "(" [ {Expression [","]} ] ")"
+    | Expression (
+        "="|
+        "+"|
+        "-"|
+        "*"|
+        "/"|
+        "+="|
+        "-="|
+        "||"|
+        "&&"|
+        "=="|
+        "!="|
+        ","
+    ) Expression
+    | (
+        "&"|
+        "*"|
+        "-"|
+        "!"|
+        "++"|
+        "--"
+    ) Expression
+    | Expression ("++"|"--")
+    | Expression "?" Expression ":" Expression
+    .

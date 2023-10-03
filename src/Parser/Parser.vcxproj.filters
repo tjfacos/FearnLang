@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Grammar Files">
+      <UniqueIdentifier>{5abe8c0a-32f1-4718-9ed9-acc0e1a8e16e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{fdb7e2cc-8651-40cb-bab7-1dad37c9bdf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files\Flex">
+      <UniqueIdentifier>{61afd68a-e293-48e5-81b0-8175947643ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files\Bison">
+      <UniqueIdentifier>{03483f90-5294-4a38-be62-0d46c83f16b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grammar Files\BNF">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FearnParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lexer.c">
+      <Filter>Generated Files\Flex</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.tab.c">
+      <Filter>Generated Files\Bison</Filter>
+    </ClCompile>
+    <ClCompile Include="AST.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FearnParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.tab.h">
+      <Filter>Generated Files\Bison</Filter>
+    </ClInclude>
+    <ClInclude Include="AST.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Lexer.l">
+      <Filter>Grammar Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Parser.y">
+      <Filter>Grammar Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Planning\grammar.ebnf">
+      <Filter>Grammar Files\BNF</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Planning\TOKENS.TXT">
+      <Filter>Grammar Files\BNF</Filter>
+    </Text>
+    <Text Include="OLD_GRAMMAR.txt">
+      <Filter>Grammar Files\BNF</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
