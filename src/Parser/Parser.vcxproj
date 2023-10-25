@@ -149,7 +149,7 @@
     <CustomBuild Include="Lexer.l">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">flex -oLexer.c Lexer.l</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">flex -o Lexer.c Lexer.l</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Running Flex</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Lexer.c</Outputs>
     </CustomBuild>
