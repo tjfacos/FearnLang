@@ -1,0 +1,11 @@
+fn gcd(A : int, B : int) => int
+    if A == 0
+        return B
+    if B == 0
+        return A
+    return gcd(B, A % B)
+
+fn main() => void
+    let A : int = (int)input("Enter A: ")
+    let B : int = (int)input("Enter B: ")
+    print(gcd(A, B))
