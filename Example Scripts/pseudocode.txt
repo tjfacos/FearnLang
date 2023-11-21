@@ -1,0 +1,11 @@
+FUNCTION TypeValidate(node):
+	if node.type == declaration:
+		DataType = node.datatype
+		ExpType = TypeValidate(node.body)
+        if DataType == ExpType:
+            return DataType
+        else:
+            RaiseErr(TypeError)
+    
+    if node.type == expression:
+        
