@@ -1,18 +1,18 @@
-fn main() => void
-    let n : int = (int)input("Enter N: ")
-    let i : int = 0
-    let output : str
+let n : int = int_input "Enter N: "
+let i : int = 0
+let output : str
 
-    while i < n
-        i++
-        output = ""
+while i < n
+    i++
+    output = ""
 
-        if n % 3 == 0
-            output += "Fizz"
-        if n % 5 == 0
-            output += "Buzz"
+    if n % 3 == 0
+        output += "Fizz"
+    if n % 5 == 0
+        output += "Buzz"
 
-        if output == ""
-            output = str(i)
-        
-        print(output)
+    if output == ""
+        output = strOf i
+    
+    print output
+    print "\n"

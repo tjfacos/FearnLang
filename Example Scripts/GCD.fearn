@@ -1,11 +1,17 @@
-fn gcd(A : int, B : int) => int
-    if A == 0
-        return B
-    if B == 0
-        return A
-    return gcd(B, A % B)
+let A : int = int_input "Enter A: "
+let B : int = int_input "Enter B: "
+let temp: int
+let gcd: int
 
-fn main() => void
-    let A : int = (int)input("Enter A: ")
-    let B : int = (int)input("Enter B: ")
-    print(gcd(A, B))
+while A != 0 && B != 0
+    temp = B
+    B = A % B
+    A = B
+
+if A == 0
+    gcd = B
+else
+    gcd = A
+
+print gcd
+print "\n"
