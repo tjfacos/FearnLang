@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "process",
+            "label": "Build ANTLR Classes",
+            "command": "java -cp C:\\libraries\\javalibs\\antlr-4.13.1-complete.jar org.antlr.v4.Tool -o gen FearnParse.g4 | javac -cp C:\\libraries\\javalibs\\antlr-4.13.1-complete.jar gen/Fearn*.java" 
+        }
+    ]
+}
