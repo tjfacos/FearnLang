@@ -1,4 +1,4 @@
-grammar FearnParse;
+grammar FearnGrammar;
 
 program : statement+;
 statement : let | show;
