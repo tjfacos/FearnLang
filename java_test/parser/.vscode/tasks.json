@@ -14,7 +14,7 @@
       },
       {
         "type": "process",
-        "label": "Build ANTLR Grammar",
+        "label": "Test ANTLR Grammar",
         "command": "antlr4-parse",
         "args": ["FearnGrammar.g4", "program", "-gui", "test.fearn"],
         "isTestCommand": true,
