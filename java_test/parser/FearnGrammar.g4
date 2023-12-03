@@ -1,9 +1,19 @@
 grammar FearnGrammar;
 
-program : statement+;
-statement : let | show;
-let : VAR '=' INT ;
+program : 
+        INT+
+    |   FLOAT+
+    |   STR+
+    |   BOOL+
+    ;
 
-show : 'show' (INT | VAR) ;VAR : [a-z]+ ;
-INT : [0-9]+ ;
-WS : [ \n\t]+ -> skip;
+
+
+
+/* Lexer Rules */
+fragment D : [0-9] ;
+
+INT     :   D+                  ;
+FLOAT   :   D+'.'D+             ;
+STR     :   '"'(.)*?'"'         ;
+BOOL    :   'true' | 'false'    ;

@@ -17,10 +17,9 @@
         "label": "Test ANTLR Grammar",
         "command": "antlr4-parse",
         "args": ["FearnGrammar.g4", "program", "-gui", "test.fearn"],
-        "isTestCommand": true,
         "group": {
           "kind": "test",
-          "isDefault": false
+          "isDefault": true
         }
       }
     ]
