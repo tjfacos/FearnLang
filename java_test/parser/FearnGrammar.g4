@@ -1,12 +1,21 @@
 grammar FearnGrammar;
 
 program 
-    : ( function ('\n')* (EOF)? )+;
+    : ( function ('\n')* (EOF)? )+
+    ;
 
-function : 'fn' IDENTIFIER '(' ')' '=>' 'void' '\n' statement_list ;
+function 
+    : 'fn' IDENTIFIER '(' ')' '=>' 'void' '\n' statement_list 
+    ;
 
-statement_list : ( '    ' statement '\n')+ ;
-statement : STR_LIT ;
+
+statement_list 
+    : ( '    ' statement '\n')+ 
+    ;
+
+statement 
+    : STR_LIT 
+    ;
 
 
 /* Lexer Rules */
