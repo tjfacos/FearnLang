@@ -1,10 +1,12 @@
 grammar FearnGrammar;
 
-program : 
-        IDENTIFIER
-    ;
+program 
+    : ( function ('\n')* (EOF)? )+;
 
+function : 'fn' IDENTIFIER '(' ')' '=>' 'void' '\n' statement_list ;
 
+statement_list : ( '    ' statement '\n')+ ;
+statement : STR_LIT ;
 
 
 /* Lexer Rules */
@@ -21,63 +23,7 @@ STR_LIT     :   '"'(.)*?'"'         ;
 BOOL_LIT    :   'true' | 'false'    ;
 
 /* Define Token for User Identifiers */
-IDENTIFIER  :   L(L|D)*         ;
+IDENTIFIER  :   L(L|D)*             ;
 
-
-
-
-/* Define Keywords */
-
-/*
-// Iteration Keywords
-WHILE   :   'while'             ;
-BREAK   :   'break'             ;
-CONTINUE:   'continue'          ;
-
-// Type Keywords
-STRING  :   'str'               ;
-INT     :   'int'               ;
-FLOAT   :   'float'             ;
-BOOL    :   'bool'              ;
-VOID    :   'void'              ;
-
-// Selection Keywords
-IF      :   'if'                ;
-ELSE    :   'else'              ;
-
-// Function Keywords
-FN      :   'fn'                ;
-RETURN  :   'return'            ;
-
-*/
-
-/* Define Operators */
-
-/*
-// Comparison
-LESS        :   '<'             ;
-GREATER     :   '>'             ;
-LOE         :   '<='            ;
-GOE         :   '>='            ;
-EQUAL       :   '=='            ;
-NOT_EQUAL   :   '!='            ;
-
-// Boolean
-AND         :   '&&'            ;
-OR          :   '||'            ;
-NOT         :   '!'             ;
-
-// Arithmetic
-ADD             :   '+'         ;
-SUB             :   '-'         ;
-MULT            :   '*'         ;
-DIV             :   '/'         ;
-MOD             :   '%'         ;
-ADD_ASSIGN      :   '+='        ;
-SUB_ASSIGN      :   '-='        ;
-MUL_ASSIGN      :   '*='        ;
-DIV_ASSIGN      :   '/='        ;
-MOD_ASSIGN      :   '%='        ;
-EXP             :   '^'         ;
-
-*/
+/* Ignore (certain) whitespace      */
+WS          :   ( ' ' | '\r' )+ -> skip      ;

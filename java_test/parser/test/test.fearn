@@ -1,0 +1,5 @@
+fn main() => void
+    "Hello, World!"
+
+fn test() => void
+    "Hello, World!"
