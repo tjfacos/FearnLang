@@ -1,5 +1,2 @@
-fn main() => void
-    "Hello, World!"
-
-fn test() => void
+fn main(x : int[]) => void
     "Hello, World!"

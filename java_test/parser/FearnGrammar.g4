@@ -1,16 +1,44 @@
 grammar FearnGrammar;
 
+type_name
+    : 'int'
+    | 'float'
+    | 'bool'
+    | 'str'
+    ; 
+
+// Must replace INT_LIT with expression
+type_specifier
+    : type_name
+    | type_name '[' ']' 
+    ;
+
+
+
 program 
-    : ( function ('\n')* (EOF)? )+
+    : ( function ('\n')* )+
     ;
 
 function 
-    : 'fn' IDENTIFIER '(' ')' '=>' 'void' '\n' statement_list 
+    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  declaration_block statement_list 
+    ;
+
+declaration_block
+    : '\n' '    ' 'let' ( '\n' '    ' declarations )+
+
+
+parameters_list
+    : parameter
+    | parameter ',' parameters_list
+    ;
+
+parameter
+    : IDENTIFIER ':' type_specifier
     ;
 
 
 statement_list 
-    : ( '    ' statement '\n')+ 
+    : ( '\n' '    ' statement)+ 
     ;
 
 statement 
