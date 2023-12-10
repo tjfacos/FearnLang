@@ -79,30 +79,14 @@ jump_statement
     ;
 
 
+// Expression Rules
 
-
-// Expressions
-
-/* Fundamental expressions */
-primary_expression
-    : IDENTIFIER
-    | STR_LIT
+literal
+    : STR_LIT
     | BOOL_LIT
     | INT_LIT
     | FLOAT_LIT
-    | '(' expression ')'
-    | '[' expression ']' 
     ;
-
-
-/* Expressions with some sort of suffix (e.g. function calls, indexing) */
-postfix_expression
-    : primary_expression
-    | postfix_expression '[' expression ']'
-    | postfix_expression '(' ')'
-    | postfix_expression '(' argument_list? ')'
-    ;
-
 
 /* List of arguments */
 argument_list
@@ -121,82 +105,62 @@ assignment_operator
     ;
 
 
-/* Expressions with unary operators */
-unary_expression
-    : postfix_expression
-    | '+' cast_expression
-    | '-' cast_expression
+
+
+
+/* Fundamental expressions */
+primary_expression
+    : IDENTIFIER
+    | literal
+    | '(' expression ')'
+    | '[' expression ']' 
     ;
 
 
-cast_expression
-    : unary_expression
+postfix_expression
+    : primary_expression
+    | postfix_expression '[' expression ']'
+    | postfix_expression '(' ')'
+    | postfix_expression '(' argument_list? ')'
+    ;
+
+
+unary_expression
+    : postfix_expression
+    | '+' unary_expression
+    | '-' unary_expression
+    | '!' unary_expression
     | '(' type_name ')' unary_expression
     ;
 
-exponential_expression
-    : cast_expression
-    | exponential_expression '^' cast_expression
+arithmetic_expression
+    : unary_expression
+    | arithmetic_expression '^' arithmetic_expression
+    | arithmetic_expression '*' arithmetic_expression
+    | arithmetic_expression '/' arithmetic_expression
+    | arithmetic_expression '%' arithmetic_expression
+    | arithmetic_expression '+' arithmetic_expression
+    | arithmetic_expression '-' arithmetic_expression
     ;
 
-multiplicative_expression
-    : exponential_expression
-    | multiplicative_expression '*' exponential_expression
-    | multiplicative_expression '/' exponential_expression
-    | multiplicative_expression '%' exponential_expression
+bool_expression
+    : arithmetic_expression
+    | bool_expression '<' bool_expression
+    | bool_expression '>' bool_expression
+    | bool_expression '>=' bool_expression
+    | bool_expression '<=' bool_expression
+    | bool_expression '==' bool_expression
+    | bool_expression '!=' bool_expression
+    | bool_expression '&&' bool_expression
+    | bool_expression '||' bool_expression
     ;
 
-
-additive_expression
-    : multiplicative_expression
-    | additive_expression '+' multiplicative_expression
-    | additive_expression '-' multiplicative_expression
-    ;
-
-
-relational_expression
-    : additive_expression
-    | relational_expression '<' additive_expression
-    | relational_expression '>' additive_expression
-    | relational_expression '>=' additive_expression
-    | relational_expression '<=' additive_expression
-    ;
-
-
-equality_expression
-    : relational_expression
-    | equality_expression '==' relational_expression
-    | equality_expression '!=' relational_expression
-    ;
-
-
-and_expression
-    : equality_expression
-    | and_expression '&&' equality_expression
-    ;
-
-
-or_expression
-    : and_expression
-    | or_expression '||' and_expression
-    ;
-
-
-assignment_expression
-    : or_expression
-    | unary_expression assignment_operator assignment_expression
-    ;
 
 
 expression
-    : assignment_expression
+    : bool_expression
+    | unary_expression assignment_operator expression
     ;
-
-
-
-
-
-
 
 
 

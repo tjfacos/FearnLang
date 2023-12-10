@@ -1,4 +1,1 @@
-fn main(_x2 : int) => void
-{
-    x = 5 * 3 ;
-}
+y = (str)(func(5 % 3 + 1) ^ 3)
