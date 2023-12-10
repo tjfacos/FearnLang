@@ -1,2 +1,4 @@
-fn main(x : int[]) => void
-    "Hello, World!"
+fn main(_x2 : int) => void
+{
+    x = 5 * 3 ;
+}
