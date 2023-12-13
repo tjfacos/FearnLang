@@ -1,4 +1,4 @@
-class Test
+class Compiler
 {
     public static void main(String []args)
     {
