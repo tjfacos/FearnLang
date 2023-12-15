@@ -167,26 +167,6 @@ public interface FearnGrammarListener extends ParseTreeListener {
 	 */
 	void exitLiteral(FearnGrammarParser.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link FearnGrammarParser#argument_list}.
-	 * @param ctx the parse tree
-	 */
-	void enterArgument_list(FearnGrammarParser.Argument_listContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FearnGrammarParser#argument_list}.
-	 * @param ctx the parse tree
-	 */
-	void exitArgument_list(FearnGrammarParser.Argument_listContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link FearnGrammarParser#assignment_operator}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link FearnGrammarParser#assignment_operator}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link FearnGrammarParser#primary_expression}.
 	 * @param ctx the parse tree
 	 */
@@ -206,6 +186,16 @@ public interface FearnGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPostfix_expression(FearnGrammarParser.Postfix_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FearnGrammarParser#argument_list}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgument_list(FearnGrammarParser.Argument_listContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FearnGrammarParser#argument_list}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgument_list(FearnGrammarParser.Argument_listContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FearnGrammarParser#unary_expression}.
 	 * @param ctx the parse tree
@@ -246,4 +236,14 @@ public interface FearnGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpression(FearnGrammarParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FearnGrammarParser#assignment_operator}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FearnGrammarParser#assignment_operator}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx);
 }

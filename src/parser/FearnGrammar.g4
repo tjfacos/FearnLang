@@ -88,26 +88,6 @@ literal
     | FLOAT_LIT
     ;
 
-/* List of arguments */
-argument_list
-    : expression
-    | argument_list ',' expression
-    ;
-
-/* Assignment Operators */
-assignment_operator
-    : '='
-    | '+='
-    | '-='
-    | '*='
-    | '/='
-    | '%='
-    ;
-
-
-
-
-
 /* Fundamental expressions */
 primary_expression
     : IDENTIFIER
@@ -124,6 +104,11 @@ postfix_expression
     | postfix_expression '(' argument_list? ')'
     ;
 
+/* List of arguments */
+argument_list
+    : expression
+    | argument_list ',' expression
+    ;
 
 unary_expression
     : postfix_expression
@@ -156,11 +141,27 @@ bool_expression
     ;
 
 
-
 expression
     : bool_expression
-    | unary_expression assignment_operator expression
+    | unary_expression assignment_operator bool_expression
     ;
+
+/* Assignment Operators */
+assignment_operator
+    : '='
+    | '+='
+    | '-='
+    | '*='
+    | '/='
+    | '%='
+    ;
+
+
+
+
+
+
+
 
 
 

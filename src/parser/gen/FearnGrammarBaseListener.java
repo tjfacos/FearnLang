@@ -208,30 +208,6 @@ public class FearnGrammarBaseListener implements FearnGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgument_list(FearnGrammarParser.Argument_listContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArgument_list(FearnGrammarParser.Argument_listContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPrimary_expression(FearnGrammarParser.Primary_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -251,6 +227,18 @@ public class FearnGrammarBaseListener implements FearnGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPostfix_expression(FearnGrammarParser.Postfix_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgument_list(FearnGrammarParser.Argument_listContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgument_list(FearnGrammarParser.Argument_listContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -299,6 +287,18 @@ public class FearnGrammarBaseListener implements FearnGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(FearnGrammarParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignment_operator(FearnGrammarParser.Assignment_operatorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
