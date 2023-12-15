@@ -167,6 +167,26 @@ public interface FearnGrammarListener extends ParseTreeListener {
 	 */
 	void exitLiteral(FearnGrammarParser.LiteralContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FearnGrammarParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray(FearnGrammarParser.ArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FearnGrammarParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray(FearnGrammarParser.ArrayContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FearnGrammarParser#array_contents}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_contents(FearnGrammarParser.Array_contentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FearnGrammarParser#array_contents}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_contents(FearnGrammarParser.Array_contentsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FearnGrammarParser#primary_expression}.
 	 * @param ctx the parse tree
 	 */

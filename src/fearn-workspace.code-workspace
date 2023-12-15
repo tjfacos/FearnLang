@@ -6,7 +6,14 @@
 	],
 	"settings": {
 		"files.exclude": {
-			"parser/": true
-		}
+			"parser/*.g4": false,
+			"parser/gen": true,
+			"parser/build": true,
+			"build/": true
+		},
+		"java.project.referencedLibraries": [
+			"lib/**/*.jar",
+			"c:\\libraries\\javalibs\\antlr-4.13.1-complete.jar"
+		]
 	}
 }

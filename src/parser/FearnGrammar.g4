@@ -86,7 +86,18 @@ literal
     | BOOL_LIT
     | INT_LIT
     | FLOAT_LIT
+    | array
     ;
+
+array
+    : '{' array_contents? '}'
+    ;
+
+array_contents
+    : expression
+    | expression ',' array_contents
+    ;
+
 
 /* Fundamental expressions */
 primary_expression
