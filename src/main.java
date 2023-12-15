@@ -9,22 +9,31 @@ import java.io.InputStream;
 
 class FearnC
 {
-    public static void Test() {
-        
+
+    static private void ReportErrorAndExit(String err, int code)
+    {
+        System.out.println("FearnC: " + (char)27 + "[31m" + "ERROR:" + err + (char)27 + "[0m");
+        System.exit(code);
     }
-    
-    
+
     
     public static void main(String []args)
     {
-        String inputFile = null;
-        if ( args.length > 0) {
-            inputFile = args[0];
-        } else {
-            System.out.println("FearnC: " + (char)27 + "[31m" + "ERROR: NO SOURCE FILE");
-            System.exit(1);
+        if ( args.length == 0) {
+            ReportErrorAndExit("NO SOURCE FILE", 1);
         }
 
-        System.out.println(inputFile);
+        InputStream is = null;
+        CharStream input = null;
+
+        try {
+            is = new FileInputStream(args[0]);
+            input = CharStreams.fromStream(is);
+        } catch (Exception e) {
+            ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
+        }
+
+        
+
     }
 };
