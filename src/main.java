@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.*;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 class FearnC
 {
@@ -23,17 +22,21 @@ class FearnC
             ReportErrorAndExit("NO SOURCE FILE", 1);
         }
 
-        InputStream is = null;
         CharStream input = null;
 
         try {
-            is = new FileInputStream(args[0]);
-            input = CharStreams.fromStream(is);
+            input = CharStreams.fromStream(new FileInputStream(args[0]));
         } catch (Exception e) {
             ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
         }
 
-        
+        FearnGrammarLexer lexer = new FearnGrammarLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        FearnGrammarParser parser = new FearnGrammarParser(tokens);
+
+        ParseTree tree = parser.program();
+        System.out.println(tree.toStringTree(parser));
+
 
     }
 };
