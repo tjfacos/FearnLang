@@ -97,6 +97,7 @@ expression
     | expression '[' expression ']'             # index_expr
     | IDENTIFIER '(' ')'                        # fn_call_expr
     | IDENTIFIER '(' argument_list? ')'         # fn_call_args_expr
+    | expression '.' expression                 # structs_attr_expr
     | '+' expression                            # u_plus_expr
     | '-' expression                            # u_minus_expr
     | '!' expression                            # u_not_expr
