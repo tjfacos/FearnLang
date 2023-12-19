@@ -1573,16 +1573,6 @@ public class FearnGrammarParser extends Parser {
 		public Exp_exprContext(ExpressionContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class Structs_attr_exprContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public Structs_attr_exprContext(ExpressionContext ctx) { copyFrom(ctx); }
-	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class Greater_eq_exprContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -1637,6 +1627,16 @@ public class FearnGrammarParser extends Parser {
 			return getRuleContext(ExpressionContext.class,i);
 		}
 		public Mult_exprContext(ExpressionContext ctx) { copyFrom(ctx); }
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class Struct_attr_exprContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public Struct_attr_exprContext(ExpressionContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class Eq_exprContext extends ExpressionContext {
@@ -1827,7 +1827,7 @@ public class FearnGrammarParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,23,_ctx) ) {
 					case 1:
 						{
-						_localctx = new Structs_attr_exprContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new Struct_attr_exprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(251);
 						if (!(precpred(_ctx, 19))) throw new FailedPredicateException(this, "precpred(_ctx, 19)");
