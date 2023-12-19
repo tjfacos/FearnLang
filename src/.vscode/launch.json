@@ -9,7 +9,7 @@
             "name": "Launch Fearn Compiler",
             "request": "launch",
             "mainClass": "FearnC",
-            "args": ["test/BubbleSort.fearn"]
+            "args": ["test/test.fearn"]
         },
         {
             "type": "java",

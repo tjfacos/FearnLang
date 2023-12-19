@@ -9,8 +9,8 @@ type_name
 
 type_specifier
     : type_name                             # type_specifier_primitive
-    | type_specifier '[' ']'                # type_specifier_arr_ptr
-    | type_specifier '[' expression ']'     # type_specifier_arr
+    | type_specifier '[' ']'                # type_specifier_arr
+    | '$' IDENTIFIER                        # type_specifier_struct
     ;
 
 program 
@@ -22,7 +22,8 @@ function
     ;
 
 declaration
-    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
+    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'    # var_decl
+    | 'struct' IDENTIFIER '{' declaration* '}'                      # struct_decl
     ;
 
 parameters_list
@@ -73,21 +74,25 @@ jump_statement
 // Expression Rules
 
 literal
-    : STR_LIT
+    : STR_LIT   
     | BOOL_LIT
     | INT_LIT
     | FLOAT_LIT
-    | array
     ;
 
-array
-    : '{' '}'                                   # empty_arr
-    | '{' (expression ',' )* expression '}'     # contents_arr
+array_init
+    : 'new' type_name '[' expression ']' ( '{' (expression ',' )* expression '}' )?
+    ;
+
+struct_init
+    : 'new' IDENTIFIER '(' argument_list? ')'
     ;
 
 expression
     : IDENTIFIER                                # id_expr
     | literal                                   # lit_expr
+    | array_init                                # arr_init_expr
+    | struct_init                               # struct_init_expr
     | '(' expression ')'                        # brac_expr
     | expression '[' expression ']'             # index_expr
     | IDENTIFIER '(' ')'                        # fn_call_expr

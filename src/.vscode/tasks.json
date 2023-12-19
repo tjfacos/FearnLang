@@ -23,7 +23,7 @@
             "type": "process",
             "label": "Test ANTLR Grammar",
             "command": "antlr4-parse",
-            "args": ["parser/FearnGrammar.g4", "program", "-gui", "test/bubbleSort.fearn"],
+            "args": ["parser/FearnGrammar.g4", "program", "-gui", "test/test.fearn"],
             "group": {
               "kind": "test",
               "isDefault": false
