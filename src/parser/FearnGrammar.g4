@@ -1,16 +1,16 @@
 grammar FearnGrammar;
 
 type_name
-    : 'int'
-    | 'float'
-    | 'bool'
-    | 'str'
+    : 'int'         # int_type_keyword
+    | 'float'       # float_type_keyword
+    | 'bool'        # bool_type_keyword
+    | 'str'         # str_type_keyword
     ; 
 
 type_specifier
-    : type_name
-    | type_specifier '[' ']'
-    | type_specifier '[' INT_LIT ']' 
+    : type_name                             # type_specifier_primitive
+    | type_specifier '[' ']'                # type_specifier_arr_ptr
+    | type_specifier '[' expression ']'     # type_specifier_arr
     ;
 
 program 
@@ -22,21 +22,11 @@ function
     ;
 
 declaration
-    : var_declaration
-    | struct_declaration
-    ;
-
-struct_declaration
-    : 'struct' IDENTIFIER '{' var_declaration+ '}'
-    ;
-
-var_declaration
     : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
     ;
 
 parameters_list
-    : parameter
-    | parameter ',' parameters_list
+    : ( parameter ',' )* parameter
     ;
 
 parameter
@@ -45,11 +35,11 @@ parameter
 
 // Statement Definitions
 statement 
-    : compound_statement
-    | expression_statement
-    | selection_statement
-    | iteration_statement
-    | jump_statement
+    : compound_statement        # comp_stmt
+    | expression_statement      # expr_stmt
+    | selection_statement       # sel_stmt
+    | iteration_statement       # iter_stmt
+    | jump_statement            # jmp_stmt
     ;
 
 compound_statement
@@ -57,14 +47,15 @@ compound_statement
     ;
 
 expression_statement
-    : expression ';'
-    | ';'
+    : expression ';'            # simple_expr_stmt
+    | assign_expression ';'     # assign_expr_stmt
+    | ';'                       # colon_expr_stmt
     ;
 
 selection_statement
-    : 'if' '(' expression ')' compound_statement
-    | 'if' '(' expression ')' compound_statement 'else' compound_statement
-    | 'if' '(' expression ')' compound_statement 'else' selection_statement
+    : 'if' '(' expression ')' compound_statement                                # single_if
+    | 'if' '(' expression ')' compound_statement 'else' compound_statement      # if_else
+    | 'if' '(' expression ')' compound_statement 'else' selection_statement     # if_else_chain
     ;
 
 iteration_statement
@@ -72,10 +63,10 @@ iteration_statement
     ;
 
 jump_statement
-    : 'continue' ';'
-    | 'break' ';'
-    | 'return' ';'
-    | 'return' expression ';'
+    : 'continue' ';'                # cont_stmt
+    | 'break' ';'                   # break_stmt
+    | 'return' ';'                  # return_void_stmt
+    | 'return' expression ';'       # return_expr_stmt
     ;
 
 
@@ -90,73 +81,47 @@ literal
     ;
 
 array
-    : '{' array_contents? '}'
+    : '{' '}'                                   # empty_arr
+    | '{' (expression ',' )* expression '}'     # contents_arr
     ;
 
-array_contents
-    : expression
-    | expression ',' array_contents
+expression
+    : IDENTIFIER                                # id_expr
+    | literal                                   # lit_expr
+    | '(' expression ')'                        # brac_expr
+    | expression '[' expression ']'             # index_expr
+    | IDENTIFIER '(' ')'                        # fn_call_expr
+    | IDENTIFIER '(' argument_list? ')'         # fn_call_args_expr
+    | '+' expression                            # u_plus_expr
+    | '-' expression                            # u_minus_expr
+    | '!' expression                            # u_not_expr
+    | '(' type_name ')' expression              # cast_expt
+    | expression '^' expression                 # exp_expr
+    | expression '*' expression                 # mult_expr
+    | expression '/' expression                 # div_expr
+    | expression '%' expression                 # mod_expr
+    | expression '+' expression                 # add_expr
+    | expression '-' expression                 # sub_expr
+    | expression '<' expression                 # less_expr
+    | expression '>' expression                 # greater_expr
+    | expression '<=' expression                # less_eq_expr
+    | expression '>=' expression                # greater_eq_expr
+    | expression '==' expression                # eq_expr
+    | expression '!=' expression                # not_eq_expr
+    | expression '&&' expression                # and_expr
+    | expression '||' expression                # or_expr
     ;
 
-
-/* Fundamental expressions */
-primary_expression
-    : IDENTIFIER
-    | literal
-    | '(' expression ')'
-    | '[' expression ']' 
-    ;
-
-
-postfix_expression
-    : primary_expression
-    | postfix_expression '[' expression ']'
-    | postfix_expression '(' ')'
-    | postfix_expression '(' argument_list? ')'
+assign_expression
+    : IDENTIFIER assignment_operator expression                     # assign_var_expr
+    | IDENTIFIER '[' expression ']' assignment_operator expression  # assign_index_expr
     ;
 
 /* List of arguments */
 argument_list
-    : expression
-    | argument_list ',' expression
+    : ( expression ',')* expression
     ;
-
-unary_expression
-    : postfix_expression
-    | '+' unary_expression
-    | '-' unary_expression
-    | '!' unary_expression
-    | '(' type_name ')' unary_expression
-    ;
-
-arithmetic_expression
-    : unary_expression
-    | arithmetic_expression '^' arithmetic_expression
-    | arithmetic_expression '*' arithmetic_expression
-    | arithmetic_expression '/' arithmetic_expression
-    | arithmetic_expression '%' arithmetic_expression
-    | arithmetic_expression '+' arithmetic_expression
-    | arithmetic_expression '-' arithmetic_expression
-    ;
-
-bool_expression
-    : arithmetic_expression
-    | bool_expression '<' bool_expression
-    | bool_expression '>' bool_expression
-    | bool_expression '>=' bool_expression
-    | bool_expression '<=' bool_expression
-    | bool_expression '==' bool_expression
-    | bool_expression '!=' bool_expression
-    | bool_expression '&&' bool_expression
-    | bool_expression '||' bool_expression
-    ;
-
-
-expression
-    : bool_expression
-    | unary_expression assignment_operator bool_expression
-    ;
-
+    
 /* Assignment Operators */
 assignment_operator
     : '='

@@ -7,7 +7,16 @@
             "command": ".\\build.bat",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
+            }
+        },
+        {
+            "type": "process",
+            "label": "Build Grammar Only",
+            "command": "cd parser | .\\gen.bat",
+            "group": {
+                "kind": "build",
+                "isDefault": false
             }
         },
         {
