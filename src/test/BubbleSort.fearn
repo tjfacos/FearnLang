@@ -1,8 +1,6 @@
 fn main() => void
 {
-    let {
-        l : int[7] = { 7, 6, 11, 23, 4, 1, 9 }
-    }
+    let l : int[7] = { 7, 6, 11, 23, 4, 1, 9 };
 
     print(bubble(l));
 
@@ -11,13 +9,10 @@ fn main() => void
 
 fn bubble(l : int[]) => int[]
 {
-    let
-    {
-        length : int = len(l);
-        i : int = 1;
-        swapped : bool = True;
-        temp : int
-    }
+    let length : int = len(l);
+    let i : int = 1;
+    let swapped : bool = True;
+    let temp : int;
 
     while (swapped)
     {

@@ -14,24 +14,24 @@ type_specifier
     ;
 
 program 
-    : function+
+    : (function | declaration )+
     ;
 
 function 
-    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  '{' declaration_block? ( statement )* '}' 
-    ;
-
-declaration_block
-    : 'let' '{' declaration_list '}' 
-    ;
-
-declaration_list
-    : declaration ';'?
-    | declaration ';' declaration_list
+    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  '{' ( statement | declaration )* '}' 
     ;
 
 declaration
-    : IDENTIFIER ':' type_specifier ( '=' expression)?
+    : var_declaration
+    | struct_declaration
+    ;
+
+struct_declaration
+    : 'struct' IDENTIFIER '{' var_declaration+ '}'
+    ;
+
+var_declaration
+    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
     ;
 
 parameters_list
@@ -166,15 +166,6 @@ assignment_operator
     | '/='
     | '%='
     ;
-
-
-
-
-
-
-
-
-
 
 
 /* Lexer Rules */
