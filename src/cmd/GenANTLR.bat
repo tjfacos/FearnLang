@@ -1,3 +1,6 @@
+@REM Move into parser directory
+cd parser
+
 @REM Clear existing generated files
 rmdir /Q /S gen
 rmdir /Q /S build
