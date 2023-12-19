@@ -1,4 +1,4 @@
-package modules.ast;
+package ast;
 
 public class Function {
     
