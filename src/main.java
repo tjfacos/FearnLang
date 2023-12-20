@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 class FearnC
 {
 
-    static private void ReportErrorAndExit(String err, int code)
+    static public void ReportErrorAndExit(String err, int code)
     {
         System.out.println("FearnC: " + (char)27 + "[31m" + "ERROR:" + err + (char)27 + "[0m");
         System.exit(code);
@@ -34,9 +34,12 @@ class FearnC
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         FearnGrammarParser parser = new FearnGrammarParser(tokens);
 
-        ParseTree tree = parser.program();
-        System.out.println(tree.toStringTree(parser));
+        // ParseTree parseTree = parser.program();
+        ParseTree parseTree = parser.expression();
 
+        // System.out.println(parseTree.toStringTree(parser));
 
+        ASTConstructor astConstructor = new ASTConstructor();
+        astConstructor.visit(parseTree);
     }
 };

@@ -1,5 +1,5 @@
 package ast;
 
-public class Struct {
+public class Struct extends ASTNode {
     
 }

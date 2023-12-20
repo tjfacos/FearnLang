@@ -2,7 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
-public class Program {
+public class Program extends ASTNode {
     
     private ArrayList<Declaration> global_declarations = new ArrayList<Declaration>(); 
     private ArrayList<Function> functions = new ArrayList<Function>();

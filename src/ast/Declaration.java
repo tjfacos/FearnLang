@@ -1,6 +1,8 @@
 package ast;
 
-public class Declaration {
+import ast.expression.Expression;
+
+public class Declaration extends ASTNode {
     
     private String identifer;
     private TypeSpecifier type;

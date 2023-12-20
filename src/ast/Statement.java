@@ -1,5 +1,5 @@
 package ast;
 
-public class Statement {
+public class Statement extends ASTNode {
     
 }

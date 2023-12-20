@@ -1,5 +1,5 @@
 package ast;
 
-public class Literal {
+public class Literal extends ASTNode {
     
 }

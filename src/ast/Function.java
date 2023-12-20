@@ -1,5 +1,5 @@
 package ast;
 
-public class Function {
+public class Function extends ASTNode {
     
 }

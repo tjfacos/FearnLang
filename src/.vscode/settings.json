@@ -2,5 +2,10 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\libraries\\javalibs\\antlr-4.13.1-complete.jar"
+    ],
+    "java.project.sourcePaths": [
+        ".",
+        "parser\\gen",
+        "parser"
     ]
 }

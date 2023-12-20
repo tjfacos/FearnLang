@@ -14,16 +14,20 @@ type_specifier
     ;
 
 program 
-    : (function | declaration )+
+    : (function | declaration | struct_def )+
     ;
 
 function 
-    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  '{' ( statement | declaration )* '}' 
+    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  
+      '{' ( statement | declaration )* '}' 
     ;
 
 declaration
     : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'    # var_decl
-    | 'struct' IDENTIFIER '{' declaration* '}'                      # struct_decl
+    ;
+
+struct_def
+    : 'struct' IDENTIFIER '{' declaration* '}'
     ;
 
 parameters_list
