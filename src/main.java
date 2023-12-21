@@ -2,19 +2,19 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import ast.ASTNode;
+// Generated ANTLR Dependencies
+import parser.*;
+import parser.gen.*;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
 
+// Local
+import util.*;
+import ast.ASTNode;
+
 class FearnC
 {
-
-    static public void ReportErrorAndExit(String err, int code)
-    {
-        System.out.println("FearnC: " + (char)27 + "[31m" + "ERROR:" + err + (char)27 + "[0m");
-        System.exit(code);
-    }
 
 
     public static FearnGrammarLexer lexer;
@@ -24,7 +24,7 @@ class FearnC
     public static void main(String []args)
     {
         if ( args.length == 0) {
-            ReportErrorAndExit("NO SOURCE FILE", 1);
+            ErrorReporter.ReportErrorAndExit("NO SOURCE FILE", 1);
         }
 
         CharStream input = null;
@@ -32,7 +32,7 @@ class FearnC
         try {
             input = CharStreams.fromStream(new FileInputStream(args[0]));
         } catch (Exception e) {
-            ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
+            ErrorReporter.ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
         }
 
         lexer = new FearnGrammarLexer(input);
