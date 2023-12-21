@@ -14,6 +14,6 @@ public class IndexExpression extends Expression {
     @Override
     public String toString()
     {
-        return array_name.toString() + '[' + index.toString() + ']';
+        return "{" + array_name.toString() + "}" + '[' + index.toString() + ']';
     }
 }

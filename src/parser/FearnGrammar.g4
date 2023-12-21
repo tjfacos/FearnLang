@@ -97,10 +97,10 @@ expression
     | literal                                               # lit_expr
     | array_init                                            # arr_init_expr
     | struct_init                                           # struct_init_expr
+    | expression '.' expression                             # struct_attr_expr
+    | IDENTIFIER '(' ( ( expression ',')* expression )? ')' # fn_call_expr
     | '(' expression ')'                                    # brac_expr
     | expression '[' expression ']'                         # index_expr
-    | IDENTIFIER '(' ( ( expression ',')* expression )? ')' # fn_call_expr
-    | expression '.' expression                             # struct_attr_expr
     | '+' expression                                        # u_plus_expr
     | '-' expression                                        # u_minus_expr
     | '!' expression                                        # u_not_expr
