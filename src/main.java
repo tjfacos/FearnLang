@@ -2,6 +2,7 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
+import ast.ASTNode;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
@@ -15,6 +16,10 @@ class FearnC
         System.exit(code);
     }
 
+
+    public static FearnGrammarLexer lexer;
+    public static CommonTokenStream tokens;
+    public static FearnGrammarParser parser;
     
     public static void main(String []args)
     {
@@ -30,16 +35,16 @@ class FearnC
             ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
         }
 
-        FearnGrammarLexer lexer = new FearnGrammarLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        FearnGrammarParser parser = new FearnGrammarParser(tokens);
+        lexer = new FearnGrammarLexer(input);
+        tokens = new CommonTokenStream(lexer);
+        parser = new FearnGrammarParser(tokens);
 
         // ParseTree parseTree = parser.program();
         ParseTree parseTree = parser.expression();
 
-        // System.out.println(parseTree.toStringTree(parser));
-
         ASTConstructor astConstructor = new ASTConstructor();
-        astConstructor.visit(parseTree);
+        ASTNode AST = astConstructor.visit(parseTree);
+
+        System.out.println(AST.toString());
     }
 };

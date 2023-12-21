@@ -93,38 +93,36 @@ struct_init
     ;
 
 expression
-    : IDENTIFIER                                # id_expr
-    | literal                                   # lit_expr
-    | array_init                                # arr_init_expr
-    | struct_init                               # struct_init_expr
-    | '(' expression ')'                        # brac_expr
-    | expression '[' expression ']'             # index_expr
-    | IDENTIFIER '(' ')'                        # fn_call_expr
-    | IDENTIFIER '(' argument_list? ')'         # fn_call_args_expr
-    | expression '.' expression                 # struct_attr_expr
-    | '+' expression                            # u_plus_expr
-    | '-' expression                            # u_minus_expr
-    | '!' expression                            # u_not_expr
-    | '(' type_name ')' expression              # cast_expt
-    | expression '^' expression                 # exp_expr
-    | expression '*' expression                 # mult_expr
-    | expression '/' expression                 # div_expr
-    | expression '%' expression                 # mod_expr
-    | expression '+' expression                 # add_expr
-    | expression '-' expression                 # sub_expr
-    | expression '<' expression                 # less_expr
-    | expression '>' expression                 # greater_expr
-    | expression '<=' expression                # less_eq_expr
-    | expression '>=' expression                # greater_eq_expr
-    | expression '==' expression                # eq_expr
-    | expression '!=' expression                # not_eq_expr
-    | expression '&&' expression                # and_expr
-    | expression '||' expression                # or_expr
+    : IDENTIFIER                                            # id_expr
+    | literal                                               # lit_expr
+    | array_init                                            # arr_init_expr
+    | struct_init                                           # struct_init_expr
+    | '(' expression ')'                                    # brac_expr
+    | expression '[' expression ']'                         # index_expr
+    | IDENTIFIER '(' ( ( expression ',')* expression )? ')' # fn_call_expr
+    | expression '.' expression                             # struct_attr_expr
+    | '+' expression                                        # u_plus_expr
+    | '-' expression                                        # u_minus_expr
+    | '!' expression                                        # u_not_expr
+    | '(' type_name ')' expression                          # cast_expt
+    | expression '^' expression                             # exp_expr
+    | expression '*' expression                             # mult_expr
+    | expression '/' expression                             # div_expr
+    | expression '%' expression                             # mod_expr
+    | expression '+' expression                             # add_expr
+    | expression '-' expression                             # sub_expr
+    | expression '<' expression                             # less_expr
+    | expression '>' expression                             # greater_expr
+    | expression '<=' expression                            # less_eq_expr
+    | expression '>=' expression                            # greater_eq_expr
+    | expression '==' expression                            # eq_expr
+    | expression '!=' expression                            # not_eq_expr
+    | expression '&&' expression                            # and_expr
+    | expression '||' expression                            # or_expr
     ;
 
 assign_expression
-    : IDENTIFIER assignment_operator expression                     # assign_var_expr
-    | IDENTIFIER '[' expression ']' assignment_operator expression  # assign_index_expr
+    : expression assignment_operator expression                     
     ;
 
 /* List of arguments */

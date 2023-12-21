@@ -11,40 +11,37 @@ public abstract class Expression extends ASTNode {
         Negate,
         TypeCast,
         StructInit,
-        ArrayInit;
+        ArrayInit,
 
-        public enum Primary
-        {
-            VariableReference,
-            IntLiteral,
-            FloatLiteral,
-            BoolLiteral,
-            StrLiteral,
-            Index,
-        }
 
-        public enum Bool
-        {
-            Less,
-            Greater,
-            LessEq,
-            GreaterEq,
-            Eq,
-            NotEq,
-            LogicalAnd,
-            LogicalOr,
-            LogicalNot
-        }
+        VariableReference,
+        IntLiteral,
+        FloatLiteral,
+        BoolLiteral,
+        StrLiteral,
+        Index,
+
+
+    
+        Less,
+        Greater,
+        LessEq,
+        GreaterEq,
+        Eq,
+        NotEq,
+        LogicalAnd,
+        LogicalOr,
+        LogicalNot,
+    
+    
+        Exponent,
+        Mult,
+        Div,
+        Mod,
+        Add,
+        Sub
         
-        public enum Arithmetic
-        {
-            Exponent,
-            Mult,
-            Div,
-            Mod,
-            Add,
-            Sub
-        }
 
     }
+
 }
