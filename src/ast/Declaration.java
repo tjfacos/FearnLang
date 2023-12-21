@@ -1,6 +1,7 @@
 package ast;
 
 import ast.expression.Expression;
+import ast.type.TypeSpecifier;
 
 public class Declaration extends ASTNode {
     

@@ -89,7 +89,7 @@ array_init
     ;
 
 struct_init
-    : 'new' IDENTIFIER '(' argument_list? ')'
+    : 'new' IDENTIFIER '(' ( ( expression ',')* expression )? ')'
     ;
 
 expression
@@ -104,7 +104,7 @@ expression
     | '+' expression                                        # u_plus_expr
     | '-' expression                                        # u_minus_expr
     | '!' expression                                        # u_not_expr
-    | '(' type_name ')' expression                          # cast_expt
+    | '(' type_name ')' expression                          # cast_expr
     | expression '^' expression                             # exp_expr
     | expression '*' expression                             # mult_expr
     | expression '/' expression                             # div_expr
@@ -123,11 +123,6 @@ expression
 
 assign_expression
     : expression assignment_operator expression                     
-    ;
-
-/* List of arguments */
-argument_list
-    : ( expression ',')* expression
     ;
     
 /* Assignment Operators */

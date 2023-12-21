@@ -44,4 +44,6 @@ public abstract class Expression extends ASTNode {
 
     }
 
+    @Override public abstract String toString();
+
 }

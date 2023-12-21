@@ -1,8 +1,8 @@
 package ast.expression;
 
 public class PrimaryExpression<T> extends Expression {
-    T value;
-    ExprType type;
+    public T value;
+    public ExprType type;
 
     public PrimaryExpression(T val, ExprType t)
     {
