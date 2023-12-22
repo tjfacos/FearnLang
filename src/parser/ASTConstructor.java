@@ -278,16 +278,32 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     { 
         TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(1));
         
-        Expression arr_length = (Expression)visit(ctx.getChild(3));
+        ArrayList<Expression> dims = new ArrayList<Expression>();
         
+        int i = 3;
+
+        for (; ctx.getChild(i-1).getText().equals("["); i+= 3)
+        {
+            dims.add((Expression)visit(ctx.getChild(i)));
+        }
+
+        ArrayBody init = (ArrayBody)visit(ctx.getChild(--i));
+
+        return new ArrayInitExpression(type, dims, init);
+    }
+
+    // Curly List (e.g. { 1 , 2 })
+    @Override
+    public Expression visitArray_body(FearnGrammarParser.Array_bodyContext ctx)
+    {
         ArrayList<Expression> elements = new ArrayList<Expression>();
 
-        for (int i = 6; i < ctx.getChildCount(); i += 2)
+        for (int i = 1; i < ctx.getChildCount() ; i += 2)
         {
             elements.add((Expression)visit(ctx.getChild(i)));
         }
 
-        return new ArrayInitExpression(type, arr_length, elements);
+        return new ArrayBody(elements);
     }
 
     // Struct Initialisation ( e.g. ($Person y =) new Person('Kennith', 23) )
@@ -348,7 +364,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 	public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx)
 	{
-        return new ArraySpecifier((TypeSpecifier)visit(ctx.getChild(0)));
+
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(0));
+        Integer dims = ctx.getChildCount() - 1;
+
+        return new ArraySpecifier(type, dims);
     }
 
 	public ASTNode visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)

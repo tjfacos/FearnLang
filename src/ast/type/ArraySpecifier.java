@@ -3,11 +3,13 @@ package ast.type;
 public class ArraySpecifier extends TypeSpecifier {
     
     public TypeSpecifier element_type;
+    public Integer dimensions;
 
-    public ArraySpecifier(TypeSpecifier eleT)
+    public ArraySpecifier(TypeSpecifier eleT, Integer dims)
     {
         type = Category.Array;
         element_type = eleT;
+        dimensions = dims;
     }
 
     @Override

@@ -10,7 +10,7 @@ type_name
 type_specifier
     : type_name                             # type_specifier_primitive
     | '$' IDENTIFIER                        # type_specifier_struct
-    | type_specifier '[' ']'                # type_specifier_arr
+    | type_specifier ('[]')+                # type_specifier_arr
     ;
 
 // Root Program
@@ -92,7 +92,13 @@ literal
     ;
 
 array_init
-    : 'new' type_specifier '[' expression ']' ( '{' (expression ',' )* expression '}' )?
+    : 'new' type_specifier ('[' expression ']')+ array_body?
+    ;
+
+array_body
+    : '{' (array_body ',')* array_body '}'
+    | '{' (expression ',')* expression '}'
+    | '{''}'
     ;
 
 struct_init
