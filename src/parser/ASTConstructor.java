@@ -276,15 +276,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx)
     { 
-        PrimitiveDataType type = null;
-
-        switch (ctx.getChild(1).getText()) {
-            case "int"  : type = PrimitiveDataType.INT;   break;
-            case "float": type = PrimitiveDataType.FLOAT; break;
-            case "str"  : type = PrimitiveDataType.STR;   break;
-            case "bool" : type = PrimitiveDataType.BOOL;  break;
-            default: break;
-        }
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(1));
         
         Expression arr_length = (Expression)visit(ctx.getChild(3));
         
@@ -356,16 +348,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 	public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx)
 	{
-        PrimitiveDataType type = null;
-
-        switch (ctx.getChild(0).getText()) {
-            case "int"  : type = PrimitiveDataType.INT;   break;
-            case "float": type = PrimitiveDataType.FLOAT; break;
-            case "str"  : type = PrimitiveDataType.STR;   break;
-            case "bool" : type = PrimitiveDataType.BOOL;  break;
-        }
-
-        return new ArraySpecifier(type);
+        return new ArraySpecifier((TypeSpecifier)visit(ctx.getChild(0)));
     }
 
 	public ASTNode visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)
@@ -380,7 +363,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.getChild(3));
 
         Expression init_expression = null;
-        if (ctx.getChildCount() > 4)
+        
+        if (ctx.getChildCount() > 5)
         {
             init_expression = (Expression)visit(ctx.getChild(5));
         }

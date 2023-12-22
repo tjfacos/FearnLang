@@ -9,8 +9,8 @@ type_name
 
 type_specifier
     : type_name                             # type_specifier_primitive
-    | type_name '[' ']'                     # type_specifier_arr
     | '$' IDENTIFIER                        # type_specifier_struct
+    | type_specifier '[' ']'                # type_specifier_arr
     ;
 
 program 
@@ -85,7 +85,7 @@ literal
     ;
 
 array_init
-    : 'new' type_name '[' expression ']' ( '{' (expression ',' )* expression '}' )?
+    : 'new' type_specifier '[' expression ']' ( '{' (expression ',' )* expression '}' )?
     ;
 
 struct_init

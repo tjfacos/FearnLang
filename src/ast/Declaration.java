@@ -18,7 +18,11 @@ public class Declaration extends ASTNode {
 
     @Override public String toString()
     {
-        return "Declare " + type.toString() + " " + identifer + "( = " + init_expression.toString() + ");\n";
+        if (!(init_expression == null)) {
+            return "Declare " + type.toString() + " " + identifer + "( = " + init_expression.toString() + ");\n";
+        } else {
+            return "Declare " + type.toString() + " " + identifer ;
+        }
     }
 
 }

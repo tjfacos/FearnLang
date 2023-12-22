@@ -2,9 +2,9 @@ package ast.type;
 
 public class ArraySpecifier extends TypeSpecifier {
     
-    public PrimitiveDataType element_type;
+    public TypeSpecifier element_type;
 
-    public ArraySpecifier(PrimitiveDataType eleT)
+    public ArraySpecifier(TypeSpecifier eleT)
     {
         type = Category.Array;
         element_type = eleT;
@@ -13,7 +13,7 @@ public class ArraySpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return "T[Array]" + element_type.name() + "[]";
+        return "T[Array](" + element_type.toString() + ")";
     }
 
 }

@@ -2,14 +2,15 @@ package ast.expression;
 
 import java.util.ArrayList;
 
-import ast.type.PrimitiveDataType;
+import ast.type.TypeSpecifier;
 
 public class ArrayInitExpression extends Expression {
-    public PrimitiveDataType type;
+    
+    public TypeSpecifier type;
     public Expression length;
     public ArrayList<Expression> init_elements;
 
-    public ArrayInitExpression(PrimitiveDataType t, Expression len, ArrayList<Expression> ele)
+    public ArrayInitExpression(TypeSpecifier t, Expression len, ArrayList<Expression> ele)
     {
         type = t;
         length = len;
@@ -19,7 +20,7 @@ public class ArrayInitExpression extends Expression {
     @Override
     public String toString()
     {
-        return type.name() + "(len: " + length.toString() + ")" + init_elements.toString();
+        return type.toString() + "(len: " + length.toString() + ")" + init_elements.toString();
     }
     
 
