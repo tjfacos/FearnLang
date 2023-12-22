@@ -19,7 +19,9 @@ program
 
 function 
     : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  
-      '{' ( statement | declaration )* '}' 
+      '{' 
+            ( statement | declaration )* 
+      '}' 
     ;
 
 declaration
