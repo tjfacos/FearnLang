@@ -373,6 +373,32 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     }
 
+    /* Statements */
+
+    // Compound Statement
+
+    // Selection Statements
+
+    // Iteration Statement
+
+    // Expression Statements
+
+    // Jump Statements
+
+
+
+
+
+    /* FUNCTIONS AND STRUCTURES */
+
+    // Function Definition
+
+    // Parameter
+
+    // Struct Definition
+
+
+    /* Program (root of AST) */
 
 
 
@@ -395,19 +421,6 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 
 
-
-
-
-
-
-
-
-
-    @Override
-    public ASTNode visitStruct_def(FearnGrammarParser.Struct_defContext ctx)
-    {
-        return new Struct();
-    }
 
 
 

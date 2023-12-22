@@ -13,40 +13,37 @@ type_specifier
     | type_specifier '[' ']'                # type_specifier_arr
     ;
 
+// Root Program
 program 
     : (function | declaration | struct_def )+
     ;
 
+// Function Definition
 function 
-    : 'fn' IDENTIFIER '(' (parameters_list)? ')' '=>' ( type_specifier | 'void' )  
+    : 'fn' IDENTIFIER '(' (( parameter ',' )* parameter)? ')' '=>' ( type_specifier | 'void' )  
       '{' 
             ( statement | declaration )* 
       '}' 
-    ;
-
-declaration
-    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
-    ;
-
-struct_def
-    : 'struct' IDENTIFIER '{' declaration* '}'
-    ;
-
-parameters_list
-    : ( parameter ',' )* parameter
     ;
 
 parameter
     : IDENTIFIER ':' type_specifier
     ;
 
+// Struct Definition
+struct_def
+    : 'struct' IDENTIFIER '{' declaration* '}'
+    ;
+
+
+
 // Statement Definitions
 statement 
-    : compound_statement        # comp_stmt
-    | expression_statement      # expr_stmt
-    | selection_statement       # sel_stmt
-    | iteration_statement       # iter_stmt
-    | jump_statement            # jmp_stmt
+    : compound_statement        
+    | expression_statement      
+    | selection_statement       
+    | iteration_statement       
+    | jump_statement            
     ;
 
 compound_statement
@@ -66,7 +63,7 @@ selection_statement
     ;
 
 iteration_statement
-    : 'while' '(' expression ')' compound_statement
+    : 'for' '(' declaration? ';' expression ';' expression ')' compound_statement
     ;
 
 jump_statement
@@ -76,6 +73,14 @@ jump_statement
     | 'return' expression ';'       # return_expr_stmt
     ;
 
+
+
+
+
+
+declaration
+    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
+    ;
 
 // Expression Rules
 
