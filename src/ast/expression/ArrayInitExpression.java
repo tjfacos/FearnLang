@@ -19,7 +19,7 @@ public class ArrayInitExpression extends Expression {
     @Override
     public String toString()
     {
-        return type.name() + init_elements.toString();
+        return type.name() + "(len: " + length.toString() + ")" + init_elements.toString();
     }
     
 

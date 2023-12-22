@@ -9,7 +9,7 @@ type_name
 
 type_specifier
     : type_name                             # type_specifier_primitive
-    | type_specifier '[' ']'                # type_specifier_arr
+    | type_name '[' ']'                     # type_specifier_arr
     | '$' IDENTIFIER                        # type_specifier_struct
     ;
 
@@ -23,7 +23,7 @@ function
     ;
 
 declaration
-    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'    # var_decl
+    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
     ;
 
 struct_def

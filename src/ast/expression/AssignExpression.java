@@ -22,7 +22,8 @@ public class AssignExpression extends Expression {
         Operator = op;
     }
 
-    @Override public String toString()
+    @Override 
+    public String toString()
     {
         return Target.toString() + " " + Operator.name() + " ( " + Expr.toString() + " ) ";
     }

@@ -11,7 +11,11 @@ import ast.*;
 import ast.expression.*;
 import ast.expression.AssignExpression.AssignmentOperator;
 import ast.expression.Expression.ExprType;
+import ast.type.ArraySpecifier;
 import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
+import ast.type.StructInstanceSpecifier;
+import ast.type.TypeSpecifier;
 
 public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     Program root = new Program();
@@ -19,7 +23,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     /* PRIMARY EXPRESSIONS */
     @Override
-    public ASTNode visitId_expr(FearnGrammarParser.Id_exprContext ctx)
+    public Expression visitId_expr(FearnGrammarParser.Id_exprContext ctx)
     {
         String id = ctx.getText();
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
@@ -28,7 +32,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     
     @Override
-    public ASTNode visitLiteral(FearnGrammarParser.LiteralContext ctx)
+    public Expression visitLiteral(FearnGrammarParser.LiteralContext ctx)
     {
         switch (ctx.getStart().getType())
         {
@@ -58,7 +62,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     
     @Override
-    public ASTNode visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) { return visit(ctx.getChild(1)); }
+    public Expression visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) { return (Expression)visit(ctx.getChild(1)); }
     
     
     /* BINARY OPERATIONS ( 2 operands ) */
@@ -66,7 +70,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     // Arithmetic
     
     @Override
-    public ASTNode visitMult_expr(FearnGrammarParser.Mult_exprContext ctx) 
+    public BinaryExpression visitMult_expr(FearnGrammarParser.Mult_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -75,7 +79,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitDiv_expr(FearnGrammarParser.Div_exprContext ctx) 
+    public BinaryExpression visitDiv_expr(FearnGrammarParser.Div_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -84,7 +88,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitMod_expr(FearnGrammarParser.Mod_exprContext ctx) 
+    public BinaryExpression visitMod_expr(FearnGrammarParser.Mod_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -93,7 +97,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitAdd_expr(FearnGrammarParser.Add_exprContext ctx) 
+    public BinaryExpression visitAdd_expr(FearnGrammarParser.Add_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -102,7 +106,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitSub_expr(FearnGrammarParser.Sub_exprContext ctx) 
+    public BinaryExpression visitSub_expr(FearnGrammarParser.Sub_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -111,7 +115,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitExp_expr(FearnGrammarParser.Exp_exprContext ctx) 
+    public BinaryExpression visitExp_expr(FearnGrammarParser.Exp_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -123,7 +127,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     // Boolean Logical
     @Override
-    public ASTNode visitLess_expr(FearnGrammarParser.Less_exprContext ctx) 
+    public BinaryExpression visitLess_expr(FearnGrammarParser.Less_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -132,7 +136,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitGreater_expr(FearnGrammarParser.Greater_exprContext ctx) 
+    public BinaryExpression visitGreater_expr(FearnGrammarParser.Greater_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -141,7 +145,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitLess_eq_expr(FearnGrammarParser.Less_eq_exprContext ctx) 
+    public BinaryExpression visitLess_eq_expr(FearnGrammarParser.Less_eq_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -150,7 +154,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitGreater_eq_expr(FearnGrammarParser.Greater_eq_exprContext ctx) 
+    public BinaryExpression visitGreater_eq_expr(FearnGrammarParser.Greater_eq_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -159,7 +163,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitEq_expr(FearnGrammarParser.Eq_exprContext ctx) 
+    public BinaryExpression visitEq_expr(FearnGrammarParser.Eq_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -168,7 +172,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitNot_eq_expr(FearnGrammarParser.Not_eq_exprContext ctx) 
+    public BinaryExpression visitNot_eq_expr(FearnGrammarParser.Not_eq_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -177,7 +181,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitAnd_expr(FearnGrammarParser.And_exprContext ctx) 
+    public BinaryExpression visitAnd_expr(FearnGrammarParser.And_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -186,7 +190,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitOr_expr(FearnGrammarParser.Or_exprContext ctx) 
+    public BinaryExpression visitOr_expr(FearnGrammarParser.Or_exprContext ctx) 
     { 
         Expression op1 = (Expression)visit(ctx.getChild(0));
         Expression op2 = (Expression)visit(ctx.getChild(2));
@@ -196,7 +200,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     /* UNARY OPERATIONS (1 operand) */
     @Override
-    public ASTNode visitU_minus_expr(FearnGrammarParser.U_minus_exprContext ctx) 
+    public UnaryExpression visitU_minus_expr(FearnGrammarParser.U_minus_exprContext ctx) 
     { 
         Expression op = (Expression)visit(ctx.getChild(1));
         
@@ -204,7 +208,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     @Override
-    public ASTNode visitU_not_expr(FearnGrammarParser.U_not_exprContext ctx) 
+    public UnaryExpression visitU_not_expr(FearnGrammarParser.U_not_exprContext ctx) 
     { 
         Expression op = (Expression)visit(ctx.getChild(1));
         
@@ -212,7 +216,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitCast_expr(FearnGrammarParser.Cast_exprContext ctx) 
+    public CastExpression visitCast_expr(FearnGrammarParser.Cast_exprContext ctx) 
     { 
         PrimitiveDataType targetType = null;
 
@@ -228,7 +232,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitIndex_expr(FearnGrammarParser.Index_exprContext ctx) 
+    public IndexExpression visitIndex_expr(FearnGrammarParser.Index_exprContext ctx) 
     { 
         return new IndexExpression(
             (Expression)visit(ctx.getChild(0)), 
@@ -245,7 +249,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     // Function Call
     @Override
-    public ASTNode visitFn_call_expr(FearnGrammarParser.Fn_call_exprContext ctx)
+    public FnCallExpression visitFn_call_expr(FearnGrammarParser.Fn_call_exprContext ctx)
     {
         String function_name = ctx.getChild(0).getText();
         ArrayList<Expression> args = new ArrayList<Expression>();
@@ -260,7 +264,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     // Struct Attribute Expression (e.g. x.y )
     @Override
-    public ASTNode visitStruct_attr_expr(FearnGrammarParser.Struct_attr_exprContext ctx)
+    public StructAttrExpression visitStruct_attr_expr(FearnGrammarParser.Struct_attr_exprContext ctx)
     { 
         Expression struct_name = (Expression)visit(ctx.getChild(0));
         Expression attribute = (Expression)visit(ctx.getChild(2));
@@ -270,7 +274,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     // Array Initialisation (e.g. (int[] x =) new int[5] {1, 2, 3, 7, 123 })
     @Override
-    public ASTNode visitArray_init(FearnGrammarParser.Array_initContext ctx)
+    public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx)
     { 
         PrimitiveDataType type = null;
 
@@ -296,7 +300,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     // Struct Initialisation ( e.g. ($Person y =) new Person('Kennith', 23) )
     @Override
-    public ASTNode visitStruct_init(FearnGrammarParser.Struct_initContext ctx)
+    public StructInitExpression visitStruct_init(FearnGrammarParser.Struct_initContext ctx)
     { 
         String struct_id = ctx.getChild(1).getText();
         
@@ -312,7 +316,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* Assignment Expressions (e.g. x = y; x += 3; y %= 2) */
     @Override
-    public ASTNode visitAssign_expression(FearnGrammarParser.Assign_expressionContext ctx)
+    public AssignExpression visitAssign_expression(FearnGrammarParser.Assign_expressionContext ctx)
     { 
         Expression target = (Expression)visit(ctx.getChild(0));
         Expression expression = (Expression)visit(ctx.getChild(2));
@@ -334,7 +338,56 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
     }
 
+    /* TYPE SPECIFIERS */
+    public PrimitiveSpecifier visitType_specifier_primitive(FearnGrammarParser.Type_specifier_primitiveContext ctx)
+    {
+        PrimitiveDataType type = null;
 
+        switch (ctx.getText()) {
+            case "int"  : type = PrimitiveDataType.INT;   break;
+            case "float": type = PrimitiveDataType.FLOAT; break;
+            case "str"  : type = PrimitiveDataType.STR;   break;
+            case "bool" : type = PrimitiveDataType.BOOL;  break;
+        }
+
+        return new PrimitiveSpecifier(type);
+    
+    }
+
+	public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx)
+	{
+        PrimitiveDataType type = null;
+
+        switch (ctx.getChild(0).getText()) {
+            case "int"  : type = PrimitiveDataType.INT;   break;
+            case "float": type = PrimitiveDataType.FLOAT; break;
+            case "str"  : type = PrimitiveDataType.STR;   break;
+            case "bool" : type = PrimitiveDataType.BOOL;  break;
+        }
+
+        return new ArraySpecifier(type);
+    }
+
+	public ASTNode visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)
+	{
+        return new StructInstanceSpecifier(ctx.getChild(1).getText());
+    }
+
+    /* DECLARATION */
+    public ASTNode visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
+    {
+        String identifer = ctx.getChild(1).getText();
+        TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.getChild(3));
+
+        Expression init_expression = null;
+        if (ctx.getChildCount() > 4)
+        {
+            init_expression = (Expression)visit(ctx.getChild(5));
+        }
+
+        return new Declaration(identifer, type_spec, init_expression);
+
+    }
 
 
 

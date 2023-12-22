@@ -5,38 +5,20 @@ import ast.type.TypeSpecifier;
 
 public class Declaration extends ASTNode {
     
-    private String identifer;
-    private TypeSpecifier type;
-    private Expression init_expr;
+    public String identifer;
+    public TypeSpecifier type;
+    public Expression init_expression;
     
-    public void setIdentifier(String id)
+    public Declaration(String id, TypeSpecifier t, Expression e)
     {
-        this.identifer = id;
+        identifer = id;
+        type = t;
+        init_expression = e;
     }
 
-    public void setTypeSpecifier(TypeSpecifier type)
+    @Override public String toString()
     {
-        this.type = type;
-    }
-
-    public void setInitExpression(Expression expr)
-    {
-        this.init_expr = expr;
-    }
-
-    public String getIdentifier()
-    {
-        return this.identifer;
-    }
-
-    public TypeSpecifier getTypeSpecifier()
-    {
-        return this.type;
-    }
-
-    public Expression getInitExpression()
-    {
-        return this.init_expr;
+        return "Declare " + type.toString() + " " + identifer + "( = " + init_expression.toString() + ");\n";
     }
 
 }
