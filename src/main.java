@@ -39,6 +39,9 @@ class FearnC
         tokens = new CommonTokenStream(lexer);
         parser = new FearnGrammarParser(tokens);
 
+        parser.removeErrorListeners();
+        parser.addErrorListener(new FearnErrorListener());
+
         ParseTree parseTree = parser.program();
 
         ASTConstructor astConstructor = new ASTConstructor();
