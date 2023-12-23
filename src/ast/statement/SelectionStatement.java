@@ -21,7 +21,7 @@ public class SelectionStatement extends Statement {
         if (else_branch != null)
         {
             return String.format(
-                "IF (%s) THEN %s ELSE %s\n\t",
+                "\n\tIF (%s) THEN %s ELSE %s",
                 condition.toString(),
                 if_branch.toString(),
                 else_branch.toString()
@@ -29,7 +29,7 @@ public class SelectionStatement extends Statement {
         }
         
         return String.format(
-            "IF (%s) THEN %s\n\t",
+            "\n\tIF (%s) THEN %s",
             condition.toString(),
             if_branch.toString()
         );

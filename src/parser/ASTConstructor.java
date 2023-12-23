@@ -11,16 +11,17 @@ import ast.*;
 import ast.expression.*;
 import ast.expression.AssignExpression.AssignmentOperator;
 import ast.expression.Expression.ExprType;
+import ast.function.Function;
+import ast.function.Parameter;
 import ast.type.ArraySpecifier;
 import ast.type.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
 import ast.statement.*;
+import ast.statement.JumpStatement.JumpType;
 
 public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
-    Program root = new Program();
-
     
     /* PRIMARY EXPRESSIONS */
     @Override
@@ -412,11 +413,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
         int i = 1;
 
-        for (
-            ; 
-            !ctx.getChild(i).getText().equals("}") && ctx.getChild(i).getChild(0).getText().equals("let"); 
-            i++
-        )
+        for (; !ctx.getChild(i).getText().equals("}") && ctx.getChild(i).getChild(0).getText().equals("let"); i++)
         {
             local_decls.add((Declaration)visit(ctx.getChild(i)));
         }
@@ -496,7 +493,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     // Iteration Statement
     @Override
-    public Statement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx)
+    public IterationStatement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx)
     {
         Declaration decl = null;
         Expression cont_expr = null;
@@ -520,24 +517,24 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
 	
 
-    // // Jump Statements
-    // @Override
-    // public Statement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx)
-    // {
-
-    // }
+    // Jump Statements
+    @Override
+    public JumpStatement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx)
+    {
+        return new JumpStatement(JumpType.Continue);
+    }
 	
-	// @Override
-    // public Statement visitBreak_stmt(FearnGrammarParser.Break_stmtContext ctx)
-    // {
-
-    // }
+	@Override
+    public JumpStatement visitBreak_stmt(FearnGrammarParser.Break_stmtContext ctx)
+    {
+        return new JumpStatement(JumpType.Break);
+    }
 	
-	// @Override
-    // public Statement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx)
-    // {
-
-    // }
+	@Override
+    public ReturnStatement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx)
+    {
+        return new ReturnStatement(JumpType.Return, (Expression)visit(ctx.expression()));
+    }
 	
 
 
@@ -546,13 +543,73 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     /* FUNCTIONS AND STRUCTURES */
 
     // Function Definition
+    @Override
+    public Function visitFunction(FearnGrammarParser.FunctionContext ctx)
+    {
+        ArrayList<Parameter> parameters = new ArrayList<Parameter>();
+        TypeSpecifier return_type = null;
+        Boolean is_void = false;
+
+        if ( ctx.type_specifier() == null ) {
+            is_void = true;
+        } else {
+            return_type = (TypeSpecifier)visit(ctx.type_specifier());
+        }
+
+        for (int i = 0; i < ctx.parameter().size(); i++)
+        {
+            parameters.add((Parameter)visit(ctx.parameter(i)));
+        }
+
+        return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, (CompoundStatement)visit(ctx.compound_statement()));
+    }
 
     // Parameter
+	@Override
+    public Parameter visitParameter(FearnGrammarParser.ParameterContext ctx)
+    {
+        return new Parameter(ctx.IDENTIFIER().getText(), (TypeSpecifier)visit(ctx.type_specifier()));
+    }
 
     // Struct Definition
+    @Override
+    public Struct visitStruct_def(FearnGrammarParser.Struct_defContext ctx)
+    {
+        ArrayList<Declaration> decl = new ArrayList<Declaration>();
+        for (int i = 0; i < ctx.declaration().size(); i++)
+        {
+            decl.add((Declaration)visit(ctx.declaration(i)));
+        }
 
+        return new Struct(ctx.IDENTIFIER().getText(), decl);
+    }
 
     /* Program (root of AST) */
+    @Override
+    public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
+    {
+        ArrayList<Declaration> global_declarations = new ArrayList<Declaration>(); 
+        ArrayList<Struct> structs = new ArrayList<Struct>(); 
+        ArrayList<Function> functions = new ArrayList<Function>();
+
+
+        for (int i = 0; i < ctx.declaration().size(); i++)
+        {
+            global_declarations.add(visitDeclaration(ctx.declaration(i)));
+        }
+
+        for (int i = 0; i < ctx.struct_def().size(); i++)
+        {
+            structs.add(visitStruct_def(ctx.struct_def(i)));
+        }
+
+        for (int i = 0; i < ctx.function().size(); i++)
+        {
+            functions.add(visitFunction(ctx.function(i)));
+        }
+
+        return new Program(global_declarations, functions, structs);
+    }
 
 
 

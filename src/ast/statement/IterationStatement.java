@@ -26,7 +26,7 @@ public class IterationStatement extends Statement {
         if (iteration_expression == null) { i = "null"; } else { i = iteration_expression.toString(); }
         b = body.toString();
         
-        return String.format("FOR ( %s ; %s ; %s ) %s\n\t",
+        return String.format("\n\tFOR ( %s ; %s ; %s ) %s",
             d, c, i, b
         );
 

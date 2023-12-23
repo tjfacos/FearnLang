@@ -2,29 +2,26 @@ package ast;
 
 import java.util.ArrayList;
 
+import ast.function.Function;
+
 public class Program extends ASTNode {
     
-    private ArrayList<Declaration> global_declarations = new ArrayList<Declaration>(); 
-    private ArrayList<Function> functions = new ArrayList<Function>();
+    public ArrayList<Declaration> global_declarations; 
+    public ArrayList<Struct> structs; 
+    public ArrayList<Function> functions;
+
+    public Program(ArrayList<Declaration> global_decl, ArrayList<Function> funcs, ArrayList<Struct> s) 
+    {
+        global_declarations = global_decl;
+        functions = funcs;
+        structs = s;
+    }
     
-    public void addGlobalDeclaration(Declaration decl)
+    @Override 
+    public String toString()
     {
-        global_declarations.add(decl);
+        return String.format("%s\n\n%s\n\n%s", global_declarations, structs, functions);
     }
-
-    public void addFunction(Function func)
-    {
-        functions.add(func);
-    }
-
-    public ArrayList<Declaration> getGlobalDeclarations()
-    {
-        return this.global_declarations;
-    }
-
-    public ArrayList<Function> getFunctions()
-    {
-        return this.functions;
-    }
+    
 
 }

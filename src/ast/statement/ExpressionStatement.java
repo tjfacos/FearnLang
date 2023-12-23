@@ -14,6 +14,6 @@ public class ExpressionStatement extends Statement {
     
     @Override public String toString()
     {
-        return String.format("ExpStmt (Assign %s) %s\n\t", isAssign, expression.toString());
+        return String.format("\n\tExpStmt (Assign %s) %s", isAssign, expression.toString());
     }
 }
