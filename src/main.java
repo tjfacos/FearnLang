@@ -40,7 +40,7 @@ class FearnC
         parser = new FearnGrammarParser(tokens);
 
         // ParseTree parseTree = parser.program();
-        ParseTree parseTree = parser.declaration();
+        ParseTree parseTree = parser.statement();
 
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);

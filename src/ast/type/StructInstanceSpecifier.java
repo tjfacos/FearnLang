@@ -13,6 +13,6 @@ public class StructInstanceSpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return "T[Struct]" + name;
+        return String.format("T[Struct: %s]", name);
     }
 }

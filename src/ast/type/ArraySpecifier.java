@@ -15,7 +15,7 @@ public class ArraySpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return "T[Array](" + element_type.toString() + ")";
+        return String.format("T[Array: %s]", element_type.toString());
     }
 
 }

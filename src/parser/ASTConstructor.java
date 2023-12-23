@@ -16,6 +16,7 @@ import ast.type.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
+import ast.statement.*;
 
 public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     Program root = new Program();
@@ -371,13 +372,16 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new ArraySpecifier(type, dims);
     }
 
-	public ASTNode visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)
+	public StructInstanceSpecifier visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)
 	{
         return new StructInstanceSpecifier(ctx.getChild(1).getText());
     }
 
+
+
+
     /* DECLARATION */
-    public ASTNode visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
+    public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
     {
         String identifer = ctx.getChild(1).getText();
         TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.getChild(3));
@@ -393,18 +397,148 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     }
 
-    /* Statements */
+
+
+    /* STATEMENTS */
 
     // Compound Statement
+    @Override
+    public CompoundStatement visitCompound_statement(FearnGrammarParser.Compound_statementContext ctx)
+    {
+        
+        
+        ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
+        ArrayList<Statement> local_stmts = new ArrayList<Statement>();
+        
+        int i = 1;
+
+        for (
+            ; 
+            !ctx.getChild(i).getText().equals("}") && ctx.getChild(i).getChild(0).getText().equals("let"); 
+            i++
+        )
+        {
+            local_decls.add((Declaration)visit(ctx.getChild(i)));
+        }
+        
+        for (; i < ctx.getChildCount() - 1; i++)
+        {
+            local_stmts.add((Statement)visit(ctx.getChild(i)));
+        }
+        
+            
+        return new CompoundStatement(local_decls, local_stmts);
+            
+    }
+        
+    
+    
+    // Expression Statements
+    @Override
+    public ExpressionStatement visitSimple_expr_stmt(FearnGrammarParser.Simple_expr_stmtContext ctx)
+    {
+        return new ExpressionStatement((Expression)visit(ctx.getChild(0)), false);
+    }
+    
+    @Override
+    public ExpressionStatement visitAssign_expr_stmt(FearnGrammarParser.Assign_expr_stmtContext ctx)
+    {
+        return new ExpressionStatement((Expression)visit(ctx.getChild(0)), true);
+    }
+
+
 
     // Selection Statements
+    @Override
+    public SelectionStatement visitSingle_if(FearnGrammarParser.Single_ifContext ctx)
+    {
+
+        return new SelectionStatement(
+            (Expression)visit(ctx.getChild(2)),
+            (CompoundStatement)visit(ctx.getChild(4)),
+            null
+        );
+    }
+    
+    @Override
+    public SelectionStatement visitIf_else(FearnGrammarParser.If_elseContext ctx)
+    {
+        Statement else_branch = null;
+
+        if (ctx.getChildCount() == 7)
+        {
+            else_branch = (Statement)visit(ctx.getChild(6));
+        }
+
+        return new SelectionStatement(
+            (Expression)visit(ctx.getChild(2)),
+            (CompoundStatement)visit(ctx.getChild(4)),
+            else_branch
+        );
+    }
+    
+    @Override
+    public SelectionStatement visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx)
+    {
+        Statement else_branch = null;
+
+        if (ctx.getChildCount() == 7)
+        {
+            else_branch = (Statement)visit(ctx.getChild(6));
+        }
+
+        return new SelectionStatement(
+            (Expression)visit(ctx.getChild(2)),
+            (CompoundStatement)visit(ctx.getChild(4)),
+            else_branch
+        );
+    }
 
     // Iteration Statement
+    @Override
+    public Statement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx)
+    {
+        Declaration decl = null;
+        Expression cont_expr = null;
+        AssignExpression iter_expr = null;
+        CompoundStatement body = null;
 
-    // Expression Statements
 
-    // Jump Statements
+        if (ctx.declaration() != null)          { decl =        (Declaration)visit(ctx.declaration());              }
+        if (ctx.expression() != null)           { cont_expr =   (Expression)visit(ctx.expression());                }
+        if (ctx.assign_expression() != null)    { iter_expr =   (AssignExpression)visit(ctx.assign_expression());   }
 
+        body = (CompoundStatement)visit(ctx.compound_statement());
+
+        return new IterationStatement(decl, cont_expr, iter_expr, body);
+    
+    }
+	    
+    
+	
+        
+    
+	
+
+    // // Jump Statements
+    // @Override
+    // public Statement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx)
+    // {
+
+    // }
+	
+	// @Override
+    // public Statement visitBreak_stmt(FearnGrammarParser.Break_stmtContext ctx)
+    // {
+
+    // }
+	
+	// @Override
+    // public Statement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx)
+    // {
+
+    // }
+	
 
 
 

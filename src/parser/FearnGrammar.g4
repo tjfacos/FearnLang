@@ -20,10 +20,7 @@ program
 
 // Function Definition
 function 
-    : 'fn' IDENTIFIER '(' (( parameter ',' )* parameter)? ')' '=>' ( type_specifier | 'void' )  
-      '{' 
-            ( statement | declaration )* 
-      '}' 
+    : 'fn' IDENTIFIER '(' (( parameter ',' )* parameter)? ')' '=>' ( type_specifier | 'void' )  compound_statement 
     ;
 
 parameter
@@ -47,13 +44,12 @@ statement
     ;
 
 compound_statement
-    : '{' (statement)* '}'
+    : '{' (declaration)* (statement)* '}'
     ;
 
 expression_statement
     : expression ';'            # simple_expr_stmt
     | assign_expression ';'     # assign_expr_stmt
-    | ';'                       # colon_expr_stmt
     ;
 
 selection_statement
@@ -63,14 +59,13 @@ selection_statement
     ;
 
 iteration_statement
-    : 'for' '(' declaration? ';' expression ';' expression ')' compound_statement
+    : 'for' '(' (declaration | ';')? expression? ';' assign_expression? ')' compound_statement
     ;
 
 jump_statement
     : 'continue' ';'                # cont_stmt
     | 'break' ';'                   # break_stmt
-    | 'return' ';'                  # return_void_stmt
-    | 'return' expression ';'       # return_expr_stmt
+    | 'return' expression? ';'       # return_stmt
     ;
 
 
@@ -165,7 +160,11 @@ STR_LIT     :   '"'(.)*?'"'| '\''(.)*?'\''  ;
 BOOL_LIT    :   'true' | 'false'            ;
 
 /* Define Token for User Identifiers */
-IDENTIFIER  :   L(L|D)*                 ;
+IDENTIFIER  :   L(L|D)*                     ;
 
 /* Ignore (certain) whitespace      */
-WS          :   ( ' ' | '\t' | '\n' | '\r' )+ -> skip      ;
+WS          :   ( ' ' | '\t' | '\n' | '\r' )+ -> skip   ;
+
+/* Ignore Comments */
+BLOCKCOMMENT: '/*' .*? '*/' -> skip                     ;
+LINECOMMENT : '//' ~[\r\n]* -> skip                     ;
