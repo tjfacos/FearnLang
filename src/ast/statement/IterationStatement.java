@@ -1,18 +1,18 @@
 package ast.statement;
 
-import ast.Declaration;
+import ast.ASTNode;
 import ast.expression.*;
 
 public class IterationStatement extends Statement {
 
-    public Declaration var_declaration;
+    public ASTNode init_expression;
     public Expression continue_expression;
     public AssignExpression iteration_expression;
     public CompoundStatement body;
 
-    public IterationStatement(Declaration decl, Expression c_expr, AssignExpression i_expr, CompoundStatement bod)
+    public IterationStatement(ASTNode init, Expression c_expr, AssignExpression i_expr, CompoundStatement bod)
     {
-        var_declaration = decl;
+        init_expression = init;
         continue_expression = c_expr;
         iteration_expression = i_expr;
         body = bod;
@@ -21,7 +21,7 @@ public class IterationStatement extends Statement {
     @Override public String toString()
     {
         String d, c, i, b;
-        if (var_declaration == null) { d = "null"; } else { d = var_declaration.toString(); }
+        if (init_expression == null) { d = "null"; } else { d = init_expression.toString(); }
         if (continue_expression == null) { c = "null"; } else { c = continue_expression.toString(); }
         if (iteration_expression == null) { i = "null"; } else { i = iteration_expression.toString(); }
         b = body.toString();

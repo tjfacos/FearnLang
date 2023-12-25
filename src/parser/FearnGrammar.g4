@@ -59,7 +59,23 @@ selection_statement
     ;
 
 iteration_statement
-    : 'for' '(' (declaration | ';')? expression? ';' assign_expression? ')' compound_statement
+    : 'for' '(' init_expression continue_condition? ';' iteration_expression? ')' compound_statement
+    ;
+
+init_expression
+    : declaration
+    | expression ';'
+    | assign_expression ';'
+    | ';'
+    ;
+
+continue_condition
+    : expression
+    ;
+
+iteration_expression
+    : expression
+    | assign_expression
     ;
 
 jump_statement

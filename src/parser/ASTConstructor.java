@@ -495,19 +495,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public IterationStatement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx)
     {
-        Declaration decl = null;
+        ASTNode init = null;
         Expression cont_expr = null;
         AssignExpression iter_expr = null;
         CompoundStatement body = null;
 
+        if (!ctx.init_expression().getText().equals(";")) 
+        {
+            init = visit(ctx.init_expression().getChild(0)); // Either an Expression or a Declaration
+        }
 
-        if (ctx.declaration() != null)          { decl =        (Declaration)visit(ctx.declaration());              }
-        if (ctx.expression() != null)           { cont_expr =   (Expression)visit(ctx.expression());                }
-        if (ctx.assign_expression() != null)    { iter_expr =   (AssignExpression)visit(ctx.assign_expression());   }
+        if (ctx.continue_condition() != null)   { cont_expr =   (Expression)visit(ctx.continue_condition().getChild(0));            }
+        if (ctx.iteration_expression() != null) { iter_expr =   (AssignExpression)visit(ctx.iteration_expression().getChild(0));    }
 
         body = (CompoundStatement)visit(ctx.compound_statement());
 
-        return new IterationStatement(decl, cont_expr, iter_expr, body);
+        return new IterationStatement(init, cont_expr, iter_expr, body);
     
     }
 	    
