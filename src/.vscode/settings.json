@@ -1,7 +1,8 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\libraries\\javalibs\\antlr-4.13.1-complete.jar"
+        "c:\\libraries\\javalibs\\antlr-4.13.1-complete.jar",
+        "c:\\libraries\\javalibs\\asm-9.6.jar"
     ],
     "java.project.sourcePaths": [
         "."

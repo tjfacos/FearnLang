@@ -8,10 +8,13 @@ import parser.gen.*;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
+import java.io.IOException;
 
 // Local
 import util.*;
 import ast.ASTNode;
+
+import codegen.*;
 
 class FearnC
 {
@@ -21,6 +24,9 @@ class FearnC
     public static CommonTokenStream tokens;
     public static FearnGrammarParser parser;
     
+    static CodeGenerator cg = new CodeGenerator();
+
+
     public static void main(String []args)
     {
         if ( args.length == 0) {
@@ -47,6 +53,16 @@ class FearnC
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
-        System.out.println(AST.toString());
+        // System.out.println(AST.toString());
+
+        try {
+            cg.Generate();
+        } catch (IOException e) {
+            ErrorReporter.ReportErrorAndExit("FUCCCK", 23);
+        }
+    
+    
     }
+
+    
 };
