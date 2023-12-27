@@ -13,7 +13,7 @@ public class FearnErrorListener extends BaseErrorListener{
         RecognitionException e
     )
     {
-        ErrorReporter.ReportErrorAndExit(
+        Reporter.ReportErrorAndExit(
             "Parse :- line "+line+"; col "+charPositionInLine+": "+msg, 
             3
         );

@@ -3,8 +3,11 @@ package codegen;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
+import ast.Program;
+
 import static org.objectweb.asm.Opcodes.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +17,10 @@ public class CodeGenerator {
     
     private ClassWriter cw = new ClassWriter(0);
 
-    public void Generate() throws IOException
+    public void Generate(Program root, String srcPath) throws IOException
     {
-        Path p = Paths.get("HelloWorld.class");
-        Files.write(p, serializeToBytes("HelloWorld"));
+        Path p = Paths.get(srcPath.replace(".fearn", ".class"));
+        Files.write(p, serializeToBytes(new File(srcPath).getName().replace(".fearn", "")));
     }
 
     byte[] serializeToBytes(String outputClassName) 
@@ -31,7 +34,7 @@ public class CodeGenerator {
             null
         );
         
-        addStandardConstructor();
+        // addStandardConstructor();
         addMainMethod();
         cw.visitEnd();
         return cw.toByteArray();
