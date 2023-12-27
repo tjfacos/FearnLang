@@ -53,13 +53,13 @@ class FearnC
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
-        // System.out.println(AST.toString());
+        System.out.println(AST.toString());
 
-        try {
-            cg.Generate();
-        } catch (IOException e) {
-            ErrorReporter.ReportErrorAndExit("FUCCCK", 23);
-        }
+        // try {
+        //     cg.Generate();
+        // } catch (IOException e) {
+        //     ErrorReporter.ReportErrorAndExit("FUCCCK", 23);
+        // }
     
     
     }

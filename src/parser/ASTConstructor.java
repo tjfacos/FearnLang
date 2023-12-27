@@ -64,7 +64,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     
     @Override
-    public Expression visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) { return (Expression)visit(ctx.getChild(1)); }
+    public Expression visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) { return (Expression)visit(ctx.expression()); }
     
     
     /* BINARY OPERATIONS ( 2 operands ) */
@@ -74,8 +74,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitMult_expr(FearnGrammarParser.Mult_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Mult);
     }
@@ -83,8 +83,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitDiv_expr(FearnGrammarParser.Div_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Div);
     }
@@ -92,17 +92,17 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitMod_expr(FearnGrammarParser.Mod_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Mod);
     }
     
     @Override
     public BinaryExpression visitAdd_expr(FearnGrammarParser.Add_exprContext ctx) 
-    { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+    {
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Add);
     }
@@ -110,8 +110,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitSub_expr(FearnGrammarParser.Sub_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Sub);
     }
@@ -119,8 +119,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitExp_expr(FearnGrammarParser.Exp_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Exponent);
     }
@@ -131,8 +131,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitLess_expr(FearnGrammarParser.Less_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Less);
     }
@@ -140,8 +140,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitGreater_expr(FearnGrammarParser.Greater_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Greater);
     }
@@ -149,8 +149,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitLess_eq_expr(FearnGrammarParser.Less_eq_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.LessEq);
     }
@@ -158,8 +158,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitGreater_eq_expr(FearnGrammarParser.Greater_eq_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.GreaterEq);
     }
@@ -167,8 +167,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitEq_expr(FearnGrammarParser.Eq_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.Eq);
     }
@@ -176,8 +176,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitNot_eq_expr(FearnGrammarParser.Not_eq_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.NotEq);
     }
@@ -185,8 +185,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitAnd_expr(FearnGrammarParser.And_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.LogicalAnd);
     }
@@ -194,8 +194,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public BinaryExpression visitOr_expr(FearnGrammarParser.Or_exprContext ctx) 
     { 
-        Expression op1 = (Expression)visit(ctx.getChild(0));
-        Expression op2 = (Expression)visit(ctx.getChild(2));
+        Expression op1 = (Expression)visit(ctx.expression(0));
+        Expression op2 = (Expression)visit(ctx.expression(1));
         
         return new BinaryExpression(op1, op2, ExprType.LogicalOr);
     }
@@ -204,7 +204,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public UnaryExpression visitU_minus_expr(FearnGrammarParser.U_minus_exprContext ctx) 
     { 
-        Expression op = (Expression)visit(ctx.getChild(1));
+        Expression op = (Expression)visit(ctx.expression());
         
         return new UnaryExpression(op, ExprType.Negate);
     }
@@ -212,7 +212,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public UnaryExpression visitU_not_expr(FearnGrammarParser.U_not_exprContext ctx) 
     { 
-        Expression op = (Expression)visit(ctx.getChild(1));
+        Expression op = (Expression)visit(ctx.expression());
         
         return new UnaryExpression(op, ExprType.LogicalNot);
     }
@@ -222,7 +222,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     { 
         PrimitiveDataType targetType = null;
 
-        switch (ctx.getChild(1).getText()) {
+        switch (ctx.type_name().getText()) {
             case "int"  : targetType = PrimitiveDataType.INT;   break;
             case "float": targetType = PrimitiveDataType.FLOAT; break;
             case "str"  : targetType = PrimitiveDataType.STR;   break;
@@ -230,15 +230,15 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             default: break;
         }
 
-        return new CastExpression((Expression)visit(ctx.getChild(3)), targetType);
+        return new CastExpression((Expression)visit(ctx.expression()), targetType);
     }
 
     @Override
     public IndexExpression visitIndex_expr(FearnGrammarParser.Index_exprContext ctx) 
     { 
         return new IndexExpression(
-            (Expression)visit(ctx.getChild(0)), 
-            (Expression)visit(ctx.getChild(2))
+            (Expression)visit(ctx.expression(0)), 
+            (Expression)visit(ctx.expression(1))
         );
     }
     
@@ -253,12 +253,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public FnCallExpression visitFn_call_expr(FearnGrammarParser.Fn_call_exprContext ctx)
     {
-        String function_name = ctx.getChild(0).getText();
+        String function_name = ctx.IDENTIFIER().getText();
         ArrayList<Expression> args = new ArrayList<Expression>();
 
-        for (int i = 2; i < ctx.getChildCount(); i += 2)
+        for (int i = 0; i < ctx.expression().size(); i++)
         {
-            args.add((Expression)visit(ctx.getChild(i)));
+            args.add((Expression)visit(ctx.expression(i)));
         }
 
         return new FnCallExpression(function_name, args);
@@ -268,8 +268,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public StructAttrExpression visitStruct_attr_expr(FearnGrammarParser.Struct_attr_exprContext ctx)
     { 
-        Expression struct_name = (Expression)visit(ctx.getChild(0));
-        Expression attribute = (Expression)visit(ctx.getChild(2));
+        Expression struct_name = (Expression)visit(ctx.expression(0));
+        Expression attribute = (Expression)visit(ctx.expression(1));
         
         return new StructAttrExpression(struct_name, attribute);
     }
@@ -278,18 +278,16 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx)
     { 
-        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(1));
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.type_specifier());
         
         ArrayList<Expression> dims = new ArrayList<Expression>();
         
-        int i = 3;
-
-        for (; ctx.getChild(i-1).getText().equals("["); i+= 3)
+        for (int i = 0; i < ctx.expression().size(); i++)
         {
-            dims.add((Expression)visit(ctx.getChild(i)));
+            dims.add((Expression)visit(ctx.expression(i)));
         }
 
-        ArrayBody init = (ArrayBody)visit(ctx.getChild(--i));
+        ArrayBody init = (ArrayBody)visit(ctx.array_body());
 
         return new ArrayInitExpression(type, dims, init);
     }
@@ -312,13 +310,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public StructInitExpression visitStruct_init(FearnGrammarParser.Struct_initContext ctx)
     { 
-        String struct_id = ctx.getChild(1).getText();
+        String struct_id = ctx.IDENTIFIER().getText();
         
         ArrayList<Expression> args = new ArrayList<Expression>();
 
-        for (int i = 3; i < ctx.getChildCount(); i += 2)
+        for (int i = 0; i < ctx.expression().size(); i++)
         {
-            args.add((Expression)visit(ctx.getChild(i)));
+            args.add((Expression)visit(ctx.expression(i)));
         }
 
         return new StructInitExpression(struct_id, args);
@@ -328,12 +326,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public AssignExpression visitAssign_expression(FearnGrammarParser.Assign_expressionContext ctx)
     { 
-        Expression target = (Expression)visit(ctx.getChild(0));
-        Expression expression = (Expression)visit(ctx.getChild(2));
+        Expression target = (Expression)visit(ctx.expression(0));
+        Expression expression = (Expression)visit(ctx.expression(1));
         
         AssignmentOperator op = null;
 
-        switch (ctx.getChild(1).getText()) {
+        switch (ctx.assignment_operator().getText()) {
             case "="    : op = AssignmentOperator.Equals    ;   break;
             case "+="   : op = AssignmentOperator.AddEquals ;   break;
             case "-="   : op = AssignmentOperator.SubEquals ;   break;
@@ -367,7 +365,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 	public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx)
 	{
 
-        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(0));
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.type_specifier());
         Integer dims = ctx.getChildCount() - 1;
 
         return new ArraySpecifier(type, dims);
@@ -375,7 +373,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 	public StructInstanceSpecifier visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx)
 	{
-        return new StructInstanceSpecifier(ctx.getChild(1).getText());
+        return new StructInstanceSpecifier(ctx.IDENTIFIER().getText());
     }
 
 
@@ -384,14 +382,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     /* DECLARATION */
     public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
     {
-        String identifer = ctx.getChild(1).getText();
-        TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.getChild(3));
+        String identifer = ctx.IDENTIFIER().getText();
+        TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.type_specifier());
 
         Expression init_expression = null;
         
         if (ctx.getChildCount() > 5)
         {
-            init_expression = (Expression)visit(ctx.getChild(5));
+            init_expression = (Expression)visit(ctx.expression());
         }
 
         return new Declaration(identifer, type_spec, init_expression);
@@ -411,18 +409,15 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
         ArrayList<Statement> local_stmts = new ArrayList<Statement>();
         
-        int i = 1;
+        for (int i = 0; i < ctx.declaration().size(); i++)
+        {
+            local_decls.add((Declaration)visit(ctx.declaration(i)));
+        }
 
-        for (; !ctx.getChild(i).getText().equals("}") && ctx.getChild(i).getChild(0).getText().equals("let"); i++)
+        for (int i = 0; i < ctx.statement().size(); i++)
         {
-            local_decls.add((Declaration)visit(ctx.getChild(i)));
-        }
-        
-        for (; i < ctx.getChildCount() - 1; i++)
-        {
-            local_stmts.add((Statement)visit(ctx.getChild(i)));
-        }
-        
+            local_stmts.add((Statement)visit(ctx.statement(i)));
+        }       
             
         return new CompoundStatement(local_decls, local_stmts);
             
@@ -434,13 +429,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public ExpressionStatement visitSimple_expr_stmt(FearnGrammarParser.Simple_expr_stmtContext ctx)
     {
-        return new ExpressionStatement((Expression)visit(ctx.getChild(0)), false);
+        return new ExpressionStatement((Expression)visit(ctx.expression()), false);
     }
     
     @Override
     public ExpressionStatement visitAssign_expr_stmt(FearnGrammarParser.Assign_expr_stmtContext ctx)
     {
-        return new ExpressionStatement((Expression)visit(ctx.getChild(0)), true);
+        return new ExpressionStatement((Expression)visit(ctx.assign_expression()), true);
     }
 
 
@@ -451,8 +446,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     {
 
         return new SelectionStatement(
-            (Expression)visit(ctx.getChild(2)),
-            (CompoundStatement)visit(ctx.getChild(4)),
+            (Expression)visit(ctx.expression()),
+            (CompoundStatement)visit(ctx.compound_statement()),
             null
         );
     }
@@ -460,34 +455,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public SelectionStatement visitIf_else(FearnGrammarParser.If_elseContext ctx)
     {
-        Statement else_branch = null;
-
-        if (ctx.getChildCount() == 7)
-        {
-            else_branch = (Statement)visit(ctx.getChild(6));
-        }
 
         return new SelectionStatement(
-            (Expression)visit(ctx.getChild(2)),
-            (CompoundStatement)visit(ctx.getChild(4)),
-            else_branch
+            (Expression)visit(ctx.expression()),
+            (CompoundStatement)visit(ctx.compound_statement(0)),
+            (Statement)visit(ctx.compound_statement(1))
         );
     }
     
     @Override
     public SelectionStatement visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx)
     {
-        Statement else_branch = null;
-
-        if (ctx.getChildCount() == 7)
-        {
-            else_branch = (Statement)visit(ctx.getChild(6));
-        }
 
         return new SelectionStatement(
-            (Expression)visit(ctx.getChild(2)),
-            (CompoundStatement)visit(ctx.getChild(4)),
-            else_branch
+            (Expression)visit(ctx.expression()),
+            (CompoundStatement)visit(ctx.compound_statement()),
+            (Statement)visit(ctx.selection_statement())
         );
     }
 

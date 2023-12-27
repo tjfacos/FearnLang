@@ -19,6 +19,7 @@ fn bubble(l : int[]) => int[]
     let length : int = len(l);
     let swapped : bool = True;
     let temp : int;
+    let x : $MyStruct;
 
     for (;swapped;)
     {
