@@ -129,7 +129,7 @@ public class CodeGenerator {
         global_declarations.forEach(
             (decl) -> {
                 cw.visitField(
-                    ACC_PUBLIC, 
+                    ACC_PUBLIC + ACC_STATIC, 
                     decl.identifer, 
                     GetTypeDescriptor(decl.type), 
                     null, 
@@ -156,12 +156,12 @@ public class CodeGenerator {
             (decl) -> {
                 if (decl.init_expression == null) { return; }
                 ExprGenerator.GenerateExpression(decl.init_expression, constructVisitor);
-
+                constructVisitor.visitFieldInsn(PUTSTATIC, ProgramName, decl.identifer, GetTypeDescriptor(decl.type));
             }
         );
         
 
-
+        constructVisitor.visitInsn(RETURN);
 
         // End Constructor Generation
         constructVisitor.visitMaxs(1, 1);

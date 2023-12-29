@@ -1,1 +1,1 @@
-let global_var : int = 5;
+let global_var : str = "How do, pet?";

@@ -11,6 +11,7 @@ import util.Reporter;
 public class ExprGenerator {
     
     static void GenerateExpression(Expression expr, MethodVisitor mv) {
+
         if      (expr.getClass() == ArrayBody.class)            { ExprGenerator.ArrayBody((ArrayBody)expr, mv);                                         }
         else if (expr.getClass() == ArrayInitExpression.class)  { ExprGenerator.ArrayInitExpression((ArrayInitExpression)expr, mv);                     }
         else if (expr.getClass() == AssignExpression.class)     { ExprGenerator.AssignExpression((AssignExpression)expr, mv);                           }
@@ -23,14 +24,17 @@ public class ExprGenerator {
         else if (expr.getClass() == StructInitExpression.class) { ExprGenerator.StructInitExpression((StructInitExpression)expr, mv);                   }
         else if (expr.getClass() == UnaryExpression.class)      { ExprGenerator.UnaryExpression((UnaryExpression)expr, mv);                             }
         else                                                    { Reporter.ReportErrorAndExit("Expression Gen Error on " + expr.toString(), 50);   }
+    
     }
 
     private static void PrimaryExpression(PrimaryExpression<Object> expr, MethodVisitor mv) {
         if (expr.type == ExprType.VariableReference)
         {
             // Get Index from Symbol Table, and Load it
+            // TODO : SYMBOL TABLE (NOW)
         } else {
             // Load Constant into Stack
+            mv.visitLdcInsn(expr.value);
         }    
     }
 
