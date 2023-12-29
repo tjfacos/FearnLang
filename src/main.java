@@ -6,10 +6,8 @@ import org.antlr.v4.runtime.tree.*;
 import parser.*;
 import parser.gen.*;
 
-import java.io.File;
 // Java IO Dependencies
 import java.io.FileInputStream;
-import java.io.IOException;
 
 // Local
 import util.*;
@@ -55,14 +53,7 @@ class FearnC
         ASTNode AST = astConstructor.visit(parseTree);
 
 
-        try {
-            cg.Generate((Program)AST, args[0]);
-        } catch (IOException e) {
-            Reporter.ReportErrorAndExit("Code Gen Error: " + e, 23);
-        }
-        
-        Reporter.ReportSuccessAndExit("Compilation Successful!");
+        cg.Generate((Program)AST, args[0]);
     }
-
-    
+  
 };

@@ -2,7 +2,7 @@ package ast.type;
 
 import ast.ASTNode;
 
-public class TypeSpecifier extends ASTNode {
+public abstract class TypeSpecifier extends ASTNode {
     public enum Category
     {
         Primitive,
@@ -11,4 +11,6 @@ public class TypeSpecifier extends ASTNode {
     }
 
     public Category type;
+    public String type_descriptor;
+
 }
