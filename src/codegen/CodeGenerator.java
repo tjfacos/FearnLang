@@ -2,8 +2,10 @@ package codegen;
 
 import org.objectweb.asm.ClassWriter;
 
+import ast.Declaration;
 import ast.Program;
 import ast.Struct;
+import ast.function.Function;
 import ast.type.ArraySpecifier;
 import ast.type.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
@@ -25,7 +27,7 @@ public class CodeGenerator {
     
     private Path buildPath;
 
-    String GetTypeDescriptor(TypeSpecifier typeSpecifier)
+    private String GetTypeDescriptor(TypeSpecifier typeSpecifier)
     {
         
         String type_descriptor = "";
@@ -57,7 +59,133 @@ public class CodeGenerator {
 
     }
 
+    
+    private void GenerateStructs(ArrayList<Struct> structs)
+    {
+        structs.forEach(
+            (struct) -> {
+                
+                ClassWriter cw = new ClassWriter(0);
+                
+                cw.visit(
+                    V1_8, 
+                    ACC_PUBLIC + ACC_SUPER, 
+                    "$"+struct.identifer, 
+                    null, 
+                    "java/lang/Object", 
+                    null
+                );
+                    
+                struct.declarations.forEach(
+                    (decl) -> {
+                        cw.visitField(
+                        ACC_PUBLIC, 
+                        decl.identifer, 
+                        GetTypeDescriptor(decl.type), 
+                        null, 
+                        null
+                        );  
+                    }
+                    
+                );
+                    
+                cw.visitEnd();
+                
+                Path destination = Paths.get(buildPath.toString(), String.format("$%s.class", struct.identifer));
+                    
+                        
+                try {
+                    Files.write(destination, cw.toByteArray());
+                } catch (IOException e) {
+                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), 30);;
+                }
+                
+                Reporter.ReportSuccess(
+                    "GENERATED Struct File : "+ destination.toAbsolutePath() + ";", 
+                    false
+                );                    
+            }
+        );   
+    }
+    
+    
+    private void GenerateMainProgram(ArrayList<Function> functions, ArrayList<Declaration> global_declarations, Path finalProgramPath) {
+        
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        String ProgramName = finalProgramPath.getFileName().toString().replace(".class", "");
 
+
+        cw.visit(
+            V1_8,
+            ACC_PUBLIC + ACC_SUPER,
+            ProgramName,
+            null, 
+            "java/lang/Object", 
+            null
+        );
+            
+        // Add Global Declarations as public fields
+        global_declarations.forEach(
+            (decl) -> {
+                cw.visitField(
+                    ACC_PUBLIC, 
+                    decl.identifer, 
+                    GetTypeDescriptor(decl.type), 
+                    null, 
+                    null
+                );
+            }
+        );
+                
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+        cw.visitEnd();
+        
+        
+        
+        
+        
+        
+        
+        try {
+            Files.write(finalProgramPath, cw.toByteArray());
+        } catch (IOException e) {
+            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), 30);;
+        }
+        
+        Reporter.ReportSuccess(
+            "GENERATED Program     : "+ finalProgramPath.toAbsolutePath() + ";", 
+            false
+            );
+            
+        }
+        
+
+
+
+        
     public void Generate(Program root, String sPath)
     {
 
@@ -77,11 +205,11 @@ public class CodeGenerator {
         GenerateStructs(root.structs);
 
         // Generate Main Program Class (defines globals and functions)
-        // GenerateMainProgram(
-        //     root.functions, 
-        //     root.global_declarations,
-        //     finalProgramPath
-        // );
+        GenerateMainProgram(
+            root.functions, 
+            root.global_declarations,
+            finalProgramPath
+        );
 
         Reporter.ReportSuccess(
             String.format(
@@ -92,59 +220,5 @@ public class CodeGenerator {
         );
 
     }
-
-    void GenerateStructs(ArrayList<Struct> structs)
-    {
-        ClassWriter cw = new ClassWriter(0);
-
-        structs.forEach(
-            (struct) -> {
-                
-                cw.visit(
-                    V1_8, 
-                    ACC_PUBLIC + ACC_SUPER, 
-                    "$"+struct.identifer, 
-                    null, 
-                    "java/lang/Object", 
-                    null
-                );
-
-                struct.declarations.forEach(
-                    (decl) -> {
-                        cw.visitField(
-                            ACC_PUBLIC, 
-                            decl.identifer, 
-                            GetTypeDescriptor(decl.type), 
-                            null, 
-                            null
-                        );
-                    
-                        System.out.println(GetTypeDescriptor(decl.type));
-
-
-                    }
-
-                );
-
-                cw.visitEnd();
-
-                Path destination = Paths.get(buildPath.toString(), String.format("$%s.class", struct.identifer));
-                
-                
-                try {
-                    Files.write(destination, cw.toByteArray());
-                } catch (IOException e) {
-                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), 30);;
-                }
-
-                Reporter.ReportSuccess(
-                    "GENERATED Struct File : "+ destination.toAbsolutePath() + ";", 
-                    false
-                );
-                
-            }
-        );   
-    }
-    
-
+        
 }
