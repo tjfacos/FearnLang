@@ -1,6 +1,7 @@
 package codegen;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 
 import ast.Declaration;
 import ast.Program;
@@ -136,6 +137,35 @@ public class CodeGenerator {
                 );
             }
         );
+
+        // Create Constructor
+        // Constructor will initialise global declarations
+
+        MethodVisitor constructVisitor = cw.visitMethod(
+            ACC_PUBLIC, 
+            "<init>", 
+            "()V", 
+            null, 
+            null
+        );
+
+        // Begin Defining Code
+        constructVisitor.visitCode();
+
+        global_declarations.forEach(
+            (decl) -> {
+                if (decl.init_expression == null) { return; }
+                ExprGenerator.GenerateExpression(decl.init_expression, constructVisitor);
+
+            }
+        );
+        
+
+
+
+        // End Constructor Generation
+        constructVisitor.visitMaxs(1, 1);
+        constructVisitor.visitEnd();
                 
                     
                     
@@ -185,7 +215,8 @@ public class CodeGenerator {
 
 
 
-        
+
+
     public void Generate(Program root, String sPath)
     {
 

@@ -1,12 +1,1 @@
-struct myStruct
-{
-    let a : int[];
-    let b : str; 
-}
-
-struct MyOtherStruct
-{
-    let x : str;
-}
-
-let global_var : int;
+let global_var : int = 5;
