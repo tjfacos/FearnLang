@@ -12,28 +12,27 @@ public class AssignExpression extends Expression {
         ModEquals
     }
 
-    public Expression Target;
-    public Expression Expr;
-    public AssignmentOperator Operator;
+    public Expression target;
+    public Expression expression;
+    public AssignmentOperator operator;
 
 
     public AssignExpression(Expression t, Expression e, AssignmentOperator op)
     {
-        Target = t;
-        Expr = e;
-        Operator = op;
+        target = t;
+        expression = e;
+        operator = op;
     }
 
     @Override 
     public String toString()
     {
-        return Target.toString() + " " + Operator.name() + " ( " + Expr.toString() + " ) ";
+        return target.toString() + " " + operator.name() + " ( " + expression.toString() + " ) ";
     }
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        expression.GenerateBytecode(mv);
     }
 
 }

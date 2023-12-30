@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.*;
 // Generated ANTLR Dependencies
 import parser.*;
 import parser.gen.*;
+import semantics.table.SymbolTable;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
@@ -51,8 +52,9 @@ class FearnC
 
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
+        SymbolTable symTable = astConstructor.symTabStack.pop();
 
-        cg.Generate((Program)AST, args[0]);
+        cg.Generate((Program)AST, symTable, args[0]);
     }
   
 };

@@ -1,5 +1,7 @@
 package ast.statement;
 
+import org.objectweb.asm.MethodVisitor;
+
 public class JumpStatement extends Statement {
     public enum JumpType 
     {
@@ -19,4 +21,12 @@ public class JumpStatement extends Statement {
     {
         return "\n\t" + type.name() + ";";
     }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+
 }

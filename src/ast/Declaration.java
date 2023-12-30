@@ -1,17 +1,22 @@
 package ast;
 
+import static org.objectweb.asm.Opcodes.ASTORE;
+
+import org.objectweb.asm.MethodVisitor;
+
 import ast.expression.Expression;
 import ast.type.TypeSpecifier;
+import codegen.CodeGenerator;
 
 public class Declaration extends ASTNode {
     
-    public String identifer;
+    public String identifier;
     public TypeSpecifier type;
     public Expression init_expression;
     
     public Declaration(String id, TypeSpecifier t, Expression e)
     {
-        identifer = id;
+        identifier = id;
         type = t;
         init_expression = e;
     }
@@ -19,10 +24,20 @@ public class Declaration extends ASTNode {
     @Override public String toString()
     {
         if (!(init_expression == null)) {
-            return "Declare " + type.toString() + " " + identifer + " = " + init_expression.toString();
+            return "Declare " + type.toString() + " " + identifier + " = " + init_expression.toString();
         } else {
-            return "Declare " + type.toString() + " " + identifer ;
+            return "Declare " + type.toString() + " " + identifier ;
         }
+    }
+
+    public void GenerateBytecode(MethodVisitor mv) 
+    {
+        
+        if (init_expression != null) {
+            init_expression.GenerateBytecode(mv);
+            mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
+        }
+
     }
 
 }

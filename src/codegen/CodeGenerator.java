@@ -2,19 +2,16 @@ package codegen;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.*;
 
 import ast.Declaration;
 import ast.Program;
 import ast.Struct;
 import ast.function.Function;
-import ast.type.ArraySpecifier;
-import ast.type.PrimitiveDataType;
-import ast.type.PrimitiveSpecifier;
-import ast.type.StructInstanceSpecifier;
-import ast.type.TypeSpecifier;
-import util.Reporter;
 
-import static org.objectweb.asm.Opcodes.*;
+import semantics.table.SymbolTable;
+
+import util.Reporter;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,46 +21,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-// TODO : SYMBOL TABLE (NOW)
-
 public class CodeGenerator {
-    
     
     private Path buildPath;
 
-    private String GetTypeDescriptor(TypeSpecifier typeSpecifier)
-    {
-        
-        String type_descriptor = "";
-
-        if (typeSpecifier.getClass() == PrimitiveSpecifier.class)
-        {
-            switch ( ((PrimitiveSpecifier)typeSpecifier).element_type ) {
-                case PrimitiveDataType.INT  : type_descriptor += "Ljava/lang/Integer;"      ; break;               
-                case PrimitiveDataType.FLOAT: type_descriptor += "Ljava/lang/Float;"        ; break;               
-                case PrimitiveDataType.STR  : type_descriptor += "Ljava/lang/String;"       ; break;               
-                case PrimitiveDataType.BOOL : type_descriptor += "Ljava/lang/Boolean;"      ; break;                           
-                default: break;
-            }
-        }
-        
-        else if (typeSpecifier.getClass() == ArraySpecifier.class)
-        {
-            type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensions ] ).replace("\0", "[");
-            type_descriptor += GetTypeDescriptor(((ArraySpecifier)typeSpecifier).element_type);
-        }
-        
-        
-        else // Struct Instance
-        {
-            type_descriptor += "L$" + ( (StructInstanceSpecifier)typeSpecifier ).name + ";";
-        }
-
-        return type_descriptor;
-
-    }
-
+    // Empty stack indicates global scope
+    public static String currentFunc = null;
     
+    public static String mainProgramName;
+    public static SymbolTable GlobalSymbolTable;
+    public static SymbolTable LocalSymbolTable;
+
+      
     private void GenerateStructs(ArrayList<Struct> structs)
     {
         structs.forEach(
@@ -74,43 +43,61 @@ public class CodeGenerator {
                 cw.visit(
                     V1_8, 
                     ACC_PUBLIC + ACC_SUPER, 
-                    "$"+struct.identifer, 
+                    "$"+struct.identifier, 
                     null, 
                     "java/lang/Object", 
                     null
                 );
-                    
-                MethodVisitor stateVisitor = cw.visitMethod(
-                    ACC_STATIC, 
-                    "<clinit>", 
-                    "()V", 
+
+                MethodVisitor constructorVisitor = cw.visitMethod(
+                    ACC_PUBLIC, 
+                    "<init>", 
+                    SymbolTable.GenStructConstructor(struct.declarations), 
                     null, 
                     null
                 );
 
+                constructorVisitor.visitCode();
 
+                Integer i = 0;
 
-                struct.declarations.forEach(
-                    (decl) -> {
-                        cw.visitField(
-                            ACC_PUBLIC, 
-                            decl.identifer, 
-                            GetTypeDescriptor(decl.type), 
-                            null, 
-                            null
-                        );  
+                for (Declaration decl : struct.declarations)
+                {
+                    String descriptor = SymbolTable.GenBasicDescriptor(decl.type);
 
-                        if (decl.init_expression == null) { return; }
+                    cw.visitField(
+                        ACC_PUBLIC, 
+                        decl.identifier, 
+                        descriptor, 
+                        null, 
+                        null
+                    );  
+    
+                        
+                    // Generate Constructor Instructions that take in an arguement, and load it into the attribute, specified by decl
+                    
+                    // Load 'this' to operand stack
+                    constructorVisitor.visitVarInsn(ALOAD, 0);
+                    
+                    // Load Arguement to operand stack
+                    constructorVisitor.visitVarInsn(ALOAD, ++i);
+                    
+                    // Assign Arguement to Field
+                    constructorVisitor.visitFieldInsn(
+                        PUTFIELD, 
+                        "$"+struct.identifier, 
+                        decl.identifier, 
+                        mainProgramName
+                    );
+
+                }
+
+                constructorVisitor.visitInsn(RETURN);
+                constructorVisitor.visitEnd();
                 
-                        decl.init_expression.GenerateBytecode(stateVisitor);
-                        stateVisitor.visitFieldInsn(PUTFIELD, "$"+struct.identifer, decl.identifer, GetTypeDescriptor(decl.type));
-                    }
-                    
-                );
-                    
                 cw.visitEnd();
                 
-                Path destination = Paths.get(buildPath.toString(), String.format("$%s.class", struct.identifer));
+                Path destination = Paths.get(buildPath.toString(), String.format("$%s.class", struct.identifier));
                     
                         
                 try {
@@ -124,6 +111,7 @@ public class CodeGenerator {
                     false
                 );                    
             }
+        
         );   
     }
     
@@ -131,13 +119,11 @@ public class CodeGenerator {
     private void GenerateMainProgram(ArrayList<Function> functions, ArrayList<Declaration> global_declarations, Path finalProgramPath) {
         
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        String ProgramName = finalProgramPath.getFileName().toString().replace(".class", "");
-
 
         cw.visit(
             V1_8,
             ACC_PUBLIC + ACC_SUPER,
-            ProgramName,
+            mainProgramName,
             null, 
             "java/lang/Object", 
             null
@@ -160,8 +146,8 @@ public class CodeGenerator {
             (decl) -> {
                 cw.visitField(
                     ACC_PUBLIC + ACC_STATIC, 
-                    decl.identifer, 
-                    GetTypeDescriptor(decl.type), 
+                    decl.identifier, 
+                    SymbolTable.GenBasicDescriptor(decl.type), 
                     null, 
                     null
                 );
@@ -169,7 +155,12 @@ public class CodeGenerator {
                 if (decl.init_expression == null) { return; }
                 
                 decl.init_expression.GenerateBytecode(constructVisitor);
-                constructVisitor.visitFieldInsn(PUTSTATIC, ProgramName, decl.identifer, GetTypeDescriptor(decl.type));
+                constructVisitor.visitFieldInsn(
+                    PUTSTATIC, 
+                    mainProgramName, 
+                    decl.identifier, 
+                    SymbolTable.GenBasicDescriptor(decl.type)
+                );
 
             }
         );
@@ -181,7 +172,27 @@ public class CodeGenerator {
         constructVisitor.visitEnd();
                 
                     
-                    
+        // Write Functions as Methods
+        for (Function func : functions)
+        {
+            MethodVisitor fnVisitor = cw.visitMethod(
+                ACC_PUBLIC + ACC_STATIC, 
+                func.identifier, 
+                SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
+                null, 
+                null
+            );
+            
+            LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(func.identifier);
+
+            fnVisitor.visitCode();
+
+            func.body.GenerateBytecode(fnVisitor);
+            
+            // End Function Generation
+            constructVisitor.visitMaxs(0, 0);
+            fnVisitor.visitEnd();
+        }
                     
                     
                     
@@ -226,18 +237,16 @@ public class CodeGenerator {
         }
         
 
-
-
-
-
-    public void Generate(Program root, String sPath)
+    public void Generate(Program root, SymbolTable symTab, String sPath)
     {
 
-        Path srcPath = Paths.get(sPath).getParent();
-        String mainProgramName = Paths.get(sPath).getFileName().toString();
-        buildPath = Paths.get(srcPath.toString(), "build");
+        GlobalSymbolTable = symTab;
 
-        Path finalProgramPath = Paths.get( buildPath.toString(), mainProgramName.replace(".fearn", ".class")).toAbsolutePath();
+        Path srcParent = Paths.get(sPath).getParent();
+        mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
+        buildPath = Paths.get(srcParent.toString(), "build");
+
+        Path finalProgramPath = Paths.get( buildPath.toString(), mainProgramName + ".class" ).toAbsolutePath();
 
         File dir = new File(buildPath.toString());
         dir.mkdir();
@@ -250,13 +259,14 @@ public class CodeGenerator {
         // Generate Class files to represent structs
         GenerateStructs(root.structs);
 
+        
         // Generate Main Program Class (defines globals and functions)
         GenerateMainProgram(
             root.functions, 
             root.global_declarations,
             finalProgramPath
         );
-
+            
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `java %s` to run Program", 
@@ -266,5 +276,6 @@ public class CodeGenerator {
         );
 
     }
-        
+    
+    
 }

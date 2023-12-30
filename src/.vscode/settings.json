@@ -6,5 +6,6 @@
     ],
     "java.project.sourcePaths": [
         "."
-    ]
+    ],
+    "java.project.explorer.showNonJavaResources": false
 }

@@ -1,5 +1,7 @@
 package ast.statement;
 
+import org.objectweb.asm.MethodVisitor;
+
 import ast.ASTNode;
 import ast.expression.*;
 
@@ -30,6 +32,12 @@ public class IterationStatement extends Statement {
             d, c, i, b
         );
 
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
     
 }

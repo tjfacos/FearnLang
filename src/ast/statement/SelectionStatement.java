@@ -1,5 +1,7 @@
 package ast.statement;
 
+import org.objectweb.asm.MethodVisitor;
+
 import ast.expression.Expression;
 
 public class SelectionStatement extends Statement {
@@ -34,6 +36,12 @@ public class SelectionStatement extends Statement {
             if_branch.toString()
         );
 
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
 }

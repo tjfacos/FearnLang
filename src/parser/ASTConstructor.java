@@ -1,11 +1,15 @@
 package parser;
 
-import parser.gen.*;
+import java.util.ArrayList;
+import java.util.Stack;
 
-// Local Dependencies
+import parser.gen.*;
+import semantics.table.FunctionRow;
+import semantics.table.StructRow;
+import semantics.table.SymbolTable;
+import semantics.table.VariableRow;
 import util.*;
 
-import java.util.ArrayList;
 
 import ast.*;
 import ast.expression.*;
@@ -406,6 +410,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             init_expression = (Expression)visit(ctx.expression());
         }
 
+        symTabStack.peek().addSymbol(
+            identifer, 
+            new VariableRow(
+                identifer, 
+                type_spec
+            )
+        );
+
         return new Declaration(identifer, type_spec, init_expression);
 
     }
@@ -561,6 +573,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             parameters.add((Parameter)visit(ctx.parameter(i)));
         }
 
+
         return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, (CompoundStatement)visit(ctx.compound_statement()));
     }
 
@@ -584,6 +597,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new Struct(ctx.IDENTIFIER().getText(), decl);
     }
 
+
+    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+
     /* Program (root of AST) */
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
@@ -593,46 +609,48 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         ArrayList<Function> functions = new ArrayList<Function>();
 
 
+        symTabStack.add(new SymbolTable());
+
+
         for (int i = 0; i < ctx.declaration().size(); i++)
         {
             global_declarations.add(visitDeclaration(ctx.declaration(i)));
         }
 
+
         for (int i = 0; i < ctx.struct_def().size(); i++)
         {
-            structs.add(visitStruct_def(ctx.struct_def(i)));
+            symTabStack.add(new SymbolTable());
+
+            Struct struct = visitStruct_def(ctx.struct_def(i));
+            structs.add(struct);
+
+            SymbolTable local_syms = symTabStack.pop();
+
+            symTabStack.peek().addSymbol(
+                struct.identifier, 
+                new StructRow(struct.identifier, local_syms)
+            );
         }
+
 
         for (int i = 0; i < ctx.function().size(); i++)
         {
-            functions.add(visitFunction(ctx.function(i)));
+            symTabStack.add(new SymbolTable());
+            
+            Function func = visitFunction(ctx.function(i));
+            functions.add(func);
+
+            SymbolTable local_syms = symTabStack.pop();
+            
+            symTabStack.peek().addSymbol(
+                func.identifier, 
+                new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms)
+            );
         }
 
+        
         return new Program(global_declarations, functions, structs);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
