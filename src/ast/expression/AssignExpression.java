@@ -1,5 +1,7 @@
 package ast.expression;
 
+import org.objectweb.asm.MethodVisitor;
+
 public class AssignExpression extends Expression {
     public static enum AssignmentOperator {
         Equals,
@@ -26,6 +28,12 @@ public class AssignExpression extends Expression {
     public String toString()
     {
         return Target.toString() + " " + Operator.name() + " ( " + Expr.toString() + " ) ";
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
 }

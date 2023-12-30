@@ -1,5 +1,7 @@
 package ast.expression;
 
+import org.objectweb.asm.MethodVisitor;
+
 public class BinaryExpression extends Expression {
     
     public Expression Op1;
@@ -17,5 +19,11 @@ public class BinaryExpression extends Expression {
     public String toString()
     {
         return '(' + Op1.toString() + ' ' + Operator.name() + ' ' + Op2.toString() + ')';
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 }

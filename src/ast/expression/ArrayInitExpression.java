@@ -2,6 +2,8 @@ package ast.expression;
 
 import java.util.ArrayList;
 
+import org.objectweb.asm.MethodVisitor;
+
 import ast.type.TypeSpecifier;
 
 public class ArrayInitExpression extends Expression {
@@ -21,6 +23,12 @@ public class ArrayInitExpression extends Expression {
     public String toString()
     {
         return type.toString() + "(dims: " + dimenisons.toString() + ")" + init_elements.toString();
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
     
 

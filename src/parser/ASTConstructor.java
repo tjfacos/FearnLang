@@ -264,14 +264,28 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new FnCallExpression(function_name, args);
     }
 
-    // Struct Attribute Expression (e.g. x.y )
+    // Struct Attribute Expression (e.g. x.y ) / 
     @Override
-    public StructAttrExpression visitStruct_attr_expr(FearnGrammarParser.Struct_attr_exprContext ctx)
+    public Expression visitDot_expr(FearnGrammarParser.Dot_exprContext ctx)
     { 
-        Expression struct_name = (Expression)visit(ctx.expression(0));
-        Expression attribute = (Expression)visit(ctx.expression(1));
+
+        Expression predot = (Expression)visit(ctx.expression(0));
+        Expression postdot = (Expression)visit(ctx.expression(1));
+
         
-        return new StructAttrExpression(struct_name, attribute);
+        if (postdot.getClass() != FnCallExpression.class)
+        {
+            return new StructAttrExpression(predot, postdot);
+        }
+        
+        // This should match a function call using universal function notation
+        // e.g. a.equals(b) == equals(a, b)
+        
+        FnCallExpression Ufunction_call = (FnCallExpression)postdot;
+
+        Ufunction_call.arguements.add(0, predot);
+        return Ufunction_call;
+        
     }
 
     // Array Initialisation (e.g. (int[] x =) new int[5] {1, 2, 3, 7, 123 })

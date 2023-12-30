@@ -52,7 +52,6 @@ class FearnC
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
-
         cg.Generate((Program)AST, args[0]);
     }
   

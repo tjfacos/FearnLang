@@ -1,5 +1,7 @@
 package ast.expression;
 
+import org.objectweb.asm.MethodVisitor;
+
 import ast.ASTNode;
 
 public abstract class Expression extends ASTNode {
@@ -45,5 +47,6 @@ public abstract class Expression extends ASTNode {
     }
 
     @Override public abstract String toString();
+    public abstract void GenerateBytecode(MethodVisitor mv);
 
 }

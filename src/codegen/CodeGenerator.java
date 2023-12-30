@@ -22,6 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
+
+// TODO : SYMBOL TABLE (NOW)
 
 public class CodeGenerator {
     
@@ -77,15 +80,30 @@ public class CodeGenerator {
                     null
                 );
                     
+                MethodVisitor stateVisitor = cw.visitMethod(
+                    ACC_STATIC, 
+                    "<clinit>", 
+                    "()V", 
+                    null, 
+                    null
+                );
+
+
+
                 struct.declarations.forEach(
                     (decl) -> {
                         cw.visitField(
-                        ACC_PUBLIC, 
-                        decl.identifer, 
-                        GetTypeDescriptor(decl.type), 
-                        null, 
-                        null
+                            ACC_PUBLIC, 
+                            decl.identifer, 
+                            GetTypeDescriptor(decl.type), 
+                            null, 
+                            null
                         );  
+
+                        if (decl.init_expression == null) { return; }
+                
+                        decl.init_expression.GenerateBytecode(stateVisitor);
+                        stateVisitor.visitFieldInsn(PUTFIELD, "$"+struct.identifer, decl.identifer, GetTypeDescriptor(decl.type));
                     }
                     
                 );
@@ -125,6 +143,18 @@ public class CodeGenerator {
             null
         );
             
+        // Generate Constructor for Global Variables
+        MethodVisitor constructVisitor = cw.visitMethod(
+            ACC_STATIC, 
+            "<clinit>", 
+            "()V", 
+            null, 
+            null
+        );
+        
+        // Begin Defining Code
+        constructVisitor.visitCode();
+        
         // Add Global Declarations as public fields
         global_declarations.forEach(
             (decl) -> {
@@ -135,36 +165,19 @@ public class CodeGenerator {
                     null, 
                     null
                 );
-            }
-        );
 
-        // Create Constructor
-        // Constructor will initialise global declarations
-
-        MethodVisitor constructVisitor = cw.visitMethod(
-            ACC_PUBLIC, 
-            "<init>", 
-            "()V", 
-            null, 
-            null
-        );
-
-        // Begin Defining Code
-        constructVisitor.visitCode();
-
-        global_declarations.forEach(
-            (decl) -> {
                 if (decl.init_expression == null) { return; }
-                ExprGenerator.GenerateExpression(decl.init_expression, constructVisitor);
+                
+                decl.init_expression.GenerateBytecode(constructVisitor);
                 constructVisitor.visitFieldInsn(PUTSTATIC, ProgramName, decl.identifer, GetTypeDescriptor(decl.type));
+
             }
         );
         
-
         constructVisitor.visitInsn(RETURN);
 
         // End Constructor Generation
-        constructVisitor.visitMaxs(1, 1);
+        constructVisitor.visitMaxs(0, 0);
         constructVisitor.visitEnd();
                 
                     
@@ -227,10 +240,12 @@ public class CodeGenerator {
         Path finalProgramPath = Paths.get( buildPath.toString(), mainProgramName.replace(".fearn", ".class")).toAbsolutePath();
 
         File dir = new File(buildPath.toString());
-        if ( !dir.exists() )
-        {
-            dir.mkdir();
+        dir.mkdir();
+        
+        for (File file: Objects.requireNonNull(dir.listFiles())) {
+            file.delete();
         }
+
 
         // Generate Class files to represent structs
         GenerateStructs(root.structs);

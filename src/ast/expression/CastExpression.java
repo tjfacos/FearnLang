@@ -1,5 +1,7 @@
 package ast.expression;
 
+import org.objectweb.asm.MethodVisitor;
+
 import ast.type.PrimitiveDataType;
 
 public class CastExpression extends Expression {
@@ -17,6 +19,12 @@ public class CastExpression extends Expression {
     public String toString()
     {
         return "( " + Op.toString() + " -> " + target.name() + " )";
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
 }

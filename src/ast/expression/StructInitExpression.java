@@ -2,6 +2,8 @@ package ast.expression;
 
 import java.util.ArrayList;
 
+import org.objectweb.asm.MethodVisitor;
+
 public class StructInitExpression extends Expression {
     
     public String name;
@@ -17,6 +19,12 @@ public class StructInitExpression extends Expression {
     public String toString()
     {
         return "$" + name + "( " + arguements.toString() + " )";
+    }
+
+    @Override
+    public void GenerateBytecode(MethodVisitor mv) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
 }
