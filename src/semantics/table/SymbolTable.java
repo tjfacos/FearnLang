@@ -83,7 +83,7 @@ public class SymbolTable {
     }
     
     
-    public static String GenStructConstructor(ArrayList<Declaration> declarations) 
+    public static String GenStructDescriptor(ArrayList<Declaration> declarations) 
     {
         String desc = "(";
 
@@ -112,8 +112,6 @@ public class SymbolTable {
     }
 
 
-    
-    
     public SymbolTable GetFuncSymbolTable(String id) {
         for (Row r : Symbols)
         {
@@ -128,6 +126,7 @@ public class SymbolTable {
         return null;
     }
     
+
     public Integer GetIndex(String id) {
         for (int i = 0; i < Symbols.size(); i++)
         {
@@ -139,6 +138,7 @@ public class SymbolTable {
         return null;
     }
 
+
     public Boolean Contains(String id) {
         for (int i = 0; i < Symbols.size(); i++)
         {
@@ -149,7 +149,35 @@ public class SymbolTable {
     }
 
 
-    public String GetGlobalFuncDescriptor(String identifier) {
+    public String GetGlobalFuncDescriptor(String id) {
+        
+        for (Row r : Symbols)
+        {
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
+            {
+                return ((FunctionRow)r).descriptor;
+            }
+        }
+        
+        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.", 300);
+        
+        return null;
+    }
+
+
+    public TypeSpecifier GetTypeSpecifier(String id) {
+        
+        for (Row r : Symbols)
+        {
+            if (r.identifier.equals(id))
+            {
+                if (r.getClass() == FunctionRow.class)  { return ((FunctionRow)r).return_type;  }
+                else /* r is VariableRow */             { return ((VariableRow)r).typeSpecifier;}
+            }
+        }
+        
+        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", 300);
+        
         return null;
     }
 

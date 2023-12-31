@@ -2,27 +2,79 @@ package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
 
+import static org.objectweb.asm.Opcodes.*;
+
+import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
+import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
+import util.Reporter;
+
 public class UnaryExpression extends Expression {
 
-    public Expression Op;
-    public ExprType Operator;
+    public Expression operand;
+    public ExprType operator;
     
-    public UnaryExpression(Expression op, ExprType operator)
+    public UnaryExpression(Expression op, ExprType type)
     {
-        Op = op;
-        Operator = operator;
+
+        operand = op;
+        operator = type;
+
     }
 
     @Override
     public String toString()
     {
-        return '(' + Operator.name() + ' ' + Op.toString() + ')';
+        return '(' + operator.name() + ' ' + operand.toString() + ')';
     }
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        
+        if (operator == ExprType.Negate) {
+            // Generate Instructions to place operand expression on top of stack
+            operand.GenerateBytecode(mv);
+
+            // Cast to I or D (as applicable), and Negate
+            if (((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.INT)
+            {
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
+                mv.visitInsn(INEG);
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
+            } else {
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
+                mv.visitInsn(DNEG);
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
+            }
+
+        } else { // operator == ExprType.LogicalNot
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
+            mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
+        }
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        if (operator == ExprType.Negate) {
+            if (operand.expression_type.getClass() == PrimitiveSpecifier.class)
+            {
+                switch (((PrimitiveSpecifier)operand.expression_type).element_type) {
+                    case PrimitiveDataType.INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
+                    case PrimitiveDataType.FLOAT:   expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT); break;
+
+                    default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.", 500);break;
+                
+                }
+            }
+
+        } else { // Logical Not
+            if (operand.expression_type.getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
+            else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value.", 500); }
+        }
+
+        return expression_type;
+
     }
 
 }

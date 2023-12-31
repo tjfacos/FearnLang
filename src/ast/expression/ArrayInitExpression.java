@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
 
 public class ArrayInitExpression extends Expression {
     
@@ -27,8 +28,33 @@ public class ArrayInitExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
+        // TODO GenerateBytecode ArrayInitExpression
+
+        // Just Generate the Body, if provided
+
+        // Otherwise
+        /*
+        
+        methodVisitor.visitInsn(ICONST_2); <- Length
+        methodVisitor.visitTypeInsn(ANEWARRAY, "java/lang/Integer"); <- Create Array of Length
+
+        OR 
+
+        methodVisitor.visitInsn(ICONST_2);
+        methodVisitor.visitInsn(ICONST_3);
+        methodVisitor.visitMultiANewArrayInsn("[[Ljava/lang/Integer;", 2);
+
+        */
+
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        // TODO Auto-generated method stub
+
+        // Check the Type of the body (if present) matches what's expected.
+        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
     }
     
 

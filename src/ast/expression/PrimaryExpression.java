@@ -4,7 +4,11 @@ import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
+import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;
+import semantics.table.SymbolTable;
 
 public class PrimaryExpression<T> extends Expression {
     public T value;
@@ -101,6 +105,25 @@ public class PrimaryExpression<T> extends Expression {
             }
 
         }
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        
+        
+        if ( type == ExprType.VariableReference ) {
+            expression_type = symTable.GetTypeSpecifier(this.value.toString());
+        } else {
+            switch (this.type) {
+                case ExprType.IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;
+                case ExprType.FloatLiteral  : expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT  ); break;
+                case ExprType.StrLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.STR    ); break;
+                case ExprType.BoolLiteral   : expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL   ); break;
+                default: break;
+            }
+        }
+
+        return expression_type;
     }
 
 }

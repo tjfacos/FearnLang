@@ -1,6 +1,7 @@
 package codegen;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.*;
 
@@ -32,6 +33,8 @@ public class CodeGenerator {
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
 
+    public static ArrayList<Label> programLabels;
+
       
     private void GenerateStructs(ArrayList<Struct> structs)
     {
@@ -52,7 +55,7 @@ public class CodeGenerator {
                 MethodVisitor cv = classWriter.visitMethod(
                     ACC_PUBLIC, 
                     "<init>", 
-                    SymbolTable.GenStructConstructor(struct.declarations), 
+                    SymbolTable.GenStructDescriptor(struct.declarations), 
                     null, 
                     null
                 );
@@ -347,6 +350,8 @@ public class CodeGenerator {
             root.global_declarations,
             finalProgramPath
         );
+
+        // TODO : Copy Runtime into build forlder using FEARNPATH env variable.
             
         Reporter.ReportSuccess(
             String.format(

@@ -5,7 +5,8 @@
         "c:\\libraries\\javalibs\\asm-9.6.jar"
     ],
     "java.project.sourcePaths": [
-        "."
+        ".",
+        "runtime"
     ],
     "java.project.explorer.showNonJavaResources": false
 }

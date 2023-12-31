@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
+
 public class FnCallExpression extends Expression {
     
     public String identifier;
@@ -23,8 +26,19 @@ public class FnCallExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
+        // TODO GenByte FnCallExpression
+        
+        // Gen args, then INVOKESTATIC
+
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        // TODO validateType FnCallExpression
+
+        // Check the function's signature (Parameters from Symbol Table) against to types of each arguement
+        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
     }
 
 }

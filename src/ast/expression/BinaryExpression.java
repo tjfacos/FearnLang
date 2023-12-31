@@ -2,6 +2,9 @@ package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
+
 public class BinaryExpression extends Expression {
     
     public Expression Op1;
@@ -23,7 +26,15 @@ public class BinaryExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
+        // TODO GenerateBytecode BinaryExpression
+
+        // Remember to cast to primitive types before doing operations
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        // TODO validateType BinaryExpression
+        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
     }
 }

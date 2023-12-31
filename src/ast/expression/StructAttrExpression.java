@@ -2,6 +2,9 @@ package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
+
 public class StructAttrExpression extends Expression {
     
     public Expression instance;
@@ -21,7 +24,17 @@ public class StructAttrExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
+        // TODO GenByte StructAttrExpression
+
+        // Gen instance, then GETFIELD
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        // TODO validateType StructAttrExpression
+
+        // Get from StructRow in SymbolTable
+        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
     }
 }

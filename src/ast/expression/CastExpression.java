@@ -3,6 +3,8 @@ package ast.expression;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.type.PrimitiveDataType;
+import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
 
 public class CastExpression extends Expression {
     
@@ -23,8 +25,18 @@ public class CastExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
+        // TODO GenBytecode CastExpression
+
+        // Consider creating a runtime method for this
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    @Override
+    public TypeSpecifier validateType(SymbolTable symTable) {
+        // TODO Auto-generated method stub
+
+        // For Each target type, ensure the operand can be cast
+        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
     }
 
 }

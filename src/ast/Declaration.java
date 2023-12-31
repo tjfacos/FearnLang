@@ -32,7 +32,7 @@ public class Declaration extends ASTNode {
 
     public void GenerateBytecode(MethodVisitor mv) 
     {
-        
+        // This is ONLY called to generate local variables within functions, so no need to handle global variables
         if (init_expression != null) {
             init_expression.GenerateBytecode(mv);
             mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
