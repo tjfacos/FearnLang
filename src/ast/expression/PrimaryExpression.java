@@ -55,13 +55,12 @@ public class PrimaryExpression<T> extends Expression {
         // Handle Literals
         } else {
             
-            mv.visitLdcInsn(value);
-
             switch (this.type) {
                 case ExprType.IntLiteral:
+                    mv.visitIntInsn(BIPUSH, (int)value);
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
-                        "Ljava/lang/Integer", 
+                        "java/lang/Integer", 
                         "valueOf", 
                         "(I)Ljava/lang/Integer;",
                         false
@@ -69,9 +68,10 @@ public class PrimaryExpression<T> extends Expression {
                     return;
 
                 case ExprType.FloatLiteral:
+                    mv.visitLdcInsn((Double)value);
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
-                        "Ljava/lang/Double", 
+                        "java/lang/Double", 
                         "valueOf", 
                         "(D)Ljava/lang/Double;",
                         false
@@ -79,9 +79,13 @@ public class PrimaryExpression<T> extends Expression {
                     return;
 
                 case ExprType.BoolLiteral:
+                    if ((Boolean)this.value)    { mv.visitInsn(ICONST_1); }
+                    else                        { mv.visitInsn(ICONST_0); }
+
+
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
-                        "Ljava/lang/Boolean", 
+                        "java/lang/Boolean", 
                         "valueOf", 
                         "(Z)Ljava/lang/Boolean;",
                         false
@@ -89,6 +93,7 @@ public class PrimaryExpression<T> extends Expression {
                     return;
 
                 case ExprType.StrLiteral:
+                    mv.visitLdcInsn(value);
                     return;
                     
                 default:

@@ -38,18 +38,18 @@ public class CodeGenerator {
         structs.forEach(
             (struct) -> {
                 
-                ClassWriter cw = new ClassWriter(0);
+                ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 
-                cw.visit(
-                    V1_8, 
-                    ACC_PUBLIC + ACC_SUPER, 
+                classWriter.visit(
+                    V19, 
+                    ACC_PUBLIC | ACC_SUPER, 
                     "$"+struct.identifier, 
                     null, 
                     "java/lang/Object", 
                     null
                 );
 
-                MethodVisitor constructorVisitor = cw.visitMethod(
+                MethodVisitor cv = classWriter.visitMethod(
                     ACC_PUBLIC, 
                     "<init>", 
                     SymbolTable.GenStructConstructor(struct.declarations), 
@@ -57,7 +57,9 @@ public class CodeGenerator {
                     null
                 );
 
-                constructorVisitor.visitCode();
+                cv.visitCode();
+                cv.visitVarInsn(ALOAD, 0);
+                cv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
 
                 Integer i = 0;
 
@@ -65,7 +67,7 @@ public class CodeGenerator {
                 {
                     String descriptor = SymbolTable.GenBasicDescriptor(decl.type);
 
-                    cw.visitField(
+                    classWriter.visitField(
                         ACC_PUBLIC, 
                         decl.identifier, 
                         descriptor, 
@@ -77,31 +79,32 @@ public class CodeGenerator {
                     // Generate Constructor Instructions that take in an arguement, and load it into the attribute, specified by decl
                     
                     // Load 'this' to operand stack
-                    constructorVisitor.visitVarInsn(ALOAD, 0);
+                    cv.visitVarInsn(ALOAD, 0);
                     
                     // Load Arguement to operand stack
-                    constructorVisitor.visitVarInsn(ALOAD, ++i);
+                    cv.visitVarInsn(ALOAD, ++i);
                     
                     // Assign Arguement to Field
-                    constructorVisitor.visitFieldInsn(
+                    cv.visitFieldInsn(
                         PUTFIELD, 
                         "$"+struct.identifier, 
                         decl.identifier, 
-                        mainProgramName
+                        SymbolTable.GenBasicDescriptor(decl.type)
                     );
 
                 }
 
-                constructorVisitor.visitInsn(RETURN);
-                constructorVisitor.visitEnd();
+                cv.visitInsn(RETURN);
+                cv.visitMaxs(0, 0);
+                cv.visitEnd();
                 
-                cw.visitEnd();
+                classWriter.visitEnd();
                 
                 Path destination = Paths.get(buildPath.toString(), String.format("$%s.class", struct.identifier));
                     
                         
                 try {
-                    Files.write(destination, cw.toByteArray());
+                    Files.write(destination, classWriter.toByteArray());
                 } catch (IOException e) {
                     Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), 30);;
                 }
@@ -118,19 +121,82 @@ public class CodeGenerator {
     
     private void GenerateMainProgram(ArrayList<Function> functions, ArrayList<Declaration> global_declarations, Path finalProgramPath) {
         
-        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-        cw.visit(
-            V1_8,
-            ACC_PUBLIC + ACC_SUPER,
+        
+        // TEST BLOCK
+        
+        /*
+        
+        cw.visit(V19, ACC_PUBLIC | ACC_SUPER, "test", null, "java/lang/Object", null);
+        
+        MethodVisitor cv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+        cv.visitCode();
+        cv.visitVarInsn(ALOAD, 0);
+        cv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        cv.visitInsn(RETURN);
+        cv.visitMaxs(1, 1);
+        cv.visitEnd();
+        
+        
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
+        mv.visitTypeInsn(NEW, "$T");
+        mv.visitInsn(DUP);
+        mv.visitInsn(ICONST_5);
+        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
+        mv.visitMethodInsn(INVOKESPECIAL, "$T", "<init>", "(Ljava/lang/Integer;)V", false);
+        mv.visitVarInsn(ASTORE, 1);
+        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitVarInsn(ALOAD, 1);
+        mv.visitFieldInsn(GETFIELD, "$T", "x", "Ljava/lang/Integer;");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V", false);
+        mv.visitInsn(RETURN);
+        mv.visitMaxs(3, 2);
+        mv.visitEnd();
+        
+        
+        
+        cw.visitEnd();
+        
+        try {
+            Files.write(finalProgramPath, cw.toByteArray());
+        } catch (IOException e) {
+            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), 30);;
+        }
+        
+        Reporter.ReportSuccess(
+            "GENERATED Program     : "+ finalProgramPath.toAbsolutePath() + ";", 
+            true
+        );
+            
+            
+            
+            
+        // END TEST
+        
+        
+        
+        */
+
+
+
+
+
+
+
+
+
+        classWriter.visit(
+            V19,
+            ACC_PUBLIC | ACC_SUPER,
             mainProgramName,
             null, 
             "java/lang/Object", 
             null
         );
             
-        // Generate Constructor for Global Variables
-        MethodVisitor constructVisitor = cw.visitMethod(
+        // Generate Initial State of Global Variables (sv = StateVisitor)
+        MethodVisitor sv = classWriter.visitMethod(
             ACC_STATIC, 
             "<clinit>", 
             "()V", 
@@ -139,13 +205,13 @@ public class CodeGenerator {
         );
         
         // Begin Defining Code
-        constructVisitor.visitCode();
-        
+        sv.visitCode();
+
         // Add Global Declarations as public fields
         global_declarations.forEach(
             (decl) -> {
-                cw.visitField(
-                    ACC_PUBLIC + ACC_STATIC, 
+                classWriter.visitField(
+                    ACC_PUBLIC | ACC_STATIC, 
                     decl.identifier, 
                     SymbolTable.GenBasicDescriptor(decl.type), 
                     null, 
@@ -154,29 +220,50 @@ public class CodeGenerator {
 
                 if (decl.init_expression == null) { return; }
                 
-                decl.init_expression.GenerateBytecode(constructVisitor);
-                constructVisitor.visitFieldInsn(
+                decl.init_expression.GenerateBytecode(sv);
+                sv.visitFieldInsn(
                     PUTSTATIC, 
                     mainProgramName, 
                     decl.identifier, 
                     SymbolTable.GenBasicDescriptor(decl.type)
                 );
-
             }
         );
         
-        constructVisitor.visitInsn(RETURN);
+        sv.visitInsn(RETURN);
 
         // End Constructor Generation
-        constructVisitor.visitMaxs(0, 0);
-        constructVisitor.visitEnd();
-                
-                    
+        sv.visitMaxs(0, 0);
+        sv.visitEnd();
+
+
+        // Generate Default Constructor
+        MethodVisitor cv = classWriter.visitMethod(
+            ACC_PUBLIC, 
+            "<init>", 
+            "()V", 
+            null, 
+            null
+        );
+        
+        
+        cv.visitVarInsn(ALOAD, 0);
+        cv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        cv.visitInsn(RETURN);
+        cv.visitMaxs(0, 0);
+        cv.visitEnd();
+
+
+
+
+            
         // Write Functions as Methods
+
+
         for (Function func : functions)
         {
-            MethodVisitor fnVisitor = cw.visitMethod(
-                ACC_PUBLIC + ACC_STATIC, 
+            MethodVisitor fnVisitor = classWriter.visitMethod(
+                ACC_PUBLIC | ACC_STATIC, 
                 func.identifier, 
                 SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
                 null, 
@@ -190,7 +277,7 @@ public class CodeGenerator {
             func.body.GenerateBytecode(fnVisitor);
             
             // End Function Generation
-            constructVisitor.visitMaxs(0, 0);
+            fnVisitor.visitMaxs(0, 0);
             fnVisitor.visitEnd();
         }
                     
@@ -215,16 +302,10 @@ public class CodeGenerator {
                     
                     
                     
-        cw.visitEnd();
-        
-        
-        
-        
-        
-        
+        classWriter.visitEnd();
         
         try {
-            Files.write(finalProgramPath, cw.toByteArray());
+            Files.write(finalProgramPath, classWriter.toByteArray());
         } catch (IOException e) {
             Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), 30);;
         }
@@ -232,7 +313,7 @@ public class CodeGenerator {
         Reporter.ReportSuccess(
             "GENERATED Program     : "+ finalProgramPath.toAbsolutePath() + ";", 
             false
-            );
+        );
             
         }
         

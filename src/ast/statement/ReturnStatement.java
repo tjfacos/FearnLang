@@ -1,5 +1,7 @@
 package ast.statement;
 
+import static org.objectweb.asm.Opcodes.*;
+
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
@@ -20,7 +22,10 @@ public class ReturnStatement extends JumpStatement {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        if (expression == null) {
+            mv.visitInsn(RETURN);
+        } else {
+            mv.visitInsn(ARETURN);
+        }
     }
 }

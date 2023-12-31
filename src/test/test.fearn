@@ -1,4 +1,1 @@
-struct T
-{
-    let x : int;
-}
+let x : bool = true;
