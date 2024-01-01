@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.Declaration;
+import semantics.table.SymbolTable;
 
 public class CompoundStatement extends Statement {
     public ArrayList<Declaration> declarations;
@@ -33,5 +34,13 @@ public class CompoundStatement extends Statement {
             stmt.GenerateBytecode(mv);
         }
         
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        for (Declaration decl : declarations)
+        { decl.verifyType(symbolTable); }
+
+        for (Statement stmt : statements)
+        { stmt.verifyType(symbolTable); }
     }
 }

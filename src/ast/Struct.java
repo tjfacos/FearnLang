@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import semantics.table.SymbolTable;
+
 public class Struct extends ASTNode {
 
     public String identifier;
@@ -17,6 +19,10 @@ public class Struct extends ASTNode {
     public String toString()
     {
         return String.format("STRUCT %s \n %s \n", identifier, declarations.toString());
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        // TODO VerifyType
     }
     
 }

@@ -3,6 +3,7 @@ package ast;
 import java.util.ArrayList;
 
 import ast.function.Function;
+import semantics.table.SymbolTable;
 
 public class Program extends ASTNode {
     
@@ -21,6 +22,17 @@ public class Program extends ASTNode {
     public String toString()
     {
         return String.format("%s\n\n%s\n\n%s", global_declarations, structs, functions);
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        
+        for (Declaration d : global_declarations    ) 
+        {
+            d.verifyType(symbolTable); 
+        }
+
+        for (Struct s : structs                     ) { s.verifyType(symbolTable); }
+        for (Function f : functions                 ) { f.verifyType(symbolTable); }
     }
     
 

@@ -11,7 +11,7 @@ public class Reporter {
 
 
     
-    static public void ReportErrorAndExit(String err, int code)
+    static public void ReportErrorAndExit(String err)
     {
         System.out.println(
             String.format(
@@ -23,7 +23,7 @@ public class Reporter {
             )
         );
         
-        System.exit(code);
+        System.exit(1);
     }
 
     static public void ReportSuccess(String message, boolean exit)

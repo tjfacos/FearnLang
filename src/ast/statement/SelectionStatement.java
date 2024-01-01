@@ -3,6 +3,7 @@ package ast.statement;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
+import semantics.table.SymbolTable;
 
 public class SelectionStatement extends Statement {
     
@@ -42,6 +43,10 @@ public class SelectionStatement extends Statement {
     public void GenerateBytecode(MethodVisitor mv) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        // TODO VerifyType
     }
 
 }

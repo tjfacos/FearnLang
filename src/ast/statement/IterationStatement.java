@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import ast.ASTNode;
 import ast.expression.*;
+import semantics.table.SymbolTable;
 
 public class IterationStatement extends Statement {
 
@@ -40,4 +41,7 @@ public class IterationStatement extends Statement {
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
     
+    public void verifyType(SymbolTable symbolTable) {
+        // TODO VerifyType
+    }
 }

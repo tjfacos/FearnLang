@@ -63,14 +63,14 @@ public class UnaryExpression extends Expression {
                     case PrimitiveDataType.INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
                     case PrimitiveDataType.FLOAT:   expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT); break;
 
-                    default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.", 500);break;
+                    default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.");break;
                 
                 }
             }
 
         } else { // Logical Not
             if (operand.expression_type.getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
-            else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value.", 500); }
+            else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value."); }
         }
 
         return expression_type;

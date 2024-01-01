@@ -2,6 +2,8 @@ package ast.statement;
 
 import org.objectweb.asm.MethodVisitor;
 
+import semantics.table.SymbolTable;
+
 public class JumpStatement extends Statement {
     public enum JumpType 
     {
@@ -28,5 +30,8 @@ public class JumpStatement extends Statement {
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
+    public void verifyType(SymbolTable symbolTable) {
+        // TODO VerifyType
+    }
 
 }

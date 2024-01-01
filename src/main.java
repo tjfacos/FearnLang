@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.tree.*;
 import parser.*;
 import parser.gen.*;
 import semantics.table.SymbolTable;
+import semantics.type.TypeAnalysis;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
@@ -30,7 +31,7 @@ class FearnC
     public static void main(String[] args)
     {
         if ( args.length == 0) {
-            Reporter.ReportErrorAndExit("NO SOURCE FILE", 1);
+            Reporter.ReportErrorAndExit("NO SOURCE FILE");
         }
 
         CharStream input = null;
@@ -38,7 +39,7 @@ class FearnC
         try {
             input = CharStreams.fromStream(new FileInputStream(args[0]));
         } catch (Exception e) {
-            Reporter.ReportErrorAndExit("FILE " + args[0] + " NOT FOUND", 2);
+            Reporter.ReportErrorAndExit("FILE " + args[0] + " NOT FOUND");
         }
 
         lexer = new FearnGrammarLexer(input);
@@ -52,9 +53,13 @@ class FearnC
 
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
+        Program root = (Program)AST;
         SymbolTable symTable = astConstructor.symTabStack.pop();
 
-        cg.Generate((Program)AST, symTable, args[0]);
+
+        TypeAnalysis.Analyse(root, symTable);
+
+        cg.Generate(root, symTable, args[0]);
     }
   
 };

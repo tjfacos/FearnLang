@@ -7,6 +7,8 @@ import org.objectweb.asm.MethodVisitor;
 import ast.expression.Expression;
 import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;
+import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class Declaration extends ASTNode {
     
@@ -38,6 +40,16 @@ public class Declaration extends ASTNode {
             mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
         }
 
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        TypeSpecifier targetType =  type;
+        TypeSpecifier exprType =    init_expression.validateType(symbolTable);
+
+        if (!targetType.equals(exprType))
+        {
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+        }
     }
 
 }

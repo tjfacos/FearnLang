@@ -19,7 +19,7 @@ public class SymbolTable {
         {
             if (new_row.getClass() == VariableRow.class && r.getClass() == VariableRow.class && r.identifier.equals(new_row.identifier))
             {
-                Reporter.ReportErrorAndExit("Symbol " + r.identifier + " can only exist once within scope.", 100);
+                Reporter.ReportErrorAndExit("Symbol " + r.identifier + " can only exist once within scope.");
             }
         }
 
@@ -106,7 +106,7 @@ public class SymbolTable {
             }
         }
 
-        Reporter.ReportErrorAndExit("Unknown Variable " + id, 200);
+        Reporter.ReportErrorAndExit("Unknown Variable " + id);
 
         return null;
     }
@@ -121,7 +121,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.", 300);
+        Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.");
         
         return null;
     }
@@ -133,7 +133,7 @@ public class SymbolTable {
             if (Symbols.get(i).identifier.equals(id))  { return i; }
         }
         
-        Reporter.ReportErrorAndExit("Unknown Variable " + id, 200);
+        Reporter.ReportErrorAndExit("Unknown Variable " + id);
 
         return null;
     }
@@ -159,7 +159,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.", 300);
+        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.");
         
         return null;
     }
@@ -176,7 +176,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", 300);
+        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.");
         
         return null;
     }

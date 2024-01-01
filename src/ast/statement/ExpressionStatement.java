@@ -8,6 +8,7 @@ import ast.expression.Expression;
 import ast.expression.FnCallExpression;
 
 import codegen.CodeGenerator;
+import semantics.table.SymbolTable;
 
 public class ExpressionStatement extends Statement {
     public Expression expression;
@@ -36,5 +37,8 @@ public class ExpressionStatement extends Statement {
                 mv.visitInsn(POP);
             }
         }
+    }
+    public void verifyType(SymbolTable symbolTable) {
+        expression.validateType(symbolTable);
     }
 }

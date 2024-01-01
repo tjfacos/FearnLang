@@ -14,8 +14,7 @@ public class FearnErrorListener extends BaseErrorListener{
     )
     {
         Reporter.ReportErrorAndExit(
-            "Parse :- line "+line+"; col "+charPositionInLine+": "+msg, 
-            3
+            "Parse :- line "+line+"; col "+charPositionInLine+": "+msg
         );
     }
 }

@@ -58,7 +58,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             return new PrimaryExpression<String>(ctx.getText().substring( 1, ctx.getText().length() - 1), ExprType.StrLiteral);
             
             default:
-            Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value", 3);
+            Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value");
         }
         
         return new PrimaryExpression<Integer>(5, ExprType.IntLiteral);

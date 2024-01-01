@@ -1,16 +1,15 @@
 package ast.expression;
 
-import static org.objectweb.asm.Opcodes.AASTORE;
-import static org.objectweb.asm.Opcodes.ANEWARRAY;
-import static org.objectweb.asm.Opcodes.BIPUSH;
-import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.*;
+import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
 
-import org.objectweb.asm.MethodVisitor;
 
+import ast.type.ArrayBodySpecifier;
 import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class ArrayBody extends Expression {
     
@@ -30,26 +29,17 @@ public class ArrayBody extends Expression {
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
-        /*  EXAMPLE: Recursive Method needed for N-D arrays 
-        *  methodVisitor.visitInsn(ICONST_2);
-        methodVisitor.visitTypeInsn(ANEWARRAY, "java/lang/Integer");
-        methodVisitor.visitInsn(DUP);
-        methodVisitor.visitInsn(ICONST_0);
-        methodVisitor.visitInsn(ICONST_1);
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
-        methodVisitor.visitInsn(AASTORE);
-        methodVisitor.visitInsn(DUP);
-        methodVisitor.visitInsn(ICONST_1);
-        methodVisitor.visitInsn(ICONST_2);
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
-        methodVisitor.visitInsn(AASTORE);
-        methodVisitor.visitVarInsn(ASTORE, 1);
-        * 
-        * 
-        */
+        String desc = SymbolTable.GenBasicDescriptor(elements.get(0).expression_type);
+
+        if (elements.get(0).getClass() != ArrayBody.class) // Array is 1-D
+        {
+            desc = desc.substring(1, desc.length() - 1);
+        }
+
+        // System.out.println(desc);
         
         mv.visitIntInsn(BIPUSH, elements.size());
-        mv.visitTypeInsn(ANEWARRAY, SymbolTable.GenBasicDescriptor(elements.get(0).expression_type));
+        mv.visitTypeInsn(ANEWARRAY, desc);
         mv.visitInsn(DUP);
         
         int i = 0;
@@ -69,11 +59,33 @@ public class ArrayBody extends Expression {
 
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
-        // TODO validateType ArrayBody
-
+        
         // Check Dimensions and Element Types
         // Recursion needed for N-D Arrays
-        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
+
+        TypeSpecifier element_type = elements.get(0).validateType(symTable);
+        
+        
+        for (Expression e : elements.subList(1, elements.size() ))
+        {
+            TypeSpecifier e_type = e.validateType(symTable);
+
+            if (element_type.equals(e_type)) {}
+            else { Reporter.ReportErrorAndExit("Type Error :- ArrayBody " + this.toString() + " has inconsistent element type."); }
+        }
+
+        ArrayList<Integer> dimensions = new ArrayList<Integer>();
+        
+        if (element_type.getClass() == ArrayBodySpecifier.class)
+        {
+            dimensions.addAll(((ArrayBodySpecifier)element_type).dimensions);
+        }
+
+        dimensions.add(elements.size());
+        expression_type = new ArrayBodySpecifier(element_type, dimensions);
+
+        return expression_type;
+        
     }
 
 

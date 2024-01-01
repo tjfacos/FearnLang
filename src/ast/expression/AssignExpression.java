@@ -7,6 +7,7 @@ import org.objectweb.asm.MethodVisitor;
 import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class AssignExpression extends Expression {
     public static enum AssignmentOperator {
@@ -73,10 +74,14 @@ public class AssignExpression extends Expression {
 
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
-        // TODO : Implement Assign Type Validation
-
         // Check the TypeSpecifiers of the target and expression are equal
+        TypeSpecifier targetType =  target.validateType(symTable);
+        TypeSpecifier exprType =    expression.validateType(symTable);
 
+        if (!targetType.equals(exprType))
+        {
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+        }
 
         expression_type = null; // Assign Expression perform a job, they don't evaluate to anything
         return expression_type;

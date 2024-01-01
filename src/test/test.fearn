@@ -1,1 +1,4 @@
-let x : bool = true;
+fn main(args : str[]) => void
+{
+    let x : int[] = new int[3] {1, 2, 3};
+}

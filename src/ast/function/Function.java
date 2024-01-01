@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ast.ASTNode;
 import ast.statement.CompoundStatement;
 import ast.type.TypeSpecifier;
+import semantics.table.SymbolTable;
 
 public class Function extends ASTNode {
     
@@ -38,5 +39,9 @@ public class Function extends ASTNode {
             parameters.toString(),
             body.toString()
         );
+    }
+
+    public void verifyType(SymbolTable symbolTable) {
+        body.verifyType(symbolTable);
     }
 }

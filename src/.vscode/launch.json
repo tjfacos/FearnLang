@@ -9,7 +9,19 @@
             "name": "Launch Fearn Compiler",
             "request": "launch",
             "mainClass": "FearnC",
-            "args": ["test/test.fearn"]
+            "args": ["test/test.fearn"],
+            "stepFilters": {
+                "skipClasses": [
+                    "$JDK",
+                    "junit.*",
+                    "java.*",
+                    "org.*",
+                    // "util.*"
+                ],
+                "skipSynthetics": false,
+                "skipStaticInitializers": false,
+                "skipConstructors": false
+            }
         },
         {
             "type": "java",

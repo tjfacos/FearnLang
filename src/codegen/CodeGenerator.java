@@ -109,7 +109,7 @@ public class CodeGenerator {
                 try {
                     Files.write(destination, classWriter.toByteArray());
                 } catch (IOException e) {
-                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), 30);;
+                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString());;
                 }
                 
                 Reporter.ReportSuccess(
@@ -278,6 +278,9 @@ public class CodeGenerator {
             fnVisitor.visitCode();
 
             func.body.GenerateBytecode(fnVisitor);
+
+            // TESTING PURPOSES ONLY
+            fnVisitor.visitInsn(RETURN);
             
             // End Function Generation
             fnVisitor.visitMaxs(0, 0);
@@ -310,7 +313,7 @@ public class CodeGenerator {
         try {
             Files.write(finalProgramPath, classWriter.toByteArray());
         } catch (IOException e) {
-            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), 30);;
+            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString());;
         }
         
         Reporter.ReportSuccess(
