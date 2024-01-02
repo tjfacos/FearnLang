@@ -296,7 +296,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx)
     { 
-        TypeSpecifier type = (TypeSpecifier)visit(ctx.type_specifier());
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(1));
         
         ArrayList<Expression> dims = new ArrayList<Expression>();
         
@@ -305,7 +305,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             dims.add((Expression)visit(ctx.expression(i)));
         }
 
-        ArrayBody init = (ArrayBody)visit(ctx.array_body());
+        ArrayBody init = null;
+        
+        if (ctx.array_body() != null)
+        {
+            init = (ArrayBody)visit(ctx.array_body());
+        }
 
         return new ArrayInitExpression(type, dims, init);
     }
@@ -383,7 +388,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 	public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx)
 	{
 
-        TypeSpecifier type = (TypeSpecifier)visit(ctx.type_specifier());
+        TypeSpecifier type = (TypeSpecifier)visit(ctx.getChild(0));
         Integer dims = ctx.getChildCount() - 1;
 
         return new ArraySpecifier(type, dims);

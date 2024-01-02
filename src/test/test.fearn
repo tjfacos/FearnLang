@@ -1,4 +1,4 @@
 fn main(args : str[]) => void
 {
-    let x : int[] = new int[3] {1, 2, 3};
+    let x : int[] = new int[5];
 }

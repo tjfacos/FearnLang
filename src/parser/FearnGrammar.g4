@@ -8,9 +8,21 @@ type_name
     ; 
 
 type_specifier
-    : type_name                             # type_specifier_primitive
-    | '$' IDENTIFIER                        # type_specifier_struct
-    | type_specifier ('[]')+                # type_specifier_arr
+    : type_specifier_primitive
+    | type_specifier_struct
+    | type_specifier_arr
+    ;
+
+type_specifier_primitive
+    : type_name
+    ;
+
+type_specifier_struct
+    : '$' IDENTIFIER
+    ;
+
+type_specifier_arr
+    : (type_specifier_primitive | type_specifier_struct ) ('[]')+
     ;
 
 // Root Program
@@ -103,7 +115,8 @@ literal
     ;
 
 array_init
-    : 'new' type_specifier ('[' expression ']')+ array_body?
+    : 'new' ( type_specifier_primitive | type_specifier_struct ) ('[' expression ']')+
+    | 'new' ( type_specifier_primitive | type_specifier_struct ) ('[]')+ array_body
     ;
 
 array_body

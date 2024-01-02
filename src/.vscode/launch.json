@@ -16,11 +16,12 @@
                     "junit.*",
                     "java.*",
                     "org.*",
-                    // "util.*"
+                    "util.*",
+                    "parser.gen.*"
                 ],
                 "skipSynthetics": false,
                 "skipStaticInitializers": false,
-                "skipConstructors": false
+                "skipConstructors": true
             }
         },
         {

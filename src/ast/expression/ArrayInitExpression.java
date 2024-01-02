@@ -47,7 +47,7 @@ public class ArrayInitExpression extends Expression {
             for (Expression dim : dimenisons)
             {
                 dim.GenerateBytecode(mv);
-                
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
             }
 
             if (dimenisons.size() > 1)
@@ -56,7 +56,8 @@ public class ArrayInitExpression extends Expression {
                 mv.visitMultiANewArrayInsn(desc, dimenisons.size());
                 return;
             } else {
-                String desc = SymbolTable.GenBasicDescriptor(type).substring(1, dimenisons.size() - 1 );
+                String desc = SymbolTable.GenBasicDescriptor(type);
+                desc = desc.substring(1, desc.length() - 1 );
                 mv.visitTypeInsn(ANEWARRAY, desc);
             }
 
@@ -67,17 +68,29 @@ public class ArrayInitExpression extends Expression {
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {        
         
-        // Check the Elements are of the same type
-        ArrayBodySpecifier bodySpecifier = (ArrayBodySpecifier)init_body.validateType(symTable);
-        
-        if (!bodySpecifier.element_type.equals(type))
+        // TODO : Make sure dimensions are (AT LEAST) Integers
+
+        if (init_body != null)
         {
-            Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.");
+            // Check the Elements are of the same type
+            ArrayBodySpecifier bodySpecifier = (ArrayBodySpecifier)init_body.validateType(symTable);
+            
+            TypeSpecifier typeOfElements = bodySpecifier;
+            for (int i = 0; i < bodySpecifier.dimensions.size(); i++)
+            {
+                typeOfElements = ((ArrayBodySpecifier)typeOfElements).element_type;
+            }
+    
+            if (!typeOfElements.equals(type))
+            {
+                Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.");
+            }
+            expression_type = new ArraySpecifier(type, bodySpecifier.dimensions.size());
+        } else {
+            expression_type = new ArraySpecifier(type, dimenisons.size());
         }
-        
-        
+                
         // Return ArraySpecifier
-        expression_type = new ArraySpecifier(type, dimenisons.size());
         return expression_type;
     }
     

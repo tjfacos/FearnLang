@@ -48,6 +48,12 @@ public class SymbolTable {
             type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensions ] ).replace("\0", "[");
             type_descriptor += GenBasicDescriptor(((ArraySpecifier)typeSpecifier).element_type);
         }
+
+        else if (typeSpecifier.getClass() == ArrayBodySpecifier.class)
+        {
+            type_descriptor += "[";
+            type_descriptor += GenBasicDescriptor(((ArrayBodySpecifier)typeSpecifier).element_type);
+        }
         
         
         else // Struct Instance

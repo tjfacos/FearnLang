@@ -75,13 +75,13 @@ public class ArrayBody extends Expression {
         }
 
         ArrayList<Integer> dimensions = new ArrayList<Integer>();
+        dimensions.add(elements.size());
         
         if (element_type.getClass() == ArrayBodySpecifier.class)
         {
             dimensions.addAll(((ArrayBodySpecifier)element_type).dimensions);
         }
 
-        dimensions.add(elements.size());
         expression_type = new ArrayBodySpecifier(element_type, dimensions);
 
         return expression_type;
