@@ -1,7 +1,6 @@
 package codegen;
 
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.*;
 
@@ -32,8 +31,6 @@ public class CodeGenerator {
     public static String mainProgramName;
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
-
-    public static ArrayList<Label> programLabels;
 
       
     private void GenerateStructs(ArrayList<Struct> structs)

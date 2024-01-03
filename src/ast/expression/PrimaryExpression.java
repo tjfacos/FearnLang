@@ -61,7 +61,7 @@ public class PrimaryExpression<T> extends Expression {
             
             switch (this.type) {
                 case ExprType.IntLiteral:
-                    mv.visitIntInsn(BIPUSH, (int)value);
+                    mv.visitIntInsn(SIPUSH, (int)value);
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
                         "java/lang/Integer", 

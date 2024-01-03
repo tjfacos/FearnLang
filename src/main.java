@@ -5,8 +5,8 @@ import org.antlr.v4.runtime.tree.*;
 // Generated ANTLR Dependencies
 import parser.*;
 import parser.gen.*;
+import semantics.SemanticAnalysis;
 import semantics.table.SymbolTable;
-import semantics.type.TypeAnalysis;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
@@ -57,7 +57,7 @@ class FearnC
         SymbolTable symTable = astConstructor.symTabStack.pop();
 
 
-        TypeAnalysis.Analyse(root, symTable);
+        SemanticAnalysis.Analyse(root, symTable);
 
         cg.Generate(root, symTable, args[0]);
     }

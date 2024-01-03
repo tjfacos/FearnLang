@@ -38,14 +38,14 @@ public class ArrayBody extends Expression {
 
         // System.out.println(desc);
         
-        mv.visitIntInsn(BIPUSH, elements.size());
+        mv.visitIntInsn(SIPUSH, elements.size());
         mv.visitTypeInsn(ANEWARRAY, desc);
         mv.visitInsn(DUP);
         
         int i = 0;
         for (Expression e : elements)
         {
-            mv.visitIntInsn(BIPUSH, i++);
+            mv.visitIntInsn(SIPUSH, i++);
             e.GenerateBytecode(mv);
             mv.visitInsn(AASTORE);
             
