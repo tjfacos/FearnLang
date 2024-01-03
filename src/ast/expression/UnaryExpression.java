@@ -60,8 +60,8 @@ public class UnaryExpression extends Expression {
             if (operand.expression_type.getClass() == PrimitiveSpecifier.class)
             {
                 switch (((PrimitiveSpecifier)operand.expression_type).element_type) {
-                    case PrimitiveDataType.INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
-                    case PrimitiveDataType.FLOAT:   expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT); break;
+                    case INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
+                    case FLOAT:   expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT); break;
 
                     default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.");break;
                 

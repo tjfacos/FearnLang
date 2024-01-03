@@ -3,7 +3,8 @@
         "lib/**/*.jar",
         "c:\\libraries\\javalibs\\antlr-4.13.1-complete.jar",
         "c:\\libraries\\javalibs\\asm-9.6.jar",
-        "c:\\libraries\\javalibs\\assertj-core-3.24.2.jar"
+        "c:\\libraries\\javalibs\\assertj-core-3.24.2.jar",
+        "c:\\libraries\\javalibs\\assertj-core-3.25.0.jar"
     ],
     "java.project.sourcePaths": [
         ".",

@@ -60,7 +60,7 @@ public class PrimaryExpression<T> extends Expression {
         } else {
             
             switch (this.type) {
-                case ExprType.IntLiteral:
+                case IntLiteral:
                     mv.visitIntInsn(SIPUSH, (int)value);
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
@@ -71,7 +71,7 @@ public class PrimaryExpression<T> extends Expression {
                     );
                     return;
 
-                case ExprType.FloatLiteral:
+                case FloatLiteral:
                     mv.visitLdcInsn((Double)value);
                     mv.visitMethodInsn(
                         INVOKESTATIC, 
@@ -82,7 +82,7 @@ public class PrimaryExpression<T> extends Expression {
                     );
                     return;
 
-                case ExprType.BoolLiteral:
+                case BoolLiteral:
                     if ((Boolean)this.value)    { mv.visitInsn(ICONST_1); }
                     else                        { mv.visitInsn(ICONST_0); }
 
@@ -96,7 +96,7 @@ public class PrimaryExpression<T> extends Expression {
                     );
                     return;
 
-                case ExprType.StrLiteral:
+                case StrLiteral:
                     mv.visitLdcInsn(value);
                     return;
                     
@@ -115,10 +115,10 @@ public class PrimaryExpression<T> extends Expression {
             expression_type = symTable.GetTypeSpecifier(this.value.toString());
         } else {
             switch (this.type) {
-                case ExprType.IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;
-                case ExprType.FloatLiteral  : expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT  ); break;
-                case ExprType.StrLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.STR    ); break;
-                case ExprType.BoolLiteral   : expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL   ); break;
+                case IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;
+                case FloatLiteral  : expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT  ); break;
+                case StrLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.STR    ); break;
+                case BoolLiteral   : expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL   ); break;
                 default: break;
             }
         }

@@ -35,10 +35,10 @@ public class SymbolTable {
         if (typeSpecifier.getClass() == PrimitiveSpecifier.class)
         {
             switch ( ((PrimitiveSpecifier)typeSpecifier).element_type ) {
-                case PrimitiveDataType.INT  : type_descriptor += "Ljava/lang/Integer;"                        ; break;               
-                case PrimitiveDataType.FLOAT: type_descriptor += "Ljava/lang/Double;"                         ; break;               
-                case PrimitiveDataType.STR  : type_descriptor += "Ljava/lang/String;"                         ; break;               
-                case PrimitiveDataType.BOOL : type_descriptor += "Ljava/lang/Boolean;"                        ; break;                           
+                case INT  : type_descriptor += "Ljava/lang/Integer;"                        ; break;               
+                case FLOAT: type_descriptor += "Ljava/lang/Double;"                         ; break;               
+                case STR  : type_descriptor += "Ljava/lang/String;"                         ; break;               
+                case BOOL : type_descriptor += "Ljava/lang/Boolean;"                        ; break;                           
                 default: break;
             }
         }
