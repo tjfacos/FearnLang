@@ -10,14 +10,13 @@ fn main() => void
 fn bubble(l : int[]) => int[]
 {
     let length : int = len(l);
-    let i : int = 1;
     let swapped : bool = True;
     let temp : int;
 
-    while (swapped)
+    while (;swapped;)
     {
         swapped = False;
-        while (i < length)
+        while (let i : int = 1; i < length; i += 1)
         {
             if (l[i - 1] > l[i])
             {
@@ -26,7 +25,6 @@ fn bubble(l : int[]) => int[]
                 l[i] = temp;
                 swapped = True;
             }
-            i += 1;
         }
     }
 
