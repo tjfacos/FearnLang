@@ -52,7 +52,7 @@ public class PrimaryExpression<T> extends Expression {
             // NB: variables will be given indexes when they are declared
             else 
             {
-                mv.visitVarInsn(ALOAD, CodeGenerator.GlobalSymbolTable.GetIndex(this.value.toString()));
+                mv.visitVarInsn(ALOAD, CodeGenerator.LocalSymbolTable.GetIndex(this.value.toString()));
             }
             
             
