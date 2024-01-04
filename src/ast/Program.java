@@ -32,7 +32,9 @@ public class Program extends ASTNode {
         }
 
         for (Struct s : structs                     ) { s.verifyType(symbolTable); }
-        for (Function f : functions                 ) { f.verifyType(symbolTable); }
+        for (Function f : functions) { 
+            f.verifyType(symbolTable.GetFuncSymbolTable(f.identifier)); 
+        }
     }
     
 

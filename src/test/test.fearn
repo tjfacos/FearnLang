@@ -1,5 +1,5 @@
 fn main(args : str[]) => void
 {
-    let y : int = 15;
+    let y : int = 5;
     let x : str[] = new str[y];
 }

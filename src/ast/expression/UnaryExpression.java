@@ -49,7 +49,6 @@ public class UnaryExpression extends Expression {
             }
 
         } else { // operator == ExprType.LogicalNot
-            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
             mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
         }
     }

@@ -7,6 +7,8 @@ import static org.objectweb.asm.Opcodes.*;
 
 import ast.type.ArrayBodySpecifier;
 import ast.type.ArraySpecifier;
+import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;
@@ -27,7 +29,9 @@ public class ArrayInitExpression extends Expression {
     @Override
     public String toString()
     {
-        return type.toString() + "(dims: " + dimenisons.toString() + ")" + init_body.toString();
+        String s = type.toString() + "(dims: " + dimenisons.toString() + ")";
+        if (init_body != null) s += init_body.toString();
+        return s;
     }
 
     @Override
@@ -68,8 +72,6 @@ public class ArrayInitExpression extends Expression {
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {        
         
-        // TODO : Make sure dimensions are (AT LEAST) Integers
-
         if (init_body != null)
         {
             // Check the Elements are of the same type
@@ -87,6 +89,17 @@ public class ArrayInitExpression extends Expression {
             }
             expression_type = new ArraySpecifier(type, bodySpecifier.dimensions.size());
         } else {
+            
+            for (Expression e: dimenisons)
+            {
+                TypeSpecifier dim_type = e.validateType(symTable);
+                if (!dim_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
+                {
+                    Reporter.ReportErrorAndExit(toString() + ": Dimensions of arrays must be of type int.");
+                }
+            }
+            
+            
             expression_type = new ArraySpecifier(type, dimenisons.size());
         }
                 

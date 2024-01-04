@@ -31,12 +31,13 @@ public abstract class Expression extends ASTNode {
         LogicalNot,
     
         // BINARY
+        Eq,
+        NotEq,
+        
         Less,
         Greater,
         LessEq,
         GreaterEq,
-        Eq,
-        NotEq,
         LogicalAnd,
         LogicalOr,
         Exponent,

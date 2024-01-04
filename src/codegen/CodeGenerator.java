@@ -340,6 +340,15 @@ public class CodeGenerator {
         }
 
 
+        // Copy Runtime file to build directory
+        try {
+            Path RuntimePath = Paths.get(System.getenv("FEARNPATH"), "runtime", "FearnRuntime.class");
+            Files.copy(RuntimePath, buildPath.resolve(Paths.get("FearnRuntime.class")));
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Error Copying Runtime to build directory. Please define FEARNPATH at Compiler root.");;
+        }
+
+
         // Generate Class files to represent structs
         GenerateStructs(root.structs);
 
@@ -351,8 +360,7 @@ public class CodeGenerator {
             finalProgramPath
         );
 
-        // TODO : Copy Runtime into build forlder using FEARNPATH env variable.
-            
+
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `java %s` to run Program", 
@@ -360,8 +368,5 @@ public class CodeGenerator {
             ), 
             true
         );
-
     }
-    
-    
 }
