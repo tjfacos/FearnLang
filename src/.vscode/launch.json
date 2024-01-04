@@ -22,14 +22,8 @@
                 "skipSynthetics": false,
                 "skipStaticInitializers": false,
                 "skipConstructors": true
-            }
-        },
-        {
-            "type": "java",
-            "name": "FearnC",
-            "request": "launch",
-            "mainClass": "FearnC",
-            "projectName": "src_ed31134d"
+            },
+            "preLaunchTask": "Build Runtime"
         }
     ]
 }

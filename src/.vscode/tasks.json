@@ -12,6 +12,15 @@
         },
         {
             "type": "process",
+            "label": "Build Runtime",
+            "command": ".\\cmd\\BuildRuntime.bat",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "type": "process",
             "label": "Build Grammar Only",
             "command": ".\\cmd\\GenANTLR.bat",
             "group": {
