@@ -12,6 +12,7 @@ public class SymbolTable {
 
     private ArrayList<Row> Symbols = new ArrayList<Row>();
 
+
     public void addSymbol(String id, Row new_row)
     {
         // Raise error if two variables in the same function has the same identifier
@@ -171,20 +172,45 @@ public class SymbolTable {
     }
 
 
-    public TypeSpecifier GetTypeSpecifier(String id) {
+    public TypeSpecifier GetTypeSpecifier(String id, Boolean isFunction) {
         
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id))
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class && isFunction)
             {
-                if (r.getClass() == FunctionRow.class)  { return ((FunctionRow)r).return_type;  }
-                else /* r is VariableRow */             { return ((VariableRow)r).typeSpecifier;}
+                return ((FunctionRow)r).return_type;
+            }
+            
+            else if (r.identifier.equals(id) && !isFunction) 
+            { 
+                return ((VariableRow)r).typeSpecifier; 
             }
         }
         
         Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.");
         
         return null;
+    }
+
+    public ArrayList<TypeSpecifier> GetFuncParameterSpecifiers(String id)
+    {
+        ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
+
+        for (Row r : Symbols)
+        {
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
+            {
+                for (Parameter p : ((FunctionRow)r).parameters)
+                {
+                    t_list.add(p.type);
+                }
+                return t_list;
+            }
+        }
+
+        Reporter.ReportErrorAndExit("Function " + id + " is not defined.");
+
+        return t_list;
     }
 
 

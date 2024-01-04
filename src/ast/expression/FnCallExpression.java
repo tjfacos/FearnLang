@@ -1,11 +1,15 @@
 package ast.expression;
 
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
 import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
 
 import ast.type.TypeSpecifier;
+import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class FnCallExpression extends Expression {
     
@@ -26,19 +30,84 @@ public class FnCallExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO GenByte FnCallExpression
+        
         
         // Gen args, then INVOKESTATIC
+        for (Expression arg : arguements) arg.GenerateBytecode(mv);
+        
+        String desc;
+        
+        // TODO Add support for input
+        switch (identifier){
+            case "print":
+                desc = "(Ljava/lang/Object;)V";
+                break;
+            default:
+                desc = CodeGenerator.GlobalSymbolTable.GetGlobalFuncDescriptor(identifier);
+                break;
+        }
+        
+        if (identifier.equals("print"))
+        {
+            mv.visitMethodInsn(
+                INVOKESTATIC, 
+                "FearnRuntime", 
+                identifier, 
+                desc, 
+                false
+            );
+            return;
+        }
 
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        mv.visitMethodInsn(
+            INVOKESTATIC, 
+            CodeGenerator.mainProgramName, 
+            identifier, 
+            desc, 
+            false
+        );
+
     }
 
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
-        // TODO validateType FnCallExpression
-
         // Check the function's signature (Parameters from Symbol Table) against to types of each arguement
-        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
+        
+
+        ArrayList<TypeSpecifier> arg_types = new ArrayList<TypeSpecifier>();
+        
+        if (identifier.equals("print"))
+        {
+            if (arguements.size() != 1)
+            {
+                Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
+            }
+
+            return null; // null represents a void type
+        }
+
+        ArrayList<TypeSpecifier> param_types = CodeGenerator.GlobalSymbolTable.GetFuncParameterSpecifiers(identifier);
+
+        for (Expression arg : arguements)
+        {
+            arg_types.add(arg.validateType(symTable));
+        }
+
+        if (arguements.size() != param_types.size())
+        {
+            Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected" + param_types.size() + ".");
+        }
+
+        for (int i = 0; i < param_types.size(); i++)
+        {
+            if (!param_types.get(i).equals(arg_types.get(i)))
+            {
+                Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguements.get(i).toString() + ", expected " + param_types.get(i).toString());
+            }
+        }
+
+        return CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(identifier, true);
+
     }
 
 }

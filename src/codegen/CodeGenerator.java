@@ -326,6 +326,8 @@ public class CodeGenerator {
 
         GlobalSymbolTable = symTab;
 
+        // GlobalSymbolTable.addStandardFunctions();
+
         Path srcParent = Paths.get(sPath).getParent();
         mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
         buildPath = Paths.get(srcParent.toString(), "build");

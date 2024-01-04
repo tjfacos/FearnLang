@@ -4,7 +4,6 @@ public class FearnRuntime {
     {
         return op1.equals(op2);
     }
-
     
     // Maths functions
     public static Integer exp(int op1, int op2)
@@ -83,6 +82,10 @@ public class FearnRuntime {
         return a + b;
     }
     
+    public static void print(Object a)
+    {
+        System.out.println(a);
+    }
 
 
 

@@ -5,9 +5,7 @@ import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
-import ast.expression.FnCallExpression;
 
-import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 
 public class ExpressionStatement extends Statement {
@@ -30,10 +28,9 @@ public class ExpressionStatement extends Statement {
         expression.GenerateBytecode(mv);
         
         if (!isAssign) {
-            expression.GenerateBytecode(mv);
             // If the program calls a function, which returns void, do nothing. Otherwise, pop from stack 
-            if (expression.getClass() == FnCallExpression.class && CodeGenerator.GlobalSymbolTable.GetGlobalFuncDescriptor( ((FnCallExpression)expression).identifier).endsWith("V") )
-            {} else {
+            if (expression.expression_type != null)
+            {
                 mv.visitInsn(POP);
             }
         }

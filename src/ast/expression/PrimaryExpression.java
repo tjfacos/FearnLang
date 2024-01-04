@@ -110,9 +110,12 @@ public class PrimaryExpression<T> extends Expression {
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
         
-        
-        if ( type == ExprType.VariableReference ) {
-            expression_type = symTable.GetTypeSpecifier(this.value.toString());
+        if ( type == ExprType.VariableReference && !CodeGenerator.GlobalSymbolTable.Contains(value.toString()))
+        {
+            expression_type = symTable.GetTypeSpecifier(value.toString(), false);
+        }
+        else if ( type == ExprType.VariableReference ) {
+            expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(value.toString(), false);
         } else {
             switch (this.type) {
                 case IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;

@@ -56,6 +56,8 @@ class FearnC
         Program root = (Program)AST;
         SymbolTable symTable = astConstructor.symTabStack.pop();
 
+        CodeGenerator.GlobalSymbolTable = symTable;
+
 
         SemanticAnalysis.Analyse(root, symTable);
 
