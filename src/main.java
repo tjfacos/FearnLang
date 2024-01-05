@@ -53,6 +53,11 @@ class FearnC
 
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
+
+        // // testing
+        // System.out.println("TEST FINISHED");
+        // System.exit(10);
+
         Program root = (Program)AST;
         SymbolTable symTable = astConstructor.symTabStack.pop();
 

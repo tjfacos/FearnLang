@@ -27,11 +27,22 @@ import ast.statement.JumpStatement.JumpType;
 
 public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
+    /* SYMBOL ANALYSIS */
+    
+    Stack<String> symAnalysisStack = new Stack<String>();
+
+
     /* PRIMARY EXPRESSIONS */
     @Override
     public Expression visitId_expr(FearnGrammarParser.Id_exprContext ctx)
     {
         String id = ctx.getText();
+
+        if (!symAnalysisStack.contains(id))
+        {
+            Reporter.ReportErrorAndExit("Variable Identifer Unknown in Scope: " + id);
+        }
+
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
     }
     
@@ -406,6 +417,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
     {
         String identifer = ctx.IDENTIFIER().getText();
+        symAnalysisStack.push(identifer);
         TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.type_specifier());
 
         Expression init_expression = null;
@@ -437,6 +449,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     {
         
         
+        int numOfSyms = symAnalysisStack.size();
+
         ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
         ArrayList<Statement> local_stmts = new ArrayList<Statement>();
         
@@ -448,7 +462,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         for (int i = 0; i < ctx.statement().size(); i++)
         {
             local_stmts.add((Statement)visit(ctx.statement(i)));
-        }       
+        }   
+        
+        // Remove Symbols added within the compound statement
+        for (int i = 0; i < symAnalysisStack.size() - numOfSyms; i++)
+        {
+            symAnalysisStack.pop();
+        }
             
         return new CompoundStatement(local_decls, local_stmts);
             
@@ -592,15 +612,21 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         }
 
+        CompoundStatement body = (CompoundStatement)visit(ctx.compound_statement());
 
+        for (int i = 0; i < parameters.size(); i++)
+        {
+            symAnalysisStack.pop();
+        }
 
-        return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, (CompoundStatement)visit(ctx.compound_statement()));
+        return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, body);
     }
 
     // Parameter
 	@Override
     public Parameter visitParameter(FearnGrammarParser.ParameterContext ctx)
     {
+        symAnalysisStack.push(ctx.IDENTIFIER().getText());
         return new Parameter(ctx.IDENTIFIER().getText(), (TypeSpecifier)visit(ctx.type_specifier()));
     }
 
@@ -634,7 +660,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         for (int i = 0; i < ctx.declaration().size(); i++)
         {
-            global_declarations.add(visitDeclaration(ctx.declaration(i)));
+            Declaration decl = visitDeclaration(ctx.declaration(i));
+            global_declarations.add(decl);
         }
 
 
