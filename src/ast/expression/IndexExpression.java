@@ -2,24 +2,28 @@ package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.ArraySpecifier;
+import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class IndexExpression extends Expression {
     
-    public Expression array;
+    public Expression sequence;
     public Expression index;
     
     public IndexExpression(Expression id, Expression i)
     {
-        array = id;
+        sequence = id;
         index = i;
     }
 
     @Override
     public String toString()
     {
-        return "{" + array.toString() + "}" + '[' + index.toString() + ']';
+        return "{" + sequence.toString() + "}" + '[' + index.toString() + ']';
     }
 
     @Override
@@ -32,9 +36,25 @@ public class IndexExpression extends Expression {
     
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
-        // TODO validateExpression IndexExpression
+        
+        TypeSpecifier seq_type      =  sequence.validateType(symTable);
+        TypeSpecifier index_type    =  index.validateType(symTable);
 
-        // Not much can be done here at compile time, so just return type of an element
-        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
+        if (seq_type.getClass() != ArraySpecifier.class && !seq_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
+        {
+            Reporter.ReportErrorAndExit(toString() + ": Can only take index of Arrays and Strings.");
+        }
+
+        if (index_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
+        {
+            Reporter.ReportErrorAndExit(toString() + ": Index can only be an int.");
+        }
+
+        // Use seq_type to set expression type
+
+        // TODO Finish THIS
+
+        return expression_type;
+
     }
 }

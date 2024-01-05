@@ -17,13 +17,14 @@
                     "java.*",
                     "org.*",
                     "util.*",
-                    "parser.gen.*"
+                    "parser.gen.*",
+                    "ASTNode.java"
                 ],
                 "skipSynthetics": false,
                 "skipStaticInitializers": false,
                 "skipConstructors": true
-            },
-            "preLaunchTask": "Build Runtime"
+            }
+            // "preLaunchTask": "Build Rsuntime"
         }
     ]
 }

@@ -2,4 +2,6 @@ build/
 gen/
 *.class
 
+.VSCodeCounter
+
 !FearnRuntime.class

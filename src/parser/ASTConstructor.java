@@ -575,8 +575,23 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         for (int i = 0; i < ctx.parameter().size(); i++)
         {
-            parameters.add((Parameter)visit(ctx.parameter(i)));
+            // Visit Parameter
+            Parameter param = (Parameter)visit(ctx.parameter(i));
+            
+            // Add parameter to symbol table
+            symTabStack.peek().addSymbol(
+                param.identifier, 
+                new VariableRow(
+                    param.identifier, 
+                    param.type
+                )
+            );
+
+            // Add to parameters
+            parameters.add(param);
+
         }
+
 
 
         return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, (CompoundStatement)visit(ctx.compound_statement()));

@@ -222,7 +222,16 @@ public class BinaryExpression extends Expression {
                         op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.FLOAT))
                     )
                 ) {
-                    expression_type = op1_type; // This may cause errors, I dunno...
+                    switch (Operator) {
+                        case Mult:
+                        case Div:
+                        case Sub:
+                            expression_type = op1_type; // This may cause errors, I dunno...
+                            break;
+                        default:
+                            expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
+                            break;
+                    }
                 } else {
                     Reporter.ReportErrorAndExit(toString() + ": Operators must be either (a) both ints, or (b) both floats.");
                 }
@@ -267,10 +276,11 @@ public class BinaryExpression extends Expression {
             case Eq:
             case NotEq:
                 if ( op1_type.equals(op2_type)) {
-                    expression_type = op1_type; // This may cause errors, I dunno...
+                    expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
                 } else {
                     Reporter.ReportErrorAndExit(toString() + ": Operators must both be of the same type.");
                 }
+                break;
             
             default:
                 Reporter.ReportErrorAndExit(toString() + ": An Error has occured.");

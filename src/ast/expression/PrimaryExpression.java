@@ -29,9 +29,6 @@ public class PrimaryExpression<T> extends Expression {
 
     public void GenerateBytecode(MethodVisitor mv)
     {
-        
-        // TODO : Verify this is correct
-
         if (type == ExprType.VariableReference)
         {
             // Identify if the Variable is a global variable

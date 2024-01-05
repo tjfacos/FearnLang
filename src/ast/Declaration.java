@@ -43,8 +43,8 @@ public class Declaration extends ASTNode {
     }
 
     public void verifyType(SymbolTable symbolTable) {
-        TypeSpecifier targetType =  type;
-        TypeSpecifier exprType =    init_expression.validateType(symbolTable);
+        TypeSpecifier targetType = type;
+        TypeSpecifier exprType   = init_expression.validateType(symbolTable);
 
         if (!targetType.equals(exprType))
         {

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
@@ -37,17 +39,19 @@ public class FnCallExpression extends Expression {
         
         String desc;
         
-        // TODO Add support for input
         switch (identifier){
             case "print":
                 desc = "(Ljava/lang/Object;)V";
+                break;
+            case "input":
+                desc = "(Ljava/lang/String;)Ljava/lang/String;";
                 break;
             default:
                 desc = CodeGenerator.GlobalSymbolTable.GetGlobalFuncDescriptor(identifier);
                 break;
         }
         
-        if (identifier.equals("print"))
+        if (identifier.equals("print") || identifier.equals("input"))
         {
             mv.visitMethodInsn(
                 INVOKESTATIC, 
@@ -76,15 +80,31 @@ public class FnCallExpression extends Expression {
 
         ArrayList<TypeSpecifier> arg_types = new ArrayList<TypeSpecifier>();
         
-        if (identifier.equals("print"))
+        if (identifier.equals("print") || identifier.equals("input"))
         {
             if (arguements.size() != 1)
             {
                 Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
             }
 
+            arguements.get(0).validateType(symTable);
+
+            if (identifier.equals("input"))
+            {
+            
+                if (!arguements.get(0).expression_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
+                {
+                    Reporter.ReportErrorAndExit(toString() + ": Wrong data type, expected String.");
+                }
+                
+                expression_type =  new PrimitiveSpecifier(PrimitiveDataType.STR);
+                return expression_type;
+            }
+            
             return null; // null represents a void type
+            
         }
+
 
         ArrayList<TypeSpecifier> param_types = CodeGenerator.GlobalSymbolTable.GetFuncParameterSpecifiers(identifier);
 
@@ -106,8 +126,8 @@ public class FnCallExpression extends Expression {
             }
         }
 
-        return CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(identifier, true);
-
+        expression_type =  CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(identifier, true);
+        return expression_type;
     }
 
 }

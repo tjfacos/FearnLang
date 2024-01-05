@@ -5,8 +5,9 @@ import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
-
+import ast.expression.FnCallExpression;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class ExpressionStatement extends Statement {
     public Expression expression;
@@ -29,6 +30,11 @@ public class ExpressionStatement extends Statement {
         
         if (!isAssign) {
             // If the program calls a function, which returns void, do nothing. Otherwise, pop from stack 
+            if(expression.getClass() != FnCallExpression.class)
+            {
+                Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
+            }
+            
             if (expression.expression_type != null)
             {
                 mv.visitInsn(POP);

@@ -137,7 +137,7 @@ public class SymbolTable {
     public Integer GetIndex(String id) {
         for (int i = 0; i < Symbols.size(); i++)
         {
-            if (Symbols.get(i).identifier.equals(id))  { return i; }
+            if (Symbols.get(i).identifier.equals(id))  { return i + 1; }
         }
         
         Reporter.ReportErrorAndExit("Unknown Variable " + id);

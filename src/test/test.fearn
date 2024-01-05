@@ -1,4 +1,6 @@
 fn main(args : str[]) => void
 {
-    print("Hello, World!");
+    let x : int = (int)input("What is 1 + 2? : ");
+    let y : int = (int)input("What is 2 + 2? : ");
+    print(x == 3 && y == 4);
 }
