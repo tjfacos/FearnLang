@@ -31,26 +31,26 @@ public class PrimaryExpression<T> extends Expression {
     {
         if (type == ExprType.VariableReference)
         {
-            // Identify if the Variable is a global variable
-            // If yes, GETSTATIC
-            if (CodeGenerator.GlobalSymbolTable.Contains(this.value.toString()))
+
+            // Find index of variable (in THIS scope)
+            // ALOAD <index>
+            if (CodeGenerator.LocalSymbolTable.Contains(this.value.toString()))
+            {
+                mv.visitVarInsn(ALOAD, CodeGenerator.LocalSymbolTable.GetIndex(this.value.toString()));
+            }
+
+            // Otherwise, variable is global, GETSTATIC
+            else
             {
                 mv.visitFieldInsn(
                     GETSTATIC, 
                     CodeGenerator.mainProgramName, 
                     this.value.toString(), 
-                    CodeGenerator.GlobalSymbolTable.GetGlobalVarDescriptor(this.value.toString())
+                    CodeGenerator.GlobalSymbolTable.GetVarDescriptor(this.value.toString())
                 );
             }
 
 
-            // Otherwise, find index of variable (in THIS scope)
-            // ALOAD <index>
-            // NB: variables will be given indexes when they are declared
-            else 
-            {
-                mv.visitVarInsn(ALOAD, CodeGenerator.LocalSymbolTable.GetIndex(this.value.toString()));
-            }
             
             
         // Handle Literals
@@ -107,7 +107,7 @@ public class PrimaryExpression<T> extends Expression {
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
         
-        if ( type == ExprType.VariableReference && !CodeGenerator.GlobalSymbolTable.Contains(value.toString()))
+        if ( type == ExprType.VariableReference && symTable.Contains(value.toString()))
         {
             expression_type = symTable.GetTypeSpecifier(value.toString(), false);
         }

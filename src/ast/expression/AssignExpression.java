@@ -37,40 +37,77 @@ public class AssignExpression extends Expression {
         return target.toString() + " " + operator.name() + " ( " + expression.toString() + " ) ";
     }
 
+
+    /* The Target Expression can be one of the folowing
+    * -> A variable reference              (ASTORE at <INDEX> / PUTSTATIC if Global                )
+    * -> An Index Expression               (Iterative Loading of the array, then AASTORE           )
+    * -> A Struct Attribute Expression     (PUTFIELD, as Structs can't exist within other Structs  )
+    */
+
     @SuppressWarnings("unchecked")
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        expression.GenerateBytecode(mv);
-
-        /* The Target Expression can be one of the folowing
-         * -> A variable reference              (ASTORE at <INDEX> / PUTSTATIC if Global                )
-         * -> An Index Expression               (Iterative Loading of the array, then AASTORE           )
-         * -> A Struct Attribute Expression     (PUTFIELD, as Structs can exist within other Structs    )
-         * 
-         */
-
+        
+        
         if (target.getClass() == PrimaryExpression.class) // Variable Reference
         {
+            expression.GenerateBytecode(mv);
             PrimaryExpression<String> t = (PrimaryExpression<String>)target;
             String identifier = t.value.toString();
             
-            if (CodeGenerator.GlobalSymbolTable.Contains(identifier)) { // Target is a Global Variable => PUTFIELD
+            if (CodeGenerator.LocalSymbolTable.Contains(identifier)) { // Local Variable => ASTORE
+                mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
+            } else { // Target is a Global Variable => PUTFIELD
                 mv.visitFieldInsn(
                     PUTFIELD, 
                     CodeGenerator.mainProgramName, 
                     identifier,
-                    CodeGenerator.GlobalSymbolTable.GetGlobalVarDescriptor(identifier)
+                    CodeGenerator.GlobalSymbolTable.GetVarDescriptor(identifier)
                 );
-            } else { // Local Variable => ASTORE
-                mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
             }
 
         } else if (target.getClass() == IndexExpression.class) { // Index Expression
-            // TODO : Implement Assign to Index Expression
+            
+            IndexExpression targ = (IndexExpression)target;
+            
+            /*
+             * To get an assign to an index expression, first I need to load the array by 
+             * generating the target. Then, I need to generate the index. Finally, 
+             * I need to generate the expression I wish to store and call AASTORE.
+             */
+
+            targ.sequence.GenerateBytecode(mv);
+            targ.index.GenerateBytecode(mv);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
+            expression.GenerateBytecode(mv);
+            mv.visitInsn(AASTORE);
+    
         } else { // Struct Attribute Expression
-            // TODO : Implement Assign to Struct Attribute Expression
+
+            StructAttrExpression targ = (StructAttrExpression)target;
+            
+
+            /*
+             * To assign to a struct attribute, I need to load the object, 
+             * then generate the expression. Then, I can use PUTFIELD to set
+             * the attribute.
+             */
+
+            targ.instance.GenerateBytecode(mv);
+            expression.GenerateBytecode(mv);
+
+            mv.visitFieldInsn(
+                PUTFIELD, 
+                "$" + targ.struct_name, 
+                targ.attribute, 
+                targ.attr_descriptor
+            );
         }
     }
+
+
+
+
 
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {

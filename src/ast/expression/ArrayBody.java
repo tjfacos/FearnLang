@@ -1,7 +1,7 @@
 package ast.expression;
 
-import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 

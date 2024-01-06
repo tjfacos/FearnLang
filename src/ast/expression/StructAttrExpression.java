@@ -1,16 +1,23 @@
 package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.*;
 
+import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
+import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class StructAttrExpression extends Expression {
     
     public Expression instance;
-    public Expression attribute;
+    public String attribute;
+
+    public String struct_name;
+    public String attr_descriptor;
     
-    public StructAttrExpression(Expression n, Expression attr)
+    public StructAttrExpression(Expression n, String attr)
     {
         instance = n;
         attribute = attr;
@@ -24,17 +31,42 @@ public class StructAttrExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO GenByte StructAttrExpression
-
         // Gen instance, then GETFIELD
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        instance.GenerateBytecode(mv);
+
+        mv.visitFieldInsn(
+            GETFIELD, 
+            "$" + struct_name, 
+            attribute, 
+            attr_descriptor
+        );
     }
 
     @Override
     public TypeSpecifier validateType(SymbolTable symTable) {
-        // TODO validateType StructAttrExpression
-
         // Get from StructRow in SymbolTable
-        throw new UnsupportedOperationException("Unimplemented method 'validateType'");
+    
+        TypeSpecifier inst_type = instance.validateType(symTable);
+        
+        if (inst_type.getClass() != StructInstanceSpecifier.class)
+        {
+            Reporter.ReportErrorAndExit(toString() + ": " + inst_type.toString() + " is not a struct.");
+        }
+
+        struct_name = ((StructInstanceSpecifier)inst_type).name;
+
+        SymbolTable structTable = CodeGenerator.GlobalSymbolTable.GetStructSymbolTable(struct_name);
+
+        if (!structTable.Contains(attribute))
+        {
+            Reporter.ReportErrorAndExit(toString() + ": " + struct_name + " has no attribute " + attribute);
+        }
+
+        attr_descriptor = structTable.GetVarDescriptor(attribute);
+
+        expression_type = structTable.GetTypeSpecifier(attribute, false);
+
+        return expression_type;
+
     }
 }

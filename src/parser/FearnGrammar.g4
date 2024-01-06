@@ -96,11 +96,6 @@ jump_statement
     | 'return' expression? ';'       # return_stmt
     ;
 
-
-
-
-
-
 declaration
     : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
     ;

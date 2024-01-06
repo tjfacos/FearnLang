@@ -52,7 +52,7 @@ public class CodeGenerator {
                 MethodVisitor cv = classWriter.visitMethod(
                     ACC_PUBLIC, 
                     "<init>", 
-                    SymbolTable.GenStructDescriptor(struct.declarations), 
+                    GlobalSymbolTable.GetGlobalStructDescriptor(struct.identifier), 
                     null, 
                     null
                 );
@@ -91,7 +91,6 @@ public class CodeGenerator {
                         decl.identifier, 
                         SymbolTable.GenBasicDescriptor(decl.type)
                     );
-
                 }
 
                 cv.visitInsn(RETURN);
@@ -122,68 +121,6 @@ public class CodeGenerator {
     private void GenerateMainProgram(ArrayList<Function> functions, ArrayList<Declaration> global_declarations, Path finalProgramPath) {
         
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-
-        
-        // TEST BLOCK
-        
-        /*
-        
-        cw.visit(V19, ACC_PUBLIC | ACC_SUPER, "test", null, "java/lang/Object", null);
-        
-        MethodVisitor cv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-        cv.visitCode();
-        cv.visitVarInsn(ALOAD, 0);
-        cv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
-        cv.visitInsn(RETURN);
-        cv.visitMaxs(1, 1);
-        cv.visitEnd();
-        
-        
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
-        mv.visitTypeInsn(NEW, "$T");
-        mv.visitInsn(DUP);
-        mv.visitInsn(ICONST_5);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
-        mv.visitMethodInsn(INVOKESPECIAL, "$T", "<init>", "(Ljava/lang/Integer;)V", false);
-        mv.visitVarInsn(ASTORE, 1);
-        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(GETFIELD, "$T", "x", "Ljava/lang/Integer;");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/Object;)V", false);
-        mv.visitInsn(RETURN);
-        mv.visitMaxs(3, 2);
-        mv.visitEnd();
-        
-        
-        
-        cw.visitEnd();
-        
-        try {
-            Files.write(finalProgramPath, cw.toByteArray());
-        } catch (IOException e) {
-            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), 30);;
-        }
-        
-        Reporter.ReportSuccess(
-            "GENERATED Program     : "+ finalProgramPath.toAbsolutePath() + ";", 
-            true
-        );
-            
-            
-            
-            
-        // END TEST
-        
-        
-        
-        */
-
-
-
-
-
-
-
 
 
         classWriter.visit(

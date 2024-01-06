@@ -1,10 +1,26 @@
-fn main(args : str[]) => void
+struct MyStruct
 {
-    let x : int = 5;
-    print(x);
+    let x : $MyOtherStruct;
 }
 
-fn test(x : int) => void
+struct MyOtherStruct
 {
-    print(y);
+    let isTrue : bool;
 }
+
+fn main(args : str[]) => void
+{
+    let inst : $MyStruct = new MyStruct(
+        new MyOtherStruct(true)
+    );
+    
+    print(inst.x.isTrue);
+
+    inst.x.isTrue = false;
+
+    print(inst.x.isTrue);
+}
+
+
+// java jdk.internal.org.objectweb.asm.util.ASMifier test.class
+

@@ -54,25 +54,25 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         switch (ctx.getStart().getType())
         {
             case FearnGrammarLexer.INT_LIT:
-            return new PrimaryExpression<Integer>( Integer.valueOf(ctx.getText()), ExprType.IntLiteral);
+                return new PrimaryExpression<Integer>( Integer.valueOf(ctx.getText()), ExprType.IntLiteral);
             
             
             case FearnGrammarLexer.BOOL_LIT:
-            return new PrimaryExpression<Boolean>( Boolean.valueOf(ctx.getText()), ExprType.BoolLiteral);
+                return new PrimaryExpression<Boolean>( Boolean.valueOf(ctx.getText()), ExprType.BoolLiteral);
             
             case FearnGrammarLexer.FLOAT_LIT:
             
             // FearnLang Floats are represented by Java doubles
-            return new PrimaryExpression<Double>(Double.valueOf(ctx.getText()), ExprType.FloatLiteral);
+                return new PrimaryExpression<Double>(Double.valueOf(ctx.getText()), ExprType.FloatLiteral);
             
             case FearnGrammarLexer.STR_LIT:
-            return new PrimaryExpression<String>(ctx.getText().substring( 1, ctx.getText().length() - 1), ExprType.StrLiteral);
+                return new PrimaryExpression<String>(ctx.getText().substring( 1, ctx.getText().length() - 1), ExprType.StrLiteral);
             
             default:
-            Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value");
+                Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value");
         }
         
-        return new PrimaryExpression<Integer>(5, ExprType.IntLiteral);
+        return null;
         
     }
     
@@ -290,7 +290,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
         if (postdot.getClass() != FnCallExpression.class)
         {
-            return new StructAttrExpression(predot, postdot);
+            return new StructAttrExpression(predot, ctx.expression(1).getText());
         }
         
         // This should match a function call using universal function notation
@@ -321,7 +321,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         if (ctx.array_body() != null)
         {
             init = (ArrayBody)visit(ctx.array_body());
+        
+            for (int i = 0; i < ctx.getChildCount() - 3; i++)
+            {
+                dims.add(null);
+            }
         }
+        
 
         return new ArrayInitExpression(type, dims, init);
     }

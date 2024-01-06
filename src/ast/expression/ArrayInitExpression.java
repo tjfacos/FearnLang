@@ -87,6 +87,12 @@ public class ArrayInitExpression extends Expression {
             {
                 Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.");
             }
+
+            if (bodySpecifier.dimensions.size() != dimenisons.size())
+            {
+                Reporter.ReportErrorAndExit("Dimensions of Array Body don't match dimensions of Array Initialisation.");
+            }
+
             expression_type = new ArraySpecifier(type, bodySpecifier.dimensions.size());
         } else {
             

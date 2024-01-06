@@ -1,6 +1,7 @@
 package ast.expression;
 
 import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.*;
 
 import ast.type.ArraySpecifier;
 import ast.type.PrimitiveDataType;
@@ -28,10 +29,11 @@ public class IndexExpression extends Expression {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
-        // TODO GenByte IndexExpression
-
         // Gen Array, Gen Index, cast Index to I, AALOAD
-        throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
+        sequence.GenerateBytecode(mv);
+        index.GenerateBytecode(mv);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
+        mv.visitInsn(AALOAD);
     }
     
     @Override
@@ -45,14 +47,19 @@ public class IndexExpression extends Expression {
             Reporter.ReportErrorAndExit(toString() + ": Can only take index of Arrays and Strings.");
         }
 
-        if (index_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
+        if (!index_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
         {
             Reporter.ReportErrorAndExit(toString() + ": Index can only be an int.");
         }
 
         // Use seq_type to set expression type
 
-        // TODO Finish THIS
+        ArraySpecifier seq_arr_spec = (ArraySpecifier)seq_type;
+        if (seq_arr_spec.dimensions == 1) {
+            expression_type = seq_arr_spec.element_type;
+        } else {
+            expression_type = new ArraySpecifier(seq_arr_spec.element_type, seq_arr_spec.dimensions - 1);
+        }
 
         return expression_type;
 
