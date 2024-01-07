@@ -58,9 +58,9 @@ public class AssignExpression extends Expression {
             
             if (CodeGenerator.LocalSymbolTable.Contains(identifier)) { // Local Variable => ASTORE
                 mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
-            } else { // Target is a Global Variable => PUTFIELD
+            } else { // Target is a Global Variable => PUTSTATIC
                 mv.visitFieldInsn(
-                    PUTFIELD, 
+                    PUTSTATIC, 
                     CodeGenerator.mainProgramName, 
                     identifier,
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(identifier)

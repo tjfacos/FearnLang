@@ -7,6 +7,7 @@ import ast.statement.CompoundStatement;
 import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class Function extends ASTNode {
     
@@ -47,5 +48,10 @@ public class Function extends ASTNode {
         CodeGenerator.CurrentReturnType = return_type;
         
         body.validate(symbolTable);
+
+        if (!body.includesReturn && return_type != null)
+        {
+            Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.");
+        }
     }
 }

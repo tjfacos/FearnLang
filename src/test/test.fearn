@@ -1,24 +1,35 @@
+let i : int = 0;
+let arr : int[];
+
 fn main(args : str[]) => void
 {
     let n : int = (int)input("Enter n : ");
-    print(fib(n));
+    arr = new int[n];
+    fib(n);
+    print(arr);
 }
 
-fn fib(n : int) => int
+fn fib(n : int) => void
 {
-    if (n == 0)
+    if (i == 0)
     {
-        return 1;
+        arr[i] = 1;
+    } else if (i == 1)
+    {
+        arr[i] = 1;
+    } else {
+        arr[i] = arr[i-1] + arr[i-2];
     }
-    
-    if (n == 1)
+
+    i += 1;
+
+    if (i == n)
     {
-        return 1;
-    } 
-    
-    return fib(n - 1) + fib(n - 2);
+        return;
+    }
+
+    fib(n);
 }
 
 
 // java jdk.internal.org.objectweb.asm.util.ASMifier test.class
-
