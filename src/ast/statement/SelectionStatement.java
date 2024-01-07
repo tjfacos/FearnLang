@@ -31,7 +31,7 @@ public class SelectionStatement extends Statement {
 
         if (else_branch.getClass() == SelectionStatement.class)
         {
-            
+
         }
 
     }
@@ -114,15 +114,33 @@ public class SelectionStatement extends Statement {
         );
 
         // If an else branch exists, Generate its bytecode here
-        
+        if (else_branch != null)
+        {
+            else_branch.GenerateBytecode(mv);
+        }
+
+
         mv.visitLabel(end_label);
-        mv.visitFrame(
-            F_FULL, 
-            numLocals, 
-            locals, 
-            0, 
-            new Object[] {}
-        );
+
+        // WARNING this may break stuff
+
+        try {
+            mv.visitFrame(
+                F_FULL, 
+                numLocals, 
+                locals, 
+                0, 
+                new Object[] {}
+            );
+        } catch (IllegalStateException e) {
+            mv.visitFrame(
+                F_SAME, 
+                0, 
+                null, 
+                0, 
+                null
+            );
+        }
 
     }
 

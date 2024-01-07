@@ -5,17 +5,27 @@ fn main(args : str[]) => void
 
 fn f(x: int) => void
 {
-
-    let a : int = 5;
-
-    if (x == 5) { 
-        let msg : str = "FIVE";
-        print(msg);      
-    } else {
-        print("NOT FIVE");
+    let msg : str;
+    if (x == 4) 
+    { 
+        msg = "FOUR";    
+    } 
+    else if (x == 3 || x == 5)
+    {
+        msg = "ONE OFF";
     }
+    else if (x > 4)
+    {
+        msg = "MORE";
+    } 
+    else 
+    {
+        msg = "POOR";
+    }
+    
 
-    print(a);
+    print(msg);
+
 }
 
 
