@@ -8,7 +8,7 @@ import ast.Declaration;
 import ast.Program;
 import ast.Struct;
 import ast.function.Function;
-
+import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 
 import util.Reporter;
@@ -25,12 +25,12 @@ public class CodeGenerator {
     
     private Path buildPath;
 
-    // Empty stack indicates global scope
-    public static String currentFunc = null;
     
     public static String mainProgramName;
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
+    public static TypeSpecifier CurrentReturnType;
+    public static String CurrentFuncIdentifier;
 
       
     private void GenerateStructs(ArrayList<Struct> structs)
@@ -190,9 +190,6 @@ public class CodeGenerator {
         cv.visitMaxs(0, 0);
         cv.visitEnd();
 
-
-
-
             
         // Write Functions as Methods
 
@@ -208,39 +205,31 @@ public class CodeGenerator {
             );
             
             LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(func.identifier);
+            CurrentFuncIdentifier = func.identifier;
 
             fnVisitor.visitCode();
 
+            
+            // Initialise all local variables to null
+            for (int i = func.parameters.size(); i < LocalSymbolTable.GetAllVarTypeSpecifiers().size(); i++)
+            {
+                fnVisitor.visitInsn(ACONST_NULL);
+                fnVisitor.visitVarInsn(ASTORE, i);
+            }
+
+
             func.body.GenerateBytecode(fnVisitor);
 
-            // TESTING PURPOSES ONLY
-            fnVisitor.visitInsn(RETURN);
+            // Add a return instruction if void
+            if (func.is_void)
+            {
+                fnVisitor.visitInsn(RETURN);
+            }
             
             // End Function Generation
             fnVisitor.visitMaxs(0, 0);
             fnVisitor.visitEnd();
         }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
         classWriter.visitEnd();
         
@@ -255,15 +244,13 @@ public class CodeGenerator {
             false
         );
             
-        }
+    }
         
 
     public void Generate(Program root, SymbolTable symTab, String sPath)
     {
 
         GlobalSymbolTable = symTab;
-
-        // GlobalSymbolTable.addStandardFunctions();
 
         Path srcParent = Paths.get(sPath).getParent();
         mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
@@ -302,8 +289,9 @@ public class CodeGenerator {
 
         Reporter.ReportSuccess(
             String.format(
-                "Compilation Successful! \n\t -> Run `java %s` to run Program", 
-                finalProgramPath
+                "Compilation Successful! \n\t -> Run `cd %s ; java %s` to run Program", 
+                buildPath.toString(),
+                mainProgramName
             ), 
             true
         );

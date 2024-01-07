@@ -29,19 +29,20 @@ public class ExpressionStatement extends Statement {
         expression.GenerateBytecode(mv);
         
         if (!isAssign) {
-            // If the program calls a function, which returns void, do nothing. Otherwise, pop from stack 
-            if(expression.getClass() != FnCallExpression.class)
-            {
-                Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
-            }
-            
+            // If the expression evaluates to a value, pop from operand stack            
             if (expression.expression_type != null)
             {
                 mv.visitInsn(POP);
             }
         }
     }
-    public void verifyType(SymbolTable symbolTable) {
-        expression.validateType(symbolTable);
+    public void validate(SymbolTable symbolTable) {
+        
+        if(!isAssign && expression.getClass() != FnCallExpression.class)
+        {
+            Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
+        }
+
+        expression.validate(symbolTable);
     }
 }

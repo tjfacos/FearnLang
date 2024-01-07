@@ -46,7 +46,7 @@ public class StructInitExpression extends Expression {
     }
 
     @Override 
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         
         // Checks args, then return type of struct
 
@@ -59,7 +59,7 @@ public class StructInitExpression extends Expression {
 
         for (int i = 0; i< attr_types.size(); i++)
         {
-            if (!arguements.get(i).validateType(symTable).equals(attr_types.get(i)))
+            if (!arguements.get(i).validate(symTable).equals(attr_types.get(i)))
             {
                 Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguements.get(i).toString() + ", expected " + attr_types.get(i).toString());
             }

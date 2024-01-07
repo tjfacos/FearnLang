@@ -81,9 +81,9 @@ public class CastExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         // For Each target type, ensure the operand can be cast
-        TypeSpecifier op_type = Operand.validateType(symTable);
+        TypeSpecifier op_type = Operand.validate(symTable);
 
         switch (target) {
             case PrimitiveDataType.INT: // You can cast strings, floats, and bools (Boolean.compare) to integers

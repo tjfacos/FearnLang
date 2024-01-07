@@ -5,6 +5,9 @@ import static org.objectweb.asm.Opcodes.*;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
+import codegen.CodeGenerator;
+import semantics.table.SymbolTable;
+import util.Reporter;
 
 public class ReturnStatement extends JumpStatement {
     Expression expression;
@@ -25,7 +28,30 @@ public class ReturnStatement extends JumpStatement {
         if (expression == null) {
             mv.visitInsn(RETURN);
         } else {
+            expression.GenerateBytecode(mv);
             mv.visitInsn(ARETURN);
+        }
+    }
+
+    public void validate(SymbolTable symbolTable) {
+        // Get return type from Symbol Table (add to CodeGenerator as static TypeSpecifier)
+        // Then, ensure the return is of the correct type
+
+        /* This section is complicated by the fact that both expression 
+         * and CurrentReturnType can be null, causing the .equals method
+         * to throw an error.
+         */
+
+        if (CodeGenerator.CurrentReturnType == null)
+        {
+            if (expression == null) return;
+            else Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected void");
+        } else {
+            if (expression == null || !expression.validate(symbolTable).equals(CodeGenerator.CurrentReturnType)) 
+            {
+                Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected void");
+            }
+            else return;
         }
     }
 }

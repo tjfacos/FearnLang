@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ast.ASTNode;
 import ast.statement.CompoundStatement;
 import ast.type.TypeSpecifier;
+import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 
 public class Function extends ASTNode {
@@ -41,7 +42,10 @@ public class Function extends ASTNode {
         );
     }
 
-    public void verifyType(SymbolTable symbolTable) {
-        body.verifyType(symbolTable);
+    public void validate(SymbolTable symbolTable) {
+
+        CodeGenerator.CurrentReturnType = return_type;
+        
+        body.validate(symbolTable);
     }
 }

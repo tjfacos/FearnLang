@@ -51,7 +51,7 @@ public abstract class Expression extends ASTNode {
     @Override public abstract String toString();
     public abstract void GenerateBytecode(MethodVisitor mv);
 
-    public abstract TypeSpecifier validateType(SymbolTable symTable);
+    public abstract TypeSpecifier validate(SymbolTable symTable);
     public TypeSpecifier expression_type;
 
 }

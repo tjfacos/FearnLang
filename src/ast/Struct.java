@@ -22,7 +22,7 @@ public class Struct extends ASTNode {
         return String.format("STRUCT %s \n %s \n", identifier, declarations.toString());
     }
 
-    public void verifyType(SymbolTable symbolTable) {
+    public void validate(SymbolTable symbolTable) {
         for (Declaration decl : declarations)
         {
             if (decl.init_expression != null)

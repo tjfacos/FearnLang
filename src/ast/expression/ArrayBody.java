@@ -36,7 +36,6 @@ public class ArrayBody extends Expression {
             desc = desc.substring(1, desc.length() - 1);
         }
 
-        // System.out.println(desc);
         
         mv.visitIntInsn(SIPUSH, elements.size());
         mv.visitTypeInsn(ANEWARRAY, desc);
@@ -58,17 +57,17 @@ public class ArrayBody extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         
         // Check Dimensions and Element Types
         // Recursion needed for N-D Arrays
 
-        TypeSpecifier element_type = elements.get(0).validateType(symTable);
+        TypeSpecifier element_type = elements.get(0).validate(symTable);
         
         
         for (Expression e : elements.subList(1, elements.size() ))
         {
-            TypeSpecifier e_type = e.validateType(symTable);
+            TypeSpecifier e_type = e.validate(symTable);
 
             if (element_type.equals(e_type)) {}
             else { Reporter.ReportErrorAndExit("Type Error :- ArrayBody " + this.toString() + " has inconsistent element type."); }

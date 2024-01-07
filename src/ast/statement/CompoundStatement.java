@@ -36,11 +36,11 @@ public class CompoundStatement extends Statement {
         
     }
 
-    public void verifyType(SymbolTable symbolTable) {
+    public void validate(SymbolTable symbolTable) {
         for (Declaration decl : declarations)
-        { decl.verifyType(symbolTable); }
+        { decl.validate(symbolTable); }
 
         for (Statement stmt : statements)
-        { stmt.verifyType(symbolTable); }
+        { stmt.validate(symbolTable); }
     }
 }

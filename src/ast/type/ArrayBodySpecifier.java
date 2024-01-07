@@ -15,6 +15,6 @@ public class ArrayBodySpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return String.format("T[ArrayBody (%s): %s]", dimensions.toString(), element_type.toString());
+        return String.format("ArayBody(%s[%s])", element_type.toString(), dimensions.toString());
     }
 }

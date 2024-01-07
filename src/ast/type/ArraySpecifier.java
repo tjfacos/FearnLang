@@ -15,7 +15,7 @@ public class ArraySpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return String.format("T[Array (%s): %s]", dimensions, element_type.toString());
+        return element_type.toString() + "[]".repeat(dimensions);
     }
 
 }

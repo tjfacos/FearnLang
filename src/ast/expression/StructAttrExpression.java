@@ -43,10 +43,10 @@ public class StructAttrExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         // Get from StructRow in SymbolTable
     
-        TypeSpecifier inst_type = instance.validateType(symTable);
+        TypeSpecifier inst_type = instance.validate(symTable);
         
         if (inst_type.getClass() != StructInstanceSpecifier.class)
         {

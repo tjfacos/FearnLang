@@ -54,7 +54,7 @@ public class UnaryExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         if (operator == ExprType.Negate) {
             if (operand.expression_type.getClass() == PrimitiveSpecifier.class)
             {

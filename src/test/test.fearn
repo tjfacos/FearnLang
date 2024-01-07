@@ -1,24 +1,21 @@
-struct MyStruct
-{
-    let x : $MyOtherStruct;
-}
-
-struct MyOtherStruct
-{
-    let isTrue : bool;
-}
-
 fn main(args : str[]) => void
 {
-    let inst : $MyStruct = new MyStruct(
-        new MyOtherStruct(true)
-    );
-    
-    print(inst.x.isTrue);
+    f((int)input("Enter x : "));
+}
 
-    inst.x.isTrue = false;
+fn f(x: int) => void
+{
 
-    print(inst.x.isTrue);
+    let a : int = 5;
+
+    if (x == 5) { 
+        let msg : str = "FIVE";
+        print(msg);      
+    } else {
+        print("NOT FIVE");
+    }
+
+    print(a);
 }
 
 

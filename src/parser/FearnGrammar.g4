@@ -102,28 +102,6 @@ declaration
 
 // Expression Rules
 
-literal
-    : STR_LIT   
-    | BOOL_LIT
-    | INT_LIT
-    | FLOAT_LIT
-    ;
-
-array_init
-    : 'new' ( type_specifier_primitive | type_specifier_struct ) ('[' expression ']')+
-    | 'new' ( type_specifier_primitive | type_specifier_struct ) ('[]')+ array_body
-    ;
-
-array_body
-    : '{' (array_body ',')* array_body '}'
-    | '{' (expression ',')* expression '}'
-    | '{''}'
-    ;
-
-struct_init
-    : 'new' IDENTIFIER '(' ( ( expression ',')* expression )? ')'
-    ;
-
 expression
     : IDENTIFIER                                                                # id_expr
     | literal                                                                   # lit_expr
@@ -153,19 +131,38 @@ expression
     | expression '||' expression                                                # or_expr
     ;
 
+literal 
+    : STR_LIT | BOOL_LIT | INT_LIT | FLOAT_LIT ;
+
+array_init
+    : 'new' ( type_specifier_primitive | type_specifier_struct ) ('[' expression ']')+
+    | 'new' ( type_specifier_primitive | type_specifier_struct ) ('[]')+ array_body
+    ;
+
+array_body
+    : '{' (array_body ',')* array_body '}'
+    | '{' (expression ',')* expression '}'
+    | '{''}'
+    ;
+
+struct_init
+    : 'new' IDENTIFIER '(' ( ( expression ',')* expression )? ')'
+    ;
+
+
+
+
+/* Assignment Expression */
 assign_expression
     : expression assignment_operator expression                     
     ;
     
-/* Assignment Operators */
 assignment_operator
-    : '='
-    | '+='
-    | '-='
-    | '*='
-    | '/='
-    | '%='
-    ;
+    : '=' | '+=' | '-=' | '*=' | '/=' | '%=' ;
+
+
+
+
 
 
 /* Lexer Rules */

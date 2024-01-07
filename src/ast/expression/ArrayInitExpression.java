@@ -29,9 +29,21 @@ public class ArrayInitExpression extends Expression {
     @Override
     public String toString()
     {
-        String s = type.toString() + "(dims: " + dimenisons.toString() + ")";
+        String s = type.toString();
+        if (dimenisons.get(0) == null)
+        {
+            s += "[]".repeat(dimenisons.size());
+        } else {
+            for (Expression dim : dimenisons)
+            {
+                s += '[' + dim.toString() + ']';
+            }
+        }
+
         if (init_body != null) s += init_body.toString();
+
         return s;
+    
     }
 
     @Override
@@ -70,12 +82,12 @@ public class ArrayInitExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {        
+    public TypeSpecifier validate(SymbolTable symTable) {        
         
         if (init_body != null)
         {
             // Check the Elements are of the same type
-            ArrayBodySpecifier bodySpecifier = (ArrayBodySpecifier)init_body.validateType(symTable);
+            ArrayBodySpecifier bodySpecifier = (ArrayBodySpecifier)init_body.validate(symTable);
             
             TypeSpecifier typeOfElements = bodySpecifier;
             for (int i = 0; i < bodySpecifier.dimensions.size(); i++)
@@ -98,7 +110,7 @@ public class ArrayInitExpression extends Expression {
             
             for (Expression e: dimenisons)
             {
-                TypeSpecifier dim_type = e.validateType(symTable);
+                TypeSpecifier dim_type = e.validate(symTable);
                 if (!dim_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Dimensions of arrays must be of type int.");

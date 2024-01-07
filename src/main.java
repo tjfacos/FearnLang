@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.*;
 // Generated ANTLR Dependencies
 import parser.*;
 import parser.gen.*;
-import semantics.SemanticAnalysis;
 import semantics.table.SymbolTable;
 
 // Java IO Dependencies
@@ -54,17 +53,13 @@ class FearnC
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
-        // // testing
-        // System.out.println("TEST FINISHED");
-        // System.exit(10);
-
         Program root = (Program)AST;
         SymbolTable symTable = astConstructor.symTabStack.pop();
 
         CodeGenerator.GlobalSymbolTable = symTable;
 
-
-        SemanticAnalysis.Analyse(root, symTable);
+        // Perform Type Analysis
+        root.validate(symTable);
 
         cg.Generate(root, symTable, args[0]);
     }

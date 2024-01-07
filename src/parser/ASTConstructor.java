@@ -279,7 +279,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new FnCallExpression(function_name, args);
     }
 
-    // Struct Attribute Expression (e.g. x.y ) / 
+    // Dot Expressions (e.g. x.y ) / 
+    @SuppressWarnings("rawtypes")
     @Override
     public Expression visitDot_expr(FearnGrammarParser.Dot_exprContext ctx)
     { 
@@ -287,23 +288,38 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression predot = (Expression)visit(ctx.expression(0));
         Expression postdot = (Expression)visit(ctx.expression(1));
 
-        
-        if (postdot.getClass() != FnCallExpression.class)
+        /* EITHER:
+         * A) postdot is a function call
+         * B) postdot is an identifier (a variable reference)
+         * C) Input in erroneous
+         */
+
+
+        if (postdot.getClass() == FnCallExpression.class)
+        {
+            // This should match a function call using universal function notation
+            // e.g. a.equals(b) == equals(a, b)
+
+            FnCallExpression Ufunction_call = (FnCallExpression)postdot;
+    
+            Ufunction_call.arguements.add(0, predot);
+            return Ufunction_call;
+        }
+        else if (postdot.getClass() == PrimaryExpression.class && ((PrimaryExpression)postdot).type == ExprType.VariableReference)
         {
             return new StructAttrExpression(predot, ctx.expression(1).getText());
         }
-        
-        // This should match a function call using universal function notation
-        // e.g. a.equals(b) == equals(a, b)
-        
-        FnCallExpression Ufunction_call = (FnCallExpression)postdot;
-
-        Ufunction_call.arguements.add(0, predot);
-        return Ufunction_call;
-        
+        else {
+            Reporter.ReportErrorAndExit(String.format(
+                "%s.%s is not an attribute expression or a function call.", 
+                predot.toString(), 
+                postdot.toString()
+            ));
+            return null;
+        }
     }
 
-    // Array Initialisation (e.g. (int[] x =) new int[5] {1, 2, 3, 7, 123 })
+    // Array Initialisation (e.g. new int[] {1, 2, 3, 7, 123 } / new str[5])
     @Override
     public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx)
     { 

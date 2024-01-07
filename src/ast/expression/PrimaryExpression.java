@@ -105,7 +105,7 @@ public class PrimaryExpression<T> extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         
         if ( type == ExprType.VariableReference && symTable.Contains(value.toString()))
         {

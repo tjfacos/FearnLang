@@ -13,8 +13,16 @@ public class FearnErrorListener extends BaseErrorListener{
         RecognitionException e
     )
     {
+
+        String message = msg;
+
+        if (message.startsWith("no viable alternative at input"))
+        {
+            message = "Unable to parse line. Check for missing characters, like semi-colons (;).";
+        }
+
         Reporter.ReportErrorAndExit(
-            "Parse :- line "+line+"; col "+charPositionInLine+": "+msg
+            "Parse Error : line "+line+"; col "+charPositionInLine+": "+message
         );
     }
 }

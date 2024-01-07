@@ -198,10 +198,10 @@ public class BinaryExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         
-        TypeSpecifier op1_type = Op1.validateType(symTable);
-        TypeSpecifier op2_type = Op2.validateType(symTable);
+        TypeSpecifier op1_type = Op1.validate(symTable);
+        TypeSpecifier op2_type = Op2.validate(symTable);
         
         switch (Operator) {
 

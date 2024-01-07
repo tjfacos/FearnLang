@@ -24,16 +24,16 @@ public class Program extends ASTNode {
         return String.format("%s\n\n%s\n\n%s", global_declarations, structs, functions);
     }
 
-    public void verifyType(SymbolTable symbolTable) {
+    public void validate(SymbolTable symbolTable) {
         
         for (Declaration d : global_declarations    ) 
         {
-            d.verifyType(symbolTable); 
+            d.validate(symbolTable); 
         }
 
-        for (Struct s : structs                     ) { s.verifyType(symbolTable); }
+        for (Struct s : structs                     ) { s.validate(symbolTable); }
         for (Function f : functions) { 
-            f.verifyType(symbolTable.GetFuncSymbolTable(f.identifier)); 
+            f.validate(symbolTable.GetFuncSymbolTable(f.identifier)); 
         }
     }
     

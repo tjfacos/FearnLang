@@ -37,10 +37,10 @@ public class IndexExpression extends Expression {
     }
     
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         
-        TypeSpecifier seq_type      =  sequence.validateType(symTable);
-        TypeSpecifier index_type    =  index.validateType(symTable);
+        TypeSpecifier seq_type      =  sequence.validate(symTable);
+        TypeSpecifier index_type    =  index.validate(symTable);
 
         if (seq_type.getClass() != ArraySpecifier.class && !seq_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
         {

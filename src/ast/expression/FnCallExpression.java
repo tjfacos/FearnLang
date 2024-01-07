@@ -74,7 +74,7 @@ public class FnCallExpression extends Expression {
     }
 
     @Override
-    public TypeSpecifier validateType(SymbolTable symTable) {
+    public TypeSpecifier validate(SymbolTable symTable) {
         // Check the function's signature (Parameters from Symbol Table) against to types of each arguement
         
 
@@ -87,7 +87,7 @@ public class FnCallExpression extends Expression {
                 Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
             }
 
-            arguements.get(0).validateType(symTable);
+            arguements.get(0).validate(symTable);
 
             if (identifier.equals("input"))
             {
@@ -110,7 +110,7 @@ public class FnCallExpression extends Expression {
 
         for (Expression arg : arguements)
         {
-            arg_types.add(arg.validateType(symTable));
+            arg_types.add(arg.validate(symTable));
         }
 
         if (arguements.size() != param_types.size())

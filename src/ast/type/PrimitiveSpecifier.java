@@ -13,7 +13,7 @@ public class PrimitiveSpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return String.format("T[Primitive: %s]", element_type.name());
+        return element_type.name();
     }
 
 }

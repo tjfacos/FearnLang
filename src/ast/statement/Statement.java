@@ -13,6 +13,6 @@ public abstract class Statement extends ASTNode {
     @Override public abstract String toString();
     public abstract void GenerateBytecode(MethodVisitor mv);
 
-    public abstract void verifyType(SymbolTable symbolTable);
+    public abstract void validate(SymbolTable symbolTable);
 
 }

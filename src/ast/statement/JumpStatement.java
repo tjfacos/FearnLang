@@ -30,7 +30,7 @@ public class JumpStatement extends Statement {
         throw new UnsupportedOperationException("Unimplemented method 'GenerateBytecode'");
     }
 
-    public void verifyType(SymbolTable symbolTable) {
+    public void validate(SymbolTable symbolTable) {
         // TODO VerifyType
     }
 
