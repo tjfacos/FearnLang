@@ -28,12 +28,6 @@ public class SelectionStatement extends Statement {
         condition = cond;
         if_branch = if_body;
         else_branch = else_body;
-
-        if (else_branch.getClass() == SelectionStatement.class)
-        {
-
-        }
-
     }
     
     @Override public String toString()
@@ -99,23 +93,41 @@ public class SelectionStatement extends Statement {
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
         
         // If equal to 0 (false), skip if_branch
-        mv.visitJumpInsn(IFEQ, else_label);
+        if (else_branch != null) mv.visitJumpInsn(IFEQ, else_label);
+        else mv.visitJumpInsn(IFEQ, end_label);
+
 
         if_branch.GenerateBytecode(mv);
-        mv.visitJumpInsn(GOTO, end_label);
 
-        mv.visitLabel(else_label);
-        mv.visitFrame(
-            F_FULL, 
-            numLocals, 
-            locals, 
-            0, 
-            new Object[] {}
-        );
-
+        if (!if_branch.includesReturn)
+        {
+            mv.visitJumpInsn(GOTO, end_label);
+        }
+        
+        
         // If an else branch exists, Generate its bytecode here
         if (else_branch != null)
         {
+            mv.visitLabel(else_label);
+            if (else_branch.getClass() == CompoundStatement.class)
+            {
+                mv.visitFrame(
+                    F_FULL, 
+                    numLocals, 
+                    locals, 
+                    0, 
+                    new Object[] {}
+                );
+            } else {
+                mv.visitFrame(
+                F_SAME, 
+                0, 
+                null, 
+                0, 
+                null
+                );
+            }
+
             else_branch.GenerateBytecode(mv);
         }
 
@@ -151,7 +163,7 @@ public class SelectionStatement extends Statement {
         }
 
         if_branch.validate(symbolTable);
-        else_branch.validate(symbolTable);
+        if (else_branch != null) else_branch.validate(symbolTable);
         
     }
 

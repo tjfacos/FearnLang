@@ -210,11 +210,11 @@ public class BinaryExpression extends Expression {
             case Mult:
             case Div:
             case Sub:
+            case Exponent:
             case Less:
             case LessEq:
             case Greater:
             case GreaterEq:
-            case Exponent:
                 if (
                     op1_type.equals(op2_type) && 
                     (
@@ -226,6 +226,7 @@ public class BinaryExpression extends Expression {
                         case Mult:
                         case Div:
                         case Sub:
+                        case Exponent:
                             expression_type = op1_type; // This may cause errors, I dunno...
                             break;
                         default:

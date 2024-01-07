@@ -592,7 +592,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 	@Override
     public ReturnStatement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx)
     {
-        return new ReturnStatement(JumpType.Return, (Expression)visit(ctx.expression()));
+        Expression expr = null;
+        if (ctx.expression() != null) expr = (Expression)visit(ctx.expression());
+
+        return new ReturnStatement(JumpType.Return, expr);
     }
 	
 

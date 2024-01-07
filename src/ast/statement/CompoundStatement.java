@@ -10,6 +10,7 @@ import semantics.table.SymbolTable;
 public class CompoundStatement extends Statement {
     public ArrayList<Declaration> declarations;
     public ArrayList<Statement> statements;
+    public Boolean includesReturn = false;
 
     public CompoundStatement(ArrayList<Declaration> decls, ArrayList<Statement> stmts)
     {
@@ -32,6 +33,11 @@ public class CompoundStatement extends Statement {
         for (Statement stmt : statements)
         {
             stmt.GenerateBytecode(mv);
+            if (stmt.getClass() == ReturnStatement.class)
+            {
+                includesReturn = true;
+                break;
+            }
         }
         
     }

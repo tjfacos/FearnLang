@@ -1,31 +1,22 @@
 fn main(args : str[]) => void
 {
-    f((int)input("Enter x : "));
+    let n : int = (int)input("Enter n : ");
+    print(fib(n));
 }
 
-fn f(x: int) => void
+fn fib(n : int) => int
 {
-    let msg : str;
-    if (x == 4) 
-    { 
-        msg = "FOUR";    
-    } 
-    else if (x == 3 || x == 5)
+    if (n == 0)
     {
-        msg = "ONE OFF";
-    }
-    else if (x > 4)
-    {
-        msg = "MORE";
-    } 
-    else 
-    {
-        msg = "POOR";
+        return 1;
     }
     
-
-    print(msg);
-
+    if (n == 1)
+    {
+        return 1;
+    } 
+    
+    return fib(n - 1) + fib(n - 2);
 }
 
 
