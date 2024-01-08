@@ -31,7 +31,7 @@ public class ArrayBody extends Expression {
         
         String desc = SymbolTable.GenBasicDescriptor(elements.get(0).expression_type);
 
-        if (elements.get(0).getClass() != ArrayBody.class) // Array is 1-D
+        if (elements.get(0) instanceof ArrayBody) // Array is 1-D
         {
             desc = desc.substring(1, desc.length() - 1);
         }
@@ -76,7 +76,7 @@ public class ArrayBody extends Expression {
         ArrayList<Integer> dimensions = new ArrayList<Integer>();
         dimensions.add(elements.size());
         
-        if (element_type.getClass() == ArrayBodySpecifier.class)
+        if (element_type instanceof ArrayBodySpecifier)
         {
             dimensions.addAll(((ArrayBodySpecifier)element_type).dimensions);
         }

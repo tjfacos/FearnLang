@@ -78,7 +78,7 @@ public class IterationStatement extends Statement {
             {
                 ((Expression)init_expression).GenerateBytecode(mv);
 
-                if (init_expression.getClass() != AssignExpression.class) mv.visitInsn(POP);
+                if (init_expression instanceof AssignExpression) mv.visitInsn(POP);
             
             } else {
                 ((Declaration)init_expression).GenerateBytecode(mv);

@@ -48,7 +48,7 @@ public class StructAttrExpression extends Expression {
     
         TypeSpecifier inst_type = instance.validate(symTable);
         
-        if (inst_type.getClass() != StructInstanceSpecifier.class)
+        if (inst_type instanceof StructInstanceSpecifier)
         {
             Reporter.ReportErrorAndExit(toString() + ": " + inst_type.toString() + " is not a struct.");
         }

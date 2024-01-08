@@ -56,7 +56,7 @@ public class UnaryExpression extends Expression {
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         if (operator == ExprType.Negate) {
-            if (operand.expression_type.getClass() == PrimitiveSpecifier.class)
+            if (operand.expression_type instanceof PrimitiveSpecifier)
             {
                 switch (((PrimitiveSpecifier)operand.expression_type).element_type) {
                     case INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
@@ -68,7 +68,7 @@ public class UnaryExpression extends Expression {
             }
 
         } else { // Logical Not
-            if (operand.expression_type.getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
+            if (operand.expression_type instanceof PrimitiveSpecifier && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
             else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value."); }
         }
 
