@@ -1,15 +1,32 @@
 fn main(args : str[]) => void
 {
-    for (let i : int = 1; i <= 50 ; i += 1)
-    {
-        
-        if (i % 5 == 0) { 
-            print((str)i + " is Mult Of 5");
-            continue;
-        }
+    let l : int[] = new int[] { 7, 6, 11, 23, 4, 1, 9 };
 
-        print(i);
-    }
+    print(bubble(l, 7));
+
 }
 
-// java jdk.internal.org.objectweb.asm.util.ASMifier test.class
+
+fn bubble(l : int[], length : int) => int[]
+{
+    let swapped : bool = true;
+    let temp : int;
+
+    for (;swapped;)
+    {
+   		swapped = false;
+   		for ( let i : int = 1; i < length; i += 1 )
+   		{
+            if ( l[i - 1] > l[i] )
+   			{
+                temp = l[i - 1];
+                l[i - 1] = l[i];
+                l[i] = temp;
+                swapped = true;
+   			}
+   		}
+    }
+
+    return l;
+
+}

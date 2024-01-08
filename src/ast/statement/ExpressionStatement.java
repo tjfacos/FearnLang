@@ -38,7 +38,7 @@ public class ExpressionStatement extends Statement {
     }
     public void validate(SymbolTable symbolTable) {
         
-        if(!isAssign && expression instanceof FnCallExpression)
+        if(!isAssign && !(expression instanceof FnCallExpression))
         {
             Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
         }

@@ -1,0 +1,25 @@
+fn main(args : str[]) => void
+{
+    
+    let output : str;
+    let n : int = (int)input("Enter N: ");
+    
+    for (let i : int = 1; i < n; i += 1)
+    {
+        output = "";
+
+   		if (i % 3 == 0) { 
+            output += "Fizz"; 
+        }
+
+   		if (i % 5 == 0) { 
+            output += "Buzz"; 
+        }
+   	
+    	if (output == "") { 
+            output = (str)i;
+        }
+ 		 
+   		print(output);
+    }
+}
