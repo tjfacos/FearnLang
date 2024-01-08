@@ -553,7 +553,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     {
         ASTNode init = null;
         Expression cont_expr = null;
-        AssignExpression iter_expr = null;
+        Expression iter_expr = null;
         CompoundStatement body = null;
 
         if (!ctx.init_expression().getText().equals(";")) 
@@ -562,7 +562,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         }
 
         if (ctx.continue_condition() != null)   { cont_expr =   (Expression)visit(ctx.continue_condition().getChild(0));            }
-        if (ctx.iteration_expression() != null) { iter_expr =   (AssignExpression)visit(ctx.iteration_expression().getChild(0));    }
+        if (ctx.iteration_expression() != null) { iter_expr =   (Expression)visit(ctx.iteration_expression().getChild(0));    }
 
         body = (CompoundStatement)visit(ctx.compound_statement());
 

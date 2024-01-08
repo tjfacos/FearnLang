@@ -1,6 +1,7 @@
 package codegen;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import static org.objectweb.asm.Opcodes.*;
 
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Stack;
 
 public class CodeGenerator {
     
@@ -31,6 +33,8 @@ public class CodeGenerator {
     public static SymbolTable LocalSymbolTable;
     public static TypeSpecifier CurrentReturnType;
     public static String CurrentFuncIdentifier;
+
+    public static Stack<Label> LabelStack = new Stack<Label>();
 
       
     private void GenerateStructs(ArrayList<Struct> structs)

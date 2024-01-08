@@ -9,7 +9,7 @@
             "name": "Launch Fearn Compiler",
             "request": "launch",
             "mainClass": "FearnC",
-            "args": ["test/test.fearn"],
+            "args": ["test/${input:testFile}"],
             "stepFilters": {
                 "skipClasses": [
                     "$JDK",
@@ -25,6 +25,15 @@
                 "skipConstructors": true
             }
             // "preLaunchTask": "Build Rsuntime"
+        }
+    ],
+
+    "inputs":[
+        {
+            "type": "promptString",
+            "id": "testFile",
+            "description": "Enter File Name",
+            "default": "test.fearn"
         }
     ]
 }

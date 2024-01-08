@@ -2,16 +2,12 @@ package ast.statement;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.util.ArrayList;
-
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
 import ast.type.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
-import ast.type.TypeSpecifier;
-import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
@@ -66,23 +62,10 @@ public class SelectionStatement extends Statement {
 
         // This is vital for verifying the state of the stack fram after any 
         // unconditional jump statement
-        ArrayList<String> descriptors = new ArrayList<String>();
         
-        for (TypeSpecifier spec : CodeGenerator.LocalSymbolTable.GetAllVarTypeSpecifiers())
-        {
-                String desc = SymbolTable.GenBasicDescriptor(spec);
-                
-                if (!desc.startsWith("["))
-                {
-                    desc = desc.substring(1, desc.length() - 1);
-                }
-                
-                descriptors.add(desc);
-        }
+        Object[] locals = GetLocalDecriptors();
+        int numLocals = locals.length;
 
-        int numLocals = descriptors.size();
-        Object[] locals = descriptors.toArray();
-        
         
         // Create labels
         Label else_label = new Label();
