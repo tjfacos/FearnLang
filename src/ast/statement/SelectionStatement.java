@@ -82,7 +82,7 @@ public class SelectionStatement extends Statement {
 
         if_branch.GenerateBytecode(mv);
 
-        if (!if_branch.includesReturn)
+        if (!if_branch.includesJump)
         {
             mv.visitJumpInsn(GOTO, end_label);
         }

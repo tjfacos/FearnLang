@@ -49,7 +49,7 @@ public class Function extends ASTNode {
         
         body.validate(symbolTable);
 
-        if (!body.includesReturn && return_type != null)
+        if (!body.includesJump && return_type != null)
         {
             Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.");
         }

@@ -10,7 +10,7 @@ import semantics.table.SymbolTable;
 public class CompoundStatement extends Statement {
     public ArrayList<Declaration> declarations;
     public ArrayList<Statement> statements;
-    public Boolean includesReturn = false;
+    public Boolean includesJump = false;
 
     public CompoundStatement(ArrayList<Declaration> decls, ArrayList<Statement> stmts)
     {
@@ -25,28 +25,25 @@ public class CompoundStatement extends Statement {
 
     public void GenerateBytecode(MethodVisitor mv) 
     {
-        for (Declaration decl : declarations)
-        {
-            decl.GenerateBytecode(mv);
-        }
+        for (Declaration decl : declarations) decl.GenerateBytecode(mv);
 
-        for (Statement stmt : statements)
-        {
-            stmt.GenerateBytecode(mv);
-            if (stmt.getClass() == ReturnStatement.class)
-            {
-                includesReturn = true;
-                break;
-            }
-        }
+        for (Statement stmt : statements) stmt.GenerateBytecode(mv);
         
     }
-
+    
     public void validate(SymbolTable symbolTable) {
-        for (Declaration decl : declarations)
-        { decl.validate(symbolTable); }
-
+        for (Declaration decl : declarations) decl.validate(symbolTable);
+        
         for (Statement stmt : statements)
-        { stmt.validate(symbolTable); }
+        { 
+            stmt.validate(symbolTable); 
+            
+            if (stmt instanceof JumpStatement)
+            {
+                includesJump = true;
+                break;
+            }
+        
+        }
     }
 }

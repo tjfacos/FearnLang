@@ -1,8 +1,15 @@
 fn main(args : str[]) => void
 {
-    if (true) { print(true); }
+    for (let i : int = 1; i <= 50 ; i += 1)
+    {
+        
+        if (i % 5 == 0) { 
+            print((str)i + " is Mult Of 5");
+            continue;
+        }
+
+        print(i);
+    }
 }
-
-
 
 // java jdk.internal.org.objectweb.asm.util.ASMifier test.class

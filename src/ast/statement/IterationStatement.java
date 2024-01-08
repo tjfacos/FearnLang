@@ -63,16 +63,18 @@ public class IterationStatement extends Statement {
          */
 
         Label startLoopLabel = new Label();
+        Label endBodyLabel = new Label();
         Label endLoopLabel = new Label();
 
         CodeGenerator.LabelStack.add(startLoopLabel);
+        CodeGenerator.LabelStack.add(endBodyLabel);
         CodeGenerator.LabelStack.add(endLoopLabel);
 
         Object[] locals = GetLocalDecriptors();
         int numLocals = locals.length;
 
         if (init_expression != null) {
-            if (init_expression.getClass() == Expression.class)
+            if (init_expression instanceof Expression)
             {
                 ((Expression)init_expression).GenerateBytecode(mv);
 
@@ -94,16 +96,28 @@ public class IterationStatement extends Statement {
             0, 
             new Object[] {}
         );
-
+        
         // Generate continue expression, and cast to primitive boolean (Z)
         continue_expression.GenerateBytecode(mv);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
         
         // If the condition is false, skip the body, to the end label
         mv.visitJumpInsn(IFEQ, endLoopLabel);
-
+        
         // Generate the body
         body.GenerateBytecode(mv);
+        
+        // Visit end of body
+        mv.visitLabel(endBodyLabel);
+
+        // Verify Frame State
+        mv.visitFrame(
+            F_SAME, 
+            0, 
+            null, 
+            0, 
+            null
+        );
 
         // Generate iteration_expression (which runs at the end of every loop)
         if (iteration_expression != null) iteration_expression.GenerateBytecode(mv);
@@ -126,6 +140,7 @@ public class IterationStatement extends Statement {
         // Remove the labels from the global LabelStack
         CodeGenerator.LabelStack.pop();
         CodeGenerator.LabelStack.pop();
+        CodeGenerator.LabelStack.pop();
 
     }
     
@@ -138,7 +153,7 @@ public class IterationStatement extends Statement {
 
         if (init_expression != null)
         {
-            if (init_expression.getClass() == Expression.class)
+            if (init_expression instanceof Expression)
             {
                 ((Expression)init_expression).validate(symbolTable);
             } else {
