@@ -42,7 +42,7 @@ public class IndexExpression extends Expression {
         TypeSpecifier seq_type      =  sequence.validate(symTable);
         TypeSpecifier index_type    =  index.validate(symTable);
 
-        if (!(seq_type instanceof ArraySpecifier) && !seq_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
+        if (seq_type.getClass() != ArraySpecifier.class && !seq_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
         {
             Reporter.ReportErrorAndExit(toString() + ": Can only take index of Arrays and Strings.");
         }

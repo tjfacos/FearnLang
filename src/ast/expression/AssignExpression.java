@@ -50,7 +50,7 @@ public class AssignExpression extends Expression {
     public void GenerateBytecode(MethodVisitor mv) {
         
         
-        if (target instanceof PrimaryExpression) // Variable Reference
+        if (target.getClass() == PrimaryExpression.class) // Variable Reference
         {
             expression.GenerateBytecode(mv);
             PrimaryExpression<String> t = (PrimaryExpression<String>)target;
@@ -67,7 +67,7 @@ public class AssignExpression extends Expression {
                 );
             }
 
-        } else if (target instanceof IndexExpression) { // Index Expression
+        } else if (target.getClass() == IndexExpression.class) { // Index Expression
             
             IndexExpression targ = (IndexExpression)target;
             

@@ -92,7 +92,7 @@ public class SelectionStatement extends Statement {
         if (else_branch != null)
         {
             mv.visitLabel(else_label);
-            if (else_branch instanceof CompoundStatement)
+            if (else_branch.getClass() == CompoundStatement.class)
             {
                 mv.visitFrame(
                     F_FULL, 

@@ -40,7 +40,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         if (!symAnalysisStack.contains(id))
         {
-            Reporter.ReportErrorAndExit("Symbol error on Line " +ctx.start.getLine() + ": Variable Identifer Unknown in Scope: " + id);
+            Reporter.ReportErrorAndExit("Variable Identifer Unknown in Scope: " + id);
         }
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
@@ -295,7 +295,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
          */
 
 
-        if (postdot instanceof FnCallExpression)
+        if (postdot.getClass() == FnCallExpression.class)
         {
             // This should match a function call using universal function notation
             // e.g. a.equals(b) == equals(a, b)
@@ -305,7 +305,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             Ufunction_call.arguements.add(0, predot);
             return Ufunction_call;
         }
-        else if (postdot instanceof PrimaryExpression && ((PrimaryExpression)postdot).type == ExprType.VariableReference)
+        else if (postdot.getClass() == PrimaryExpression.class && ((PrimaryExpression)postdot).type == ExprType.VariableReference)
         {
             return new StructAttrExpression(predot, ctx.expression(1).getText());
         }

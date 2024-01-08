@@ -34,7 +34,7 @@ public class SymbolTable {
         
         String type_descriptor = "";
         
-        if (typeSpecifier instanceof PrimitiveSpecifier)
+        if (typeSpecifier.getClass() == PrimitiveSpecifier.class)
         {
             switch ( ((PrimitiveSpecifier)typeSpecifier).element_type ) {
                 case INT  : type_descriptor += "Ljava/lang/Integer;"                        ; break;               
@@ -45,13 +45,13 @@ public class SymbolTable {
             }
         }
         
-        else if (typeSpecifier instanceof ArraySpecifier)
+        else if (typeSpecifier.getClass() == ArraySpecifier.class)
         {
             type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensions ] ).replace("\0", "[");
             type_descriptor += GenBasicDescriptor(((ArraySpecifier)typeSpecifier).element_type);
         }
 
-        else if (typeSpecifier instanceof ArrayBodySpecifier)
+        else if (typeSpecifier.getClass() == ArrayBodySpecifier.class)
         {
             type_descriptor += "[";
             type_descriptor += GenBasicDescriptor(((ArrayBodySpecifier)typeSpecifier).element_type);
@@ -71,7 +71,7 @@ public class SymbolTable {
         
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class && isFunction)
             {
                 return ((FunctionRow)r).return_type;
             }
@@ -100,7 +100,7 @@ public class SymbolTable {
     public String GetVarDescriptor(String id) {
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof VariableRow)
+            if (r.identifier.equals(id) && r.getClass() == VariableRow.class)
             {
                 return ((VariableRow)r).descriptor;
             }
@@ -148,7 +148,7 @@ public class SymbolTable {
     public SymbolTable GetFuncSymbolTable(String id) {
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof FunctionRow)
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
                 return ((FunctionRow)r).localSymbolTable;
             }
@@ -164,7 +164,7 @@ public class SymbolTable {
         
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof FunctionRow)
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
                 return ((FunctionRow)r).descriptor;
             }
@@ -183,7 +183,7 @@ public class SymbolTable {
         
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof FunctionRow)
+            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
                 for (Parameter p : ((FunctionRow)r).parameters)
                 {
@@ -204,7 +204,7 @@ public class SymbolTable {
     {
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof StructRow)
+            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {
                 SymbolTable symTable = ((StructRow)r).localSymbolTable;
 
@@ -237,7 +237,7 @@ public class SymbolTable {
         
         for (Row r : Symbols)
         {
-            if (r instanceof VariableRow)
+            if (r.getClass() == VariableRow.class)
             {
                 t_list.add(((VariableRow)r).typeSpecifier);
             }
@@ -250,7 +250,7 @@ public class SymbolTable {
         
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof StructRow)
+            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {
                 return ((StructRow)r).descriptor;
             }
@@ -264,7 +264,7 @@ public class SymbolTable {
     public SymbolTable GetStructSymbolTable(String id) {
         for (Row r : Symbols)
         {
-            if (r.identifier.equals(id) && r instanceof StructRow)
+            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {
                 return ((StructRow)r).localSymbolTable;
             }
