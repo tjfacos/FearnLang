@@ -1,3 +1,3 @@
 @echo off
 set jarPath=%FEARNPATH%\FearnC.jar
-java -jar --enable-preview %jarPath% %1
+java -jar --enable-preview "%jarPath%" %1
