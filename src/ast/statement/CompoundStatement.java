@@ -27,7 +27,17 @@ public class CompoundStatement extends Statement {
     {
         for (Declaration decl : declarations) decl.GenerateBytecode(mv);
 
-        for (Statement stmt : statements) stmt.GenerateBytecode(mv);
+        for (Statement stmt : statements) 
+        {
+            stmt.GenerateBytecode(mv);
+
+            // Dead-Code elimination
+            if (stmt instanceof JumpStatement)
+            {
+                return;
+            }
+
+        }
         
     }
     

@@ -1,31 +1,30 @@
-fn main() => void
+fn main(args : str[]) => void
 {
-    let l : int[7] = { 7, 6, 11, 23, 4, 1, 9 };
+    let l : int[] = new int[] { 7, 6, 11, 23, 4, 1, 9 };
 
-    print(bubble(l));
+    print(bubble(l, 7));
 
 }
 
 
-fn bubble(l : int[]) => int[]
+fn bubble(l : int[], length : int) => int[]
 {
-    let length : int = len(l);
-    let swapped : bool = True;
+    let swapped : bool = true;
     let temp : int;
 
-    while (;swapped;)
+    for (;swapped;)
     {
-        swapped = False;
-        while (let i : int = 1; i < length; i += 1)
-        {
-            if (l[i - 1] > l[i])
-            {
+   		swapped = false;
+   		for ( let i : int = 1; i < length; i += 1 )
+   		{
+            if ( l[i - 1] > l[i] )
+   			{
                 temp = l[i - 1];
                 l[i - 1] = l[i];
                 l[i] = temp;
-                swapped = True;
-            }
-        }
+                swapped = true;
+   			}
+   		}
     }
 
     return l;

@@ -1,8 +1,7 @@
 package codegen;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
+
 import static org.objectweb.asm.Opcodes.*;
 
 import ast.Declaration;
@@ -237,8 +236,10 @@ public class CodeGenerator {
                     
         classWriter.visitEnd();
         
+        byte[] bytecode = classWriter.toByteArray();
+
         try {
-            Files.write(finalProgramPath, classWriter.toByteArray());
+            Files.write(finalProgramPath, bytecode);
         } catch (IOException e) {
             Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString());;
         }

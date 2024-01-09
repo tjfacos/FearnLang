@@ -138,4 +138,29 @@ public class FearnRuntime {
 
 
 
+    // Sequence 
+    public static Integer length(Object o)
+    {
+        if (o instanceof String)
+        {
+            return String.valueOf(o).length();
+        }
+
+        return ((Object[])o).length;
+    }
+
+    
+    
+    public static String slice(String seq, Integer start, Integer end)
+    {
+        return seq.substring(start, end);
+    }
+
+    public static Object[] slice(Object[] seq, Integer start, Integer end)
+    {
+        return Arrays.copyOfRange(seq, start, end);
+    }
+
+
+
 }
