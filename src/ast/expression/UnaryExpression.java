@@ -32,9 +32,10 @@ public class UnaryExpression extends Expression {
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
+        // Generate Instructions to place operand expression on top of stack
+        operand.GenerateBytecode(mv);
+        
         if (operator == ExprType.Negate) {
-            // Generate Instructions to place operand expression on top of stack
-            operand.GenerateBytecode(mv);
 
             // Cast to I or D (as applicable), and Negate
             if (((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.INT)
@@ -56,7 +57,7 @@ public class UnaryExpression extends Expression {
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         if (operator == ExprType.Negate) {
-            if (operand.expression_type.getClass() == PrimitiveSpecifier.class)
+            if (operand.validate(symTable).getClass() == PrimitiveSpecifier.class)
             {
                 switch (((PrimitiveSpecifier)operand.expression_type).element_type) {
                     case INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
@@ -68,7 +69,7 @@ public class UnaryExpression extends Expression {
             }
 
         } else { // Logical Not
-            if (operand.expression_type.getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
+            if (operand.validate(symTable).getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
             else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value."); }
         }
 

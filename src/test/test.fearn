@@ -1,8 +1,6 @@
 fn main(args : str[]) => void
 {
-    let x : int = 5;
-
-    print(1);
-    print(2);
+    let x : bool = true;
+    print(!x);
 
 }

@@ -257,7 +257,7 @@ public class CodeGenerator {
 
         GlobalSymbolTable = symTab;
 
-        Path srcParent = Paths.get(sPath).getParent();
+        Path srcParent = Paths.get(sPath).toAbsolutePath().getParent();
         mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
         buildPath = Paths.get(srcParent.toString(), "build");
 
@@ -291,11 +291,16 @@ public class CodeGenerator {
             finalProgramPath
         );
 
+        Path parent = Paths.get(sPath).getParent();
+        String pathString;
+
+        if (parent != null) pathString = parent.resolve("build").toString();
+        else pathString = "build";
 
         Reporter.ReportSuccess(
             String.format(
-                "Compilation Successful! \n\t -> Run `cd %s ; java %s` to run Program", 
-                buildPath.toString(),
+                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s` to run Program", 
+                pathString,
                 mainProgramName
             ), 
             true
