@@ -3,15 +3,6 @@
     "tasks": [
         {
             "type": "process",
-            "label": "Build Fearn Compiler",
-            "command": ".\\cmd\\BuildFearnC.bat",
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            }
-        },
-        {
-            "type": "process",
             "label": "Build Runtime",
             "command": ".\\cmd\\BuildRuntime.bat",
             "group": {
@@ -21,7 +12,7 @@
         },
         {
             "type": "process",
-            "label": "Build Grammar Only",
+            "label": "Build Grammar",
             "command": ".\\cmd\\GenANTLR.bat",
             "group": {
                 "kind": "build",

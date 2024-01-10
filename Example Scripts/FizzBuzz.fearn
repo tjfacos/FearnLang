@@ -4,7 +4,7 @@ fn main(args : str[]) => void
     let output : str;
     let n : int = (int)input("Enter N: ");
     
-    for (let i : int = 1; i < n; i += 1)
+    for (let i : int = 1; i < n + 1; i += 1)
     {
         output = "";
 
