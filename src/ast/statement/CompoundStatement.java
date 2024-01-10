@@ -4,44 +4,37 @@ import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
 
-import ast.ASTNode;
 import ast.Declaration;
 import semantics.table.SymbolTable;
 
 public class CompoundStatement extends Statement {
-
-    public ArrayList<ASTNode> lines;
+    public ArrayList<Declaration> declarations;
+    public ArrayList<Statement> statements;
     public Boolean includesJump = false;
 
-    public CompoundStatement(ArrayList<ASTNode> loc_lines)
+    public CompoundStatement(ArrayList<Declaration> decls, ArrayList<Statement> stmts)
     {
-        lines = loc_lines;
+        declarations = decls;
+        statements = stmts;
     }
 
     @Override public String toString()
     {
-        return "{" + lines.toString() + "}";
+        return "BLOCK " + this.ID + " {\n\t" + declarations.toString() + "\n\t" + statements.toString() + "\n}";
     }
 
     public void GenerateBytecode(MethodVisitor mv) 
     {
+        for (Declaration decl : declarations) decl.GenerateBytecode(mv);
 
-        for (ASTNode line : lines) 
+        for (Statement stmt : statements) 
         {
-            if (line instanceof Statement)
+            stmt.GenerateBytecode(mv);
+
+            // Dead-Code elimination
+            if (stmt instanceof JumpStatement)
             {
-                Statement stmt = (Statement)line;
-                stmt.GenerateBytecode(mv);
-
-                // Dead-Code elimination
-                if (stmt instanceof JumpStatement)
-                {
-                    return;
-                }
-
-            } else {
-                Declaration decl = (Declaration)line;
-                decl.GenerateBytecode(mv);
+                return;
             }
 
         }
@@ -49,23 +42,16 @@ public class CompoundStatement extends Statement {
     }
     
     public void validate(SymbolTable symbolTable) {
+        for (Declaration decl : declarations) decl.validate(symbolTable);
         
-        for (ASTNode line : lines)
+        for (Statement stmt : statements)
         { 
-            if (line instanceof Statement)
+            stmt.validate(symbolTable); 
+            
+            if (stmt instanceof JumpStatement)
             {
-                Statement stmt = (Statement)line;
-                stmt.validate(symbolTable);
-
-                // Dead-Code elimination
-                if (stmt instanceof JumpStatement)
-                {
-                    includesJump = true;
-                }
-
-            } else {
-                Declaration decl = (Declaration)line;
-                decl.validate(symbolTable);
+                includesJump = true;
+                break;
             }
         
         }

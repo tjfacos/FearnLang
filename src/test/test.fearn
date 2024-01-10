@@ -1,18 +1,106 @@
-fn main(args : str[]) => void
+// Merges two subarrays of arr[].
+// First subarray is arr[l..m]
+// Second subarray is arr[m+1..r]
+fn merge(arr : int[], l : int, m : int, r : int) => void
 {
-    let x : int = 5;
+    // Find sizes of two subarrays to be merged
+    let n1 : int = m - l + 1;
+    let n2 : int = r - m;
+
     
-    if (x == 5)
+    // Create temp arrays
+    let L : int[] = new int[n1];
+    let R : int[] = new int[n2];
+    
+
+    let i : int;
+    let j : int;
+    let k : int;
+
+    
+    // Copy data to temp arrays
+    for (i = 0; i < n1; i += 1)
     {
-        print("FIVE");
-    } else if (x == 6)
+        L[i] = arr[l + i];
+    }
+    
+    for (j = 0; j < n2; j += 1)
     {
-        print("SIX");
-    } else {
-        print("Unknown");
+        R[j] = arr[m + 1 + j];
     }
 
-    let y : str = "Hello";
-    print(y);
+    // Merge the temp arrays
 
+    // Initial indices of first and second subarrays
+    i = 0;
+    j = 0;
+
+    // Initial index of merged subarray array
+    k = l;
+    
+    for (; i < n1 && j < n2; ) {
+    
+        if (L[i] <= R[j]) 
+        {
+            arr[k] = L[i];
+            i += 1;
+        }
+
+        else 
+        {
+            arr[k] = R[j];
+            j += 1;
+        }
+
+        k += 1;
+    
+    }
+
+    // Copy remaining elements of L[] if any
+    for (; i < n1 ;) {
+        arr[k] = L[i];
+        i += 1;
+        k += 1;
+    }
+
+    // Copy remaining elements of R[] if any
+    for (; j < n2 ;) {
+        arr[k] = R[j];
+        j += 1;
+        k += 1;
+    }
+
+}
+
+// Main function that sorts arr[l..r] using
+// merge()
+fn sort(arr : int[], l : int, r : int) => void
+{
+    if (l < r) {
+
+        // Find the middle point
+        let m : int = l + (r - l) / 2;
+
+        // Sort first and second halves
+        sort(arr, l, m);
+        sort(arr, m + 1, r);
+
+        // Merge the sorted halves
+        merge(arr, l, m, r);
+    }
+
+}
+
+// Driver code
+fn main(args : str[]) => void
+{
+    let arr : int[] = new int[] { 12, 11, 13, 5, 6, 7 };
+
+    print("Given array is");
+    print(arr);
+
+    sort(arr, 0, arr.length() - 1);
+
+    print("Sorted array is");
+    print(arr);
 }
