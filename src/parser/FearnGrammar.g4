@@ -116,11 +116,10 @@ expression
     | '!' expression                                                            # u_not_expr
     | '(' type_name ')' expression                                              # cast_expr
     | expression '^' expression                                                 # exp_expr
-    | expression '*' expression                                                 # mult_expr
-    | expression '/' expression                                                 # div_expr
-    | expression '%' expression                                                 # mod_expr
-    | expression '+' expression                                                 # add_expr
-    | expression '-' expression                                                 # sub_expr
+
+    | expression op=('*'|'/'|'%') expression                                    # mult_expr
+    | expression op=('-'|'+')     expression                                    # add_expr
+    
     | expression '<' expression                                                 # less_expr
     | expression '>' expression                                                 # greater_expr
     | expression '<=' expression                                                # less_eq_expr

@@ -33,7 +33,7 @@
             "type": "promptString",
             "id": "testFile",
             "description": "Enter Source File Path",
-            "default": "BubbleSort.fearn"
+            "default": "test/test.fearn"
         }
     ]
 }

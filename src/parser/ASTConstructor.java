@@ -92,25 +92,25 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression op1 = (Expression)visit(ctx.expression(0));
         Expression op2 = (Expression)visit(ctx.expression(1));
         
-        return new BinaryExpression(op1, op2, ExprType.Mult);
-    }
-    
-    @Override
-    public BinaryExpression visitDiv_expr(FearnGrammarParser.Div_exprContext ctx) 
-    { 
-        Expression op1 = (Expression)visit(ctx.expression(0));
-        Expression op2 = (Expression)visit(ctx.expression(1));
-        
-        return new BinaryExpression(op1, op2, ExprType.Div);
-    }
-    
-    @Override
-    public BinaryExpression visitMod_expr(FearnGrammarParser.Mod_exprContext ctx) 
-    { 
-        Expression op1 = (Expression)visit(ctx.expression(0));
-        Expression op2 = (Expression)visit(ctx.expression(1));
-        
-        return new BinaryExpression(op1, op2, ExprType.Mod);
+        ExprType type = null;
+
+        switch (ctx.op.getText()) {
+            case "*":
+                type = ExprType.Mult;
+                break;
+            case "/":
+                type = ExprType.Div;
+                break;
+            case "%":
+                type = ExprType.Mod;
+                break;
+            default:
+                break;
+        }
+
+        assert(type != null);
+
+        return new BinaryExpression(op1, op2, type);
     }
     
     @Override
@@ -119,16 +119,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression op1 = (Expression)visit(ctx.expression(0));
         Expression op2 = (Expression)visit(ctx.expression(1));
         
-        return new BinaryExpression(op1, op2, ExprType.Add);
-    }
-    
-    @Override
-    public BinaryExpression visitSub_expr(FearnGrammarParser.Sub_exprContext ctx) 
-    { 
-        Expression op1 = (Expression)visit(ctx.expression(0));
-        Expression op2 = (Expression)visit(ctx.expression(1));
-        
-        return new BinaryExpression(op1, op2, ExprType.Sub);
+        ExprType type = null;
+
+        switch (ctx.op.getText()) {
+            case "+":
+                type = ExprType.Add;
+                break;
+            case "-":
+                type = ExprType.Sub;
+                break;
+            default:
+                break;
+        }
+
+        assert(type != null);
+
+        return new BinaryExpression(op1, op2, type);
     }
     
     @Override

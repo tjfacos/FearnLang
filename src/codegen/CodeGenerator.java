@@ -223,8 +223,9 @@ public class CodeGenerator {
 
             func.body.GenerateBytecode(fnVisitor);
 
-            // Add a return instruction if void
-            if (func.is_void)
+            // Add a return instruction if void, and no return statement 
+            // already included
+            if (func.is_void && !func.body.includesJump)
             {
                 fnVisitor.visitInsn(RETURN);
             }

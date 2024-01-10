@@ -85,17 +85,32 @@ public class IterationStatement extends Statement {
             }
         }
 
+        // System.out.println(toString());
+
+
         // Visit start of loop
         mv.visitLabel(startLoopLabel);
 
         // Verify Frame State
-        mv.visitFrame(
-            F_FULL, 
-            numLocals, 
-            locals, 
-            0, 
-            new Object[] {}
-        );
+        
+        // WARNING May break stuff
+        try {
+            mv.visitFrame(
+                F_FULL, 
+                numLocals, 
+                locals, 
+                0, 
+                new Object[] {}
+            );
+        } catch (IllegalStateException e) {
+            mv.visitFrame(
+                F_SAME, 
+                0, 
+                null, 
+                0, 
+                null
+            );
+        }
         
         // Generate continue expression, and cast to primitive boolean (Z)
         continue_expression.GenerateBytecode(mv);
