@@ -40,7 +40,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         if (!symAnalysisStack.contains(id))
         {
-            Reporter.ReportErrorAndExit("Variable Identifer Unknown in Scope: " + id);
+            Reporter.ReportErrorAndExit("Parse Error on line " + ctx.getStart().getLine() + ": Variable Identifer Unknown in Scope: " + id);
         }
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
@@ -479,18 +479,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
         int numOfSyms = symAnalysisStack.size();
 
-        ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
-        ArrayList<Statement> local_stmts = new ArrayList<Statement>();
+        ArrayList<ASTNode> local_lines = new ArrayList<ASTNode>();
         
-        for (int i = 0; i < ctx.declaration().size(); i++)
+        for (int i = 1; i < ctx.getChildCount() - 1; i++)
         {
-            local_decls.add((Declaration)visit(ctx.declaration(i)));
+            local_lines.add(visit(ctx.getChild(i)));
         }
 
-        for (int i = 0; i < ctx.statement().size(); i++)
-        {
-            local_stmts.add((Statement)visit(ctx.statement(i)));
-        }   
         
         // Remove Symbols added within the compound statement
         for (int i = 0; i < symAnalysisStack.size() - numOfSyms; i++)
@@ -498,7 +493,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             symAnalysisStack.pop();
         }
             
-        return new CompoundStatement(local_decls, local_stmts);
+        return new CompoundStatement(local_lines);
             
     }
         

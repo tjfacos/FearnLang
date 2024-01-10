@@ -56,7 +56,7 @@ statement
     ;
 
 compound_statement
-    : '{' (declaration)* (statement)* '}'
+    : '{' (declaration | statement)* '}'
     ;
 
 expression_statement
