@@ -1,10 +1,8 @@
 @echo off
 
-if [%1]==[] goto usage
+if "%~1"=="" (
+    echo Usage: FearnRun "<program-name>" "<args>" ...
+    exit /b 1
+)
 
 java --enable-preview %*
-goto :eof
-
-:usage
-@echo Usage: FearnRun <program-name>
-exit /B 1
