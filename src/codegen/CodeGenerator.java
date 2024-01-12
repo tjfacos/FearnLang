@@ -251,8 +251,8 @@ public class CodeGenerator {
         );
             
     }
-        
 
+    
     public void Generate(Program root, SymbolTable symTab, String sPath)
     {
 

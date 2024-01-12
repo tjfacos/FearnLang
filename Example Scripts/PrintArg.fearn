@@ -1,0 +1,4 @@
+fn main(args : str[]) => void
+{
+    print(args);
+}

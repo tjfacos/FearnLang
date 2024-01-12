@@ -20,7 +20,7 @@ public class CompoundStatement extends Statement {
 
     @Override public String toString()
     {
-        return "BLOCK " + this.ID + " {\n\t" + declarations.toString() + "\n\t" + statements.toString() + "\n}";
+        return "{" + declarations.toString() + statements.toString() + "}";
     }
 
     public void GenerateBytecode(MethodVisitor mv) 

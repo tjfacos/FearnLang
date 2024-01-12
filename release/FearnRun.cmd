@@ -2,7 +2,7 @@
 
 if [%1]==[] goto usage
 
-java --enable-preview %1
+java --enable-preview %*
 goto :eof
 
 :usage

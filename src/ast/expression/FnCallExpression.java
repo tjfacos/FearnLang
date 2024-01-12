@@ -21,6 +21,7 @@ public class FnCallExpression extends Expression {
     public String identifier;
     public ArrayList<Expression> arguements;
     
+    static List<String> builtins = Arrays.asList("print", "input", "length", "slice");
 
     
     public FnCallExpression(String fn_name, ArrayList<Expression> args)
@@ -35,8 +36,6 @@ public class FnCallExpression extends Expression {
         return "FCALL "+ identifier + "( " + arguements.toString() + " )";
     }
     
-    static List<String> builtins = Arrays.asList("print", "input", "length", "slice");
-
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         

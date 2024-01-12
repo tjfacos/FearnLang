@@ -14,26 +14,26 @@ public class BinaryExpression extends Expression {
     
     public Expression Op1;
     public Expression Op2;
-    public ExprType Operator;
+    public ExprType Operation;
     
     public BinaryExpression(Expression op1, Expression op2, ExprType op)
     {
         Op1 = op1;
         Op2 = op2;
-        Operator = op;
+        Operation = op;
     }
 
     @Override
     public String toString()
     {
-        return '(' + Op1.toString() + ' ' + Operator.name() + ' ' + Op2.toString() + ')';
+        return '(' + Op1.toString() + ' ' + Operation.name() + ' ' + Op2.toString() + ')';
     }
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         String t = "";
         
-        if (Operator == ExprType.Eq || Operator == ExprType.NotEq)
+        if (Operation == ExprType.Eq || Operation == ExprType.NotEq)
         {
             // For these operations, the values on the stacks cannot be primitive
             Op1.GenerateBytecode(mv);
@@ -79,7 +79,7 @@ public class BinaryExpression extends Expression {
         
         
         
-        switch (Operator) {
+        switch (Operation) {
             case Add:
                 if (t == "int") {
                     // Add
@@ -203,7 +203,7 @@ public class BinaryExpression extends Expression {
         TypeSpecifier op1_type = Op1.validate(symTable);
         TypeSpecifier op2_type = Op2.validate(symTable);
         
-        switch (Operator) {
+        switch (Operation) {
 
             // All cases where the operands must
             // both be numeric.
@@ -222,7 +222,7 @@ public class BinaryExpression extends Expression {
                         op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.FLOAT))
                     )
                 ) {
-                    switch (Operator) {
+                    switch (Operation) {
                         case Mult:
                         case Div:
                         case Sub:

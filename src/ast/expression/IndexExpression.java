@@ -24,7 +24,7 @@ public class IndexExpression extends Expression {
     @Override
     public String toString()
     {
-        return "{" + sequence.toString() + "}" + '[' + index.toString() + ']';
+        return sequence.toString() + '[' + index.toString() + ']';
     }
 
     @Override

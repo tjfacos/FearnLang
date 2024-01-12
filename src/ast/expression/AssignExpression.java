@@ -107,11 +107,11 @@ public class AssignExpression extends Expression {
     }
 
 
-
-
-
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
+        
+        HandleOperators(symTable);
+
         // Check the TypeSpecifiers of the target and expression are equal
         TypeSpecifier targetType =  target.validate(symTable);
         TypeSpecifier exprType =    expression.validate(symTable);
@@ -121,7 +121,6 @@ public class AssignExpression extends Expression {
             Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
         }
 
-        HandleOperators(symTable);
 
         expression_type = null; // Assign Expression perform a job, they don't evaluate to anything
         return expression_type;
@@ -134,23 +133,18 @@ public class AssignExpression extends Expression {
                 return;
             case AddEquals:
                 expression = new BinaryExpression(target, expression, ExprType.Add);
-                expression.validate(symTable);
                 return;
             case SubEquals:
                 expression = new BinaryExpression(target, expression, ExprType.Sub);
-                expression.validate(symTable);
                 return;
             case MultEquals:
                 expression = new BinaryExpression(target, expression, ExprType.Mult);
-                expression.validate(symTable);
                 return;
             case DivEquals:
                 expression = new BinaryExpression(target, expression, ExprType.Div);
-                expression.validate(symTable);
                 return;
             case ModEquals:
                 expression = new BinaryExpression(target, expression, ExprType.Mod);
-                expression.validate(symTable);
                 return;
         }
     }

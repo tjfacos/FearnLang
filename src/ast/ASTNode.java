@@ -8,4 +8,6 @@ public abstract class ASTNode {
     public boolean equals(Object o) {
         return Helper.equal(this, o);
     }
+
+    public abstract String toString();
 }
