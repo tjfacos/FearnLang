@@ -594,8 +594,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             init = visit(ctx.init_expression().getChild(0)); // Either an Expression or a Declaration
         }
 
-        if (ctx.continue_condition() != null)   { cont_expr =   (Expression)visit(ctx.continue_condition().getChild(0));            }
-        if (ctx.iteration_expression() != null) { iter_expr =   (Expression)visit(ctx.iteration_expression().getChild(0));    }
+        if (ctx.continue_condition().getText().equals(";")){ cont_expr =   (Expression)visit(ctx.continue_condition().getChild(0));    }
+        if (ctx.iteration_expression() != null)                     { iter_expr =   (Expression)visit(ctx.iteration_expression().getChild(0));  }
 
         body = (CompoundStatement)visit(ctx.compound_statement());
 

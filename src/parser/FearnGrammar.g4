@@ -111,6 +111,7 @@ expression
     | IDENTIFIER '(' ( ( expression ',')* expression )? ')'                     # fn_call_expr
     | '(' expression ')'                                                        # brac_expr
     | expression '[' expression ']'                                             # index_expr
+
     | '+' expression                                                            # u_plus_expr
     | '-' expression                                                            # u_minus_expr
     | '!' expression                                                            # u_not_expr
@@ -123,8 +124,8 @@ expression
     | expression op=('*'|'/'|'%') expression                                    # mult_expr
     | expression op=('-'|'+')     expression                                    # add_expr
     
-    | expression '<' expression                                                 # less_expr
-    | expression '>' expression                                                 # greater_expr
+    | expression '<'  expression                                                # less_expr
+    | expression '>'  expression                                                # greater_expr
     | expression '<=' expression                                                # less_eq_expr
     | expression '>=' expression                                                # greater_eq_expr
     | expression '==' expression                                                # eq_expr
