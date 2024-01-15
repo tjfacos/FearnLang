@@ -28,7 +28,18 @@
               "kind": "test",
               "isDefault": false
             },
+        },
+        {
+            "type": "process",
+            "label": "Deploy Jar",
+            "command": "py",
+            "args": ["util/DeployJar.py"],
+            "group": {
+              "kind": "build",
+              "isDefault": false
+            },
         }
+
     ],
 
     "inputs":[
