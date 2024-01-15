@@ -1,6 +1,6 @@
 fn main(args : str[]) => void
 {
-    let i : int = 100;
-    print(i--);
+    let i : int[] = new int[] {1, 2, 3};
+    i[0]++;
     print(i);
 }

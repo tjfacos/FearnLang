@@ -6,6 +6,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
 import ast.expression.FnCallExpression;
+import ast.expression.IncrExpression;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
@@ -38,7 +39,7 @@ public class ExpressionStatement extends Statement {
     }
     public void validate(SymbolTable symbolTable) {
         
-        if(!isAssign && expression.getClass() != FnCallExpression.class)
+        if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))
         {
             Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
         }
