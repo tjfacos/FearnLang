@@ -26,16 +26,17 @@ public class ExpressionStatement extends Statement {
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
+        
         expression.GenerateBytecode(mv);
         
-        if (!isAssign) {
-            // If the expression evaluates to a value, pop from operand stack            
-            if (expression.expression_type != null)
-            {
-                mv.visitInsn(POP);
-            }
+        // If the expression evaluates to a value, pop from operand stack            
+        if (expression.expression_type != null)
+        {
+            mv.visitInsn(POP);
         }
+        
     }
+
     public void validate(SymbolTable symbolTable) {
         
         if(!isAssign && expression.getClass() != FnCallExpression.class)

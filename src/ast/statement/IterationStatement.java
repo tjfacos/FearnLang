@@ -56,9 +56,7 @@ public class IterationStatement extends Statement {
          * After the second label, mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null) is needed
          * 
          * Remember, all variables are initialised null at the start of any function, so the number of locals
-         * should never really change. Consider this when looking at ASMifier logs.
-         * 
-         * Have fun...
+         * should never really change.
          */
 
         Label startLoopLabel = new Label();
@@ -134,7 +132,10 @@ public class IterationStatement extends Statement {
         );
 
         // Generate iteration_expression (which runs at the end of every loop)
-        if (iteration_expression != null) iteration_expression.GenerateBytecode(mv);
+        if (iteration_expression != null) {
+            iteration_expression.GenerateBytecode(mv);
+            if (iteration_expression.expression_type != null) mv.visitInsn(POP);
+        }
 
         // Return to the start of the loop
         mv.visitJumpInsn(GOTO, startLoopLabel);
