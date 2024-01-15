@@ -1,7 +1,6 @@
 fn main(args : str[]) => void
 {
-    
-    let i : int = 100 + 1;
+    let i : int = 100;
+    print(i--);
     print(i);
-
 }

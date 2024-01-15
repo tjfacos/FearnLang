@@ -114,6 +114,9 @@ expression
     | '+' expression                                                            # u_plus_expr
     | '-' expression                                                            # u_minus_expr
     | '!' expression                                                            # u_not_expr
+    | op=('++'|'--') expression                                                 # pre_inc_expr
+    | expression op=('++'|'--')                                                 # post_inc_expr
+    | '!' expression                                                            # u_not_expr
     | '(' type_name ')' expression                                              # cast_expr
     | expression '^' expression                                                 # exp_expr
 

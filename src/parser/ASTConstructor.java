@@ -239,6 +239,33 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
     @Override
+    public IncrExpression visitPost_inc_expr(FearnGrammarParser.Post_inc_exprContext ctx)
+    {
+        Boolean isDecrement = false;
+        if(ctx.op.getText().equals("--"))
+        {
+            isDecrement = true;
+        }
+
+        return new IncrExpression((Expression)visit(ctx.expression()), isDecrement, false);
+    }
+
+    @Override
+    public IncrExpression visitPre_inc_expr(FearnGrammarParser.Pre_inc_exprContext ctx)
+    {
+        Boolean isDecrement = false;
+        if(ctx.op.getText().equals("--"))
+        {
+            isDecrement = true;
+        }
+
+        return new IncrExpression((Expression)visit(ctx.expression()), isDecrement, true);
+    }
+
+
+
+
+    @Override
     public CastExpression visitCast_expr(FearnGrammarParser.Cast_exprContext ctx) 
     { 
         PrimitiveDataType targetType = null;

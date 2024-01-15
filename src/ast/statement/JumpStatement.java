@@ -29,7 +29,7 @@ public class JumpStatement extends Statement {
         return "\n\t" + type.name() + ";";
     }
 
-    @Override
+
     public void GenerateBytecode(MethodVisitor mv) {
         /* This is the reason CodeGenerator.LabelStack exists!
          * 
@@ -67,6 +67,7 @@ public class JumpStatement extends Statement {
 
     }
 
+    
     public void validate(SymbolTable symbolTable) {
         /* This class slightly breaks my own rules, as no 
          * validation is done before Code Generation. 

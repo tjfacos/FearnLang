@@ -107,7 +107,7 @@ public class AssignExpression extends Expression {
     }
 
 
-    @Override
+    @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable) {
         
         HandleOperators(symTable);
@@ -122,8 +122,17 @@ public class AssignExpression extends Expression {
         }
 
 
+        if (target instanceof PrimaryExpression && ( (PrimaryExpression)target ).type == ExprType.VariableReference) {}
+        else if (target.getClass() == IndexExpression.class) {}
+        else if (target.getClass() == StructAttrExpression.class) {}
+        else {
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName());
+        }
+
+
         expression_type = null; // Assign Expression perform a job, they don't evaluate to anything
         return expression_type;
+
     }
 
     void HandleOperators(SymbolTable symTable)
