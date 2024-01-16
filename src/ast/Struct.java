@@ -19,7 +19,7 @@ public class Struct extends ASTNode {
     @Override 
     public String toString()
     {
-        return String.format("STRUCT %s \n %s \n", identifier, declarations.toString());
+        return String.format("STRUCT %s %s", identifier, declarations.toString());
     }
 
     public void validate(SymbolTable symbolTable) {

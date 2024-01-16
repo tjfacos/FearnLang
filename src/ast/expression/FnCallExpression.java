@@ -1,6 +1,6 @@
 package ast.expression;
 
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class FnCallExpression extends Expression {
     @Override
     public String toString()
     {
-        return "FCALL "+ identifier + "( " + arguements.toString() + " )";
+        return identifier + "(" + arguements.toString() + ")";
     }
     
     @Override
@@ -84,7 +84,14 @@ public class FnCallExpression extends Expression {
                 desc, 
                 false
             );
+            
+            if (identifier.equals("slice") && desc.contains("Object"))
+            {
+                mv.visitTypeInsn(CHECKCAST, SymbolTable.GenBasicDescriptor(arguements.get(0).expression_type));
+            }
+            
             return;
+
         }
 
         mv.visitMethodInsn(
@@ -112,7 +119,7 @@ public class FnCallExpression extends Expression {
                 
                 if (arguements.size() != 1)
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
+                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
                 if (!arguements.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
@@ -128,7 +135,7 @@ public class FnCallExpression extends Expression {
             case "print":
                 if (arguements.size() != 1)
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
+                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
                 arguements.get(0).validate(symTable);
@@ -141,7 +148,7 @@ public class FnCallExpression extends Expression {
             case "length":
                 if (arguements.size() != 1)
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 1.");
+                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
                 if (!(
@@ -161,7 +168,7 @@ public class FnCallExpression extends Expression {
             case "slice":
                 if (arguements.size() != 3)
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected 3.");
+                    Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 3.");
                 }
 
                 if (!(
@@ -201,7 +208,7 @@ public class FnCallExpression extends Expression {
 
         if (arguements.size() != param_types.size())
         {
-            Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected" + param_types.size() + ".");
+            Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected" + param_types.size() + ".");
         }
 
         for (int i = 0; i < param_types.size(); i++)

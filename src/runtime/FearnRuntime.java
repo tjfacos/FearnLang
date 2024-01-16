@@ -156,7 +156,7 @@ public class FearnRuntime {
         return seq.substring(start, end);
     }
 
-    public static Object[] slice(Object[] seq, Integer start, Integer end)
+    public static <T> T[] slice(T[] seq, Integer start, Integer end)
     {
         return Arrays.copyOfRange(seq, start, end);
     }

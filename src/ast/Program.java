@@ -21,7 +21,7 @@ public class Program extends ASTNode {
     @Override 
     public String toString()
     {
-        return String.format("%s\n\n%s\n\n%s", global_declarations, structs, functions);
+        return String.format("%s%s%s", global_declarations, structs, functions);
     }
 
     public void validate(SymbolTable symbolTable) {

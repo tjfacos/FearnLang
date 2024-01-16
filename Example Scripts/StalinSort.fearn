@@ -1,0 +1,66 @@
+fn main(args : str[]) => void
+{
+    let list : int[] = new int[args.length()];
+
+    for (let i : int = 0; i < args.length(); i++)
+    {
+        list[i] = (int)args[i];
+    }
+
+    if (list.length() == 0) { 
+        print(list);
+    } else {
+        let enemies : bool[] = list.findEnemies();
+        print(list.disappearEnemies(enemies));
+    }
+
+
+}
+
+fn findEnemies(list : int[]) => bool[]
+{
+    let last : int = list[0];
+    let enemies : bool[] = new bool[list.length()];
+    enemies[0] = false;
+
+    for (let i : int = 1; i < list.length(); i++)
+    {
+        if (list[i] > last)
+        {
+            last = list[i];
+            enemies[i] = false;
+        } else {
+            enemies[i] = true;
+        }
+    }
+
+    return enemies;
+
+}
+
+fn disappearEnemies(list : int[], enemies : bool[]) => int[]
+{
+    let new_length : int = 0;
+    let x : int = 0;
+    
+    let new_list : int[];
+
+    for (let i : int = 0; i < enemies.length(); i++)
+    {
+        if (enemies[i] == false) { 
+            new_length++; 
+        }
+    }
+
+
+    new_list = new int[new_length];
+
+    for (i = 0; i < list.length(); i++)
+    {
+        if (enemies[i] == false) {
+            new_list[x++] = list[i];
+        }
+    }
+
+    return new_list;
+}

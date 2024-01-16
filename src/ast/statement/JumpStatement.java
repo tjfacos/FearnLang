@@ -26,7 +26,7 @@ public class JumpStatement extends Statement {
 
     @Override public String toString()
     {
-        return "\n\t" + type.name() + ";";
+        return type.name() + ";";
     }
 
 

@@ -36,7 +36,7 @@ public class IterationStatement extends Statement {
         if (continue_expression == null) { c = "null"; } else { c = continue_expression.toString(); }
         if (iteration_expression == null) { i = "null"; } else { i = iteration_expression.toString(); }
         
-        return String.format("\n\tfor ( %s ; %s ; %s )",
+        return String.format("for ( %s ; %s ; %s )",
             d, c, i
         );
 

@@ -40,7 +40,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         if (!symAnalysisStack.contains(id))
         {
-            Reporter.ReportErrorAndExit("Variable Identifer Unknown in Scope: " + id);
+            Reporter.ReportErrorAndExit(String.format(
+                " Line %s : Variable Identifer Unknown in Scope: %s .",
+                ctx.getStart().getLine(),
+                id
+            ));
         }
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);

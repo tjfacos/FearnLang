@@ -20,7 +20,7 @@ public class ReturnStatement extends JumpStatement {
 
     @Override public String toString()
     {
-        return "\n\t" + type.name() + " " + expression.toString() + ";";
+        return type.name() + " " + expression.toString() + ";";
     }
 
     @Override
@@ -44,12 +44,14 @@ public class ReturnStatement extends JumpStatement {
 
         if (CodeGenerator.CurrentReturnType == null)
         {
+            // Expect expression to be null, error otherwise
             if (expression == null) return;
             else Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected void");
         } else {
+            // Expect type of expression to match current return type
             if (expression == null || !expression.validate(symbolTable).equals(CodeGenerator.CurrentReturnType)) 
             {
-                Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected void");
+                Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected " + CodeGenerator.CurrentReturnType.toString());
             }
             else return;
         }

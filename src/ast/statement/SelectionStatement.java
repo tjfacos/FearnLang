@@ -31,7 +31,7 @@ public class SelectionStatement extends Statement {
         if (else_branch != null)
         {
             return String.format(
-                "\n\tIF (%s) THEN %s ELSE %s",
+                "IF (%s) THEN %s ELSE %s",
                 condition.toString(),
                 if_branch.toString(),
                 else_branch.toString()
@@ -39,7 +39,7 @@ public class SelectionStatement extends Statement {
         }
         
         return String.format(
-            "\n\tIF (%s) THEN %s",
+            "IF (%s) THEN %s",
             condition.toString(),
             if_branch.toString()
         );
@@ -92,8 +92,9 @@ public class SelectionStatement extends Statement {
         if (else_branch != null)
         {
             mv.visitLabel(else_label);
-            if (else_branch.getClass() == CompoundStatement.class)
-            {
+            
+            // WARNING: May be broken
+            try {
                 mv.visitFrame(
                     F_FULL, 
                     numLocals, 
@@ -101,13 +102,13 @@ public class SelectionStatement extends Statement {
                     0, 
                     new Object[] {}
                 );
-            } else {
+            } catch (IllegalStateException e) {
                 mv.visitFrame(
-                F_SAME, 
-                0, 
-                null, 
-                0, 
-                null
+                    F_SAME, 
+                    0, 
+                    null, 
+                    0, 
+                    null
                 );
             }
 

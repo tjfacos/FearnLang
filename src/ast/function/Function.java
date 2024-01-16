@@ -35,7 +35,7 @@ public class Function extends ASTNode {
         String r = "void";
         if (return_type != null) {r = return_type.toString();}
         return String.format(
-            "%s FUNC %s %s \n %s", 
+            "%s FUNC %s %s %s", 
             r, 
             identifier,
             parameters.toString(),

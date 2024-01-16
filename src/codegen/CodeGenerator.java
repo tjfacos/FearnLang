@@ -300,7 +300,7 @@ public class CodeGenerator {
 
         Reporter.ReportSuccess(
             String.format(
-                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s` to run Program", 
+                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
                 pathString,
                 mainProgramName
             ), 
