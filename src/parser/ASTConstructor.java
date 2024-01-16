@@ -486,8 +486,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             init_expression = (Expression)visit(ctx.expression());
         }
 
-        symTabStack.peek().addSymbol(
-            identifer, 
+        symTabStack.peek().addRow(
             new VariableRow(
                 identifer, 
                 type_spec
@@ -661,8 +660,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             Parameter param = (Parameter)visit(ctx.parameter(i));
             
             // Add parameter to symbol table
-            symTabStack.peek().addSymbol(
-                param.identifier, 
+            symTabStack.peek().addRow(
                 new VariableRow(
                     param.identifier, 
                     param.type
@@ -736,8 +734,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
             SymbolTable local_syms = symTabStack.pop();
 
-            symTabStack.peek().addSymbol(
-                struct.identifier, 
+            symTabStack.peek().addRow(
                 new StructRow(struct.identifier, local_syms)
             );
         }
@@ -752,8 +749,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
             SymbolTable local_syms = symTabStack.pop();
             
-            symTabStack.peek().addSymbol(
-                func.identifier, 
+            symTabStack.peek().addRow(
                 new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms)
             );
         }

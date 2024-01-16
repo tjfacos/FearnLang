@@ -10,22 +10,22 @@ import util.Reporter;
 
 public class SymbolTable {
 
-    private ArrayList<Row> Symbols = new ArrayList<Row>();
+    private ArrayList<Row> Rows = new ArrayList<Row>();
 
 
     /* General Methods */
-    public void addSymbol(String id, Row new_row)
+    public void addRow(Row new_row)
     {
         // Raise error if two variables in the same function has the same identifier
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (new_row.getClass() == r.getClass() && r.identifier.equals(new_row.identifier))
             {
-                Reporter.ReportErrorAndExit("Symbol " + r.identifier + " can only exist once within scope.");
+                Reporter.ReportErrorAndExit("Symbol " + new_row.identifier + " can only exist once within scope.");
             }
         }
 
-        Symbols.add(new_row);
+        Rows.add(new_row);
     }
 
     
@@ -67,9 +67,10 @@ public class SymbolTable {
         
     }
     
+
     public TypeSpecifier GetTypeSpecifier(String id, Boolean isFunction) {
         
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == FunctionRow.class && isFunction)
             {
@@ -88,9 +89,9 @@ public class SymbolTable {
     }
 
     public Boolean Contains(String id) {
-        for (int i = 0; i < Symbols.size(); i++)
+        for (int i = 0; i < Rows.size(); i++)
         {
-            if (Symbols.get(i).identifier.equals(id))  { return true; }
+            if (Rows.get(i).identifier.equals(id))  { return true; }
         }
         
         return false;
@@ -98,7 +99,7 @@ public class SymbolTable {
 
     /* Variable Methods */
     public String GetVarDescriptor(String id) {
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == VariableRow.class)
             {
@@ -112,9 +113,9 @@ public class SymbolTable {
     }
 
     public Integer GetIndex(String id) {
-        for (int i = 0; i < Symbols.size(); i++)
+        for (int i = 0; i < Rows.size(); i++)
         {
-            if (Symbols.get(i).identifier.equals(id))  { return i; }
+            if (Rows.get(i).identifier.equals(id))  { return i; }
         }
         
         Reporter.ReportErrorAndExit("Unknown Variable " + id);
@@ -146,7 +147,7 @@ public class SymbolTable {
     }
     
     public SymbolTable GetFuncSymbolTable(String id) {
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
@@ -162,7 +163,7 @@ public class SymbolTable {
     
     public String GetGlobalFuncDescriptor(String id) {
         
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
@@ -176,12 +177,11 @@ public class SymbolTable {
     }
     
     
-    
     public ArrayList<TypeSpecifier> GetFuncParameterSpecifiers(String id)
     {
         ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
         
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
             {
@@ -202,7 +202,7 @@ public class SymbolTable {
     /* Struct Methods */
     public ArrayList<TypeSpecifier> GetStructAttributeSpecifiers(String id)
     {
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {
@@ -235,7 +235,7 @@ public class SymbolTable {
     {
         ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
         
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.getClass() == VariableRow.class)
             {
@@ -248,7 +248,7 @@ public class SymbolTable {
 
     public String GetGlobalStructDescriptor(String id) {
         
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {
@@ -262,7 +262,7 @@ public class SymbolTable {
     }
 
     public SymbolTable GetStructSymbolTable(String id) {
-        for (Row r : Symbols)
+        for (Row r : Rows)
         {
             if (r.identifier.equals(id) && r.getClass() == StructRow.class)
             {

@@ -8,8 +8,7 @@ public class FunctionRow extends Row {
     ArrayList<Parameter> parameters;
     TypeSpecifier return_type;
     SymbolTable localSymbolTable = new SymbolTable();
-    String descriptor;
-
+    
     public FunctionRow(String identifier, ArrayList<Parameter> params, TypeSpecifier rt, SymbolTable local)
     {
         super(identifier);

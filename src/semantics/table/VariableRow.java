@@ -5,7 +5,6 @@ import ast.type.TypeSpecifier;
 public class VariableRow extends Row {
     
     TypeSpecifier typeSpecifier;
-    public String descriptor;
 
     public VariableRow(String id, TypeSpecifier type)
     {

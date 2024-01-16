@@ -1,7 +1,8 @@
 package semantics.table;
 
-public class Row {
-    String identifier;
+public abstract class Row {
+    public String identifier;
+    public String descriptor;
 
     public Row(String id)
     {
