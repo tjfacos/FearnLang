@@ -1,0 +1,13 @@
+fn main(args : str[]) => void
+{
+    let name: str;
+    
+    if (args.length() > 0)
+    {
+        name = args[0];
+    } else {
+        name = input("What's your name : ");
+    }
+
+    print("Hello, " + name + "!");
+}

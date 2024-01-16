@@ -41,6 +41,11 @@ class FearnC
             Reporter.ReportErrorAndExit("FILE " + args[0] + " NOT FOUND");
         }
 
+        if (args[0].endsWith("FearnRuntime.fearn") )
+        {
+            Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.");
+        }
+
         lexer = new FearnGrammarLexer(input);
         tokens = new CommonTokenStream(lexer);
         parser = new FearnGrammarParser(tokens);
