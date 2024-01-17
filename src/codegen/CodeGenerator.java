@@ -1,6 +1,7 @@
 package codegen;
 
 import org.objectweb.asm.*;
+import org.objectweb.asm.tree.MethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -9,6 +10,7 @@ import ast.Program;
 import ast.Struct;
 import ast.function.Function;
 import ast.type.TypeSpecifier;
+import optimisation.NodeOptimiser;
 import semantics.table.SymbolTable;
 
 import util.Reporter;
@@ -199,7 +201,8 @@ public class CodeGenerator {
 
         for (Function func : functions)
         {
-            MethodVisitor fnVisitor = classWriter.visitMethod(
+            
+            MethodNode fnNode = new MethodNode(
                 ACC_PUBLIC | ACC_STATIC, 
                 func.identifier, 
                 SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
@@ -207,32 +210,46 @@ public class CodeGenerator {
                 null
             );
             
+            
             LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(func.identifier);
             CurrentFuncIdentifier = func.identifier;
-
-            fnVisitor.visitCode();
 
             
             // Initialise all local variables to null
             for (int i = func.parameters.size(); i < LocalSymbolTable.GetAllVarTypeSpecifiers().size(); i++)
             {
-                fnVisitor.visitInsn(ACONST_NULL);
-                fnVisitor.visitVarInsn(ASTORE, i);
+                fnNode.visitInsn(ACONST_NULL);
+                fnNode.visitVarInsn(ASTORE, i);
             }
 
 
-            func.body.GenerateBytecode(fnVisitor);
+            func.body.GenerateBytecode(fnNode);
 
             // Add a return instruction if void, and no return statement 
             // already included
             if (func.is_void && !func.body.includesJump)
             {
-                fnVisitor.visitInsn(RETURN);
+                fnNode.visitInsn(RETURN);
             }
             
             // End Function Generation
-            fnVisitor.visitMaxs(0, 0);
-            fnVisitor.visitEnd();
+            fnNode.visitMaxs(0, 0);
+            fnNode.visitEnd();
+            
+            new NodeOptimiser().Optimise(fnNode);
+
+
+            MethodVisitor fnVisitor = classWriter.visitMethod(
+                ACC_PUBLIC | ACC_STATIC, 
+                func.identifier, 
+                SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
+                null, 
+                null
+            );
+
+
+            fnNode.accept(fnVisitor);
+            
         }
                     
         classWriter.visitEnd();
