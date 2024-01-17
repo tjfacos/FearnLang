@@ -199,15 +199,6 @@ public class CodeGenerator {
 
         for (Function func : functions)
         {
-            
-            // MethodNode fnNode = new MethodNode(
-            //     ACC_PUBLIC | ACC_STATIC, 
-            //     func.identifier, 
-            //     SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
-            //     null, 
-            //     null
-            // );
-
             MethodVisitor fnVisitor = classWriter.visitMethod(
                 ACC_PUBLIC | ACC_STATIC, 
                 func.identifier, 
@@ -216,42 +207,32 @@ public class CodeGenerator {
                 null
             );
             
-            
             LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(func.identifier);
             CurrentFuncIdentifier = func.identifier;
+
+            fnVisitor.visitCode();
 
             
             // Initialise all local variables to null
             for (int i = func.parameters.size(); i < LocalSymbolTable.GetAllVarTypeSpecifiers().size(); i++)
             {
-                // fnNode.visitInsn(ACONST_NULL);
-                // fnNode.visitVarInsn(ASTORE, i);
                 fnVisitor.visitInsn(ACONST_NULL);
                 fnVisitor.visitVarInsn(ASTORE, i);
             }
 
 
-            // func.body.GenerateBytecode(fnNode);
             func.body.GenerateBytecode(fnVisitor);
 
             // Add a return instruction if void, and no return statement 
             // already included
             if (func.is_void && !func.body.includesJump)
             {
-                // fnNode.visitInsn(RETURN);
                 fnVisitor.visitInsn(RETURN);
             }
             
             // End Function Generation
-            // fnNode.visitMaxs(0, 0);
-            // fnNode.visitEnd();
             fnVisitor.visitMaxs(0, 0);
             fnVisitor.visitEnd();
-            
-            // new NodeOptimiser().Optimise(fnNode);
-
-            // fnNode.accept(fnVisitor);
-            
         }
                     
         classWriter.visitEnd();
