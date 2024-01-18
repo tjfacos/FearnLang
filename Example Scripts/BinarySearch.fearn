@@ -1,6 +1,6 @@
 fn main(args : str[]) => void
 {
-
+    let index : int;
     let list : int[];
     let term : int;
 
@@ -20,7 +20,14 @@ fn main(args : str[]) => void
 
     print("SEARCH TERM IS : " + (str)term);
     
-    print("INDEX IS : " + (str)BinarySearch(list, term));
+    index = BinarySearch(list, term);
+
+    if (index > -1) {
+        print("INDEX IS : " + (str)index);
+    } else {
+        print("ITEM NOT FOUND");
+    }
+
 
 }
 
@@ -35,7 +42,6 @@ fn BinarySearch(list : int[], term : int) => int
         index = m;
     } else if (list.length() <= 1)
     {
-        print("ITEM NOT FOUND");
         index = -1;
     } else if (list[m] > term)
     {
