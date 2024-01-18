@@ -43,13 +43,28 @@ public class Function extends ASTNode {
         );
     }
 
+    /* No Function.GenerateBytecode is provided, as the generation of 
+     * functions using the method visitor is performed by CodeGenerator,
+     * as the program's Class Writer is needed to add the method to the 
+     * main program class (see codegen/CodeGenerator.java).
+     */
+
     public void validate(SymbolTable symbolTable) {
+        /* Sets Current Return Type to the return type specifier
+         * for this function. This is used during the treversal of 
+         * the body, as return statements must return an expression 
+         * the evaluates to the right type.
+         * 
+         * The body is validated, and (assuming it is not void), must include
+         * a return statement (the type of expression returned is validated by 
+         * the return statement itself, using CurrentReturnType).
+         */
 
         CodeGenerator.CurrentReturnType = return_type;
         
         body.validate(symbolTable);
 
-        if (!body.includesJump && return_type != null)
+        if (!body.includesReturn && return_type != null)
         {
             Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.");
         }

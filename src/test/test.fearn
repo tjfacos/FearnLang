@@ -1,4 +1,12 @@
 fn main(args : str[]) => void
 {
-    print("Hello\n, World!");
+    for (;true;)
+    {
+        break;
+    }
+}
+
+fn f(x : int) => str
+{
+    return (str)x;
 }
