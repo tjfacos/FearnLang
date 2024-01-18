@@ -33,6 +33,8 @@ public class CodeGenerator {
     public static TypeSpecifier CurrentReturnType;
     public static String CurrentFuncIdentifier;
 
+    public static Integer loopDepth = 0;
+
     public static Stack<Label> LabelStack = new Stack<Label>();
 
       

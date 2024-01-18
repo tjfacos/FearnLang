@@ -166,6 +166,13 @@ public class IterationStatement extends Statement {
          * It must be notes that any one of these, except the body, can be null
          */
 
+        // Increment Loop Depth, so jump statements like
+        // break and continue nested within the body register as 
+        // valid.
+        
+        CodeGenerator.loopDepth++;
+
+        // If an initialisation expression is present, validate it
         if (init_expression != null)
         {
             if (init_expression instanceof Expression)
@@ -176,19 +183,29 @@ public class IterationStatement extends Statement {
             }
         }
 
+        // If the continue condition (loop continues until condition evaluates false),
+        // raise an error
         if (continue_expression == null)
         {
             Reporter.ReportErrorAndExit(toString() + ": Iteration condition missing.");
         }
 
+        // Raise Error is the continue expression doesn evaluate to a boolean value
         if (!continue_expression.validate(symbolTable).equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)))
         {
             Reporter.ReportErrorAndExit(toString() + ": Iteration condition must be a boolean value.");
         }
 
+        // If an iteration expression is present (runs at the end of every loop, e.g. i++), validate it
         if (iteration_expression != null) iteration_expression.validate(symbolTable);
 
+        // Validate the body of the loop
         body.validate(symbolTable);
+
+        // Decrement loop depth back to original value
+        // (outside a loop, jump statements like break and continue
+        // are invalid).
+        CodeGenerator.loopDepth--;
 
     }
     

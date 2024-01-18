@@ -11,6 +11,7 @@ public class CompoundStatement extends Statement {
     public ArrayList<Declaration> declarations;
     public ArrayList<Statement> statements;
     public Boolean includesJump = false;
+    public Boolean includesReturn = false;
 
     public CompoundStatement(ArrayList<Declaration> decls, ArrayList<Statement> stmts)
     {
@@ -25,13 +26,19 @@ public class CompoundStatement extends Statement {
 
     public void GenerateBytecode(MethodVisitor mv) 
     {
+        /* Iterates through declarations, then statements, generating their bytecode
+         * by calling the common GenerateBytecode method
+         * 
+         * A small optimisation is performed here: if a JumpStatement is encountered,
+         * the code beyond is unreachable, and so is not generated.
+         * 
+         */
         for (Declaration decl : declarations) decl.GenerateBytecode(mv);
 
         for (Statement stmt : statements) 
         {
             stmt.GenerateBytecode(mv);
 
-            // Dead-Code elimination
             if (stmt instanceof JumpStatement)
             {
                 return;
@@ -42,6 +49,19 @@ public class CompoundStatement extends Statement {
     }
     
     public void validate(SymbolTable symbolTable) {
+        /* First, the declaration (which always come first) are validated.
+         * 
+         * Secondly, the statements are also validated. 
+         * includesJump and includesReturn are also set at this point.
+         * 
+         * These exist both for validatation  and code generatiomn reasons:
+         *  ->  If this CompoundStatement is the body of a function, includesReturn 
+         *      must be true.
+         *  ->  If this CompoundStatement is part of an if-else statement, includesJump 
+         *      indicates no more code should be generated to finish of the block.
+         */
+        
+        
         for (Declaration decl : declarations) decl.validate(symbolTable);
         
         for (Statement stmt : statements)
@@ -51,7 +71,10 @@ public class CompoundStatement extends Statement {
             if (stmt instanceof JumpStatement)
             {
                 includesJump = true;
-                break;
+                if (stmt instanceof ReturnStatement)
+                {
+                    includesReturn = true;
+                }
             }
         
         }
