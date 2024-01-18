@@ -102,7 +102,12 @@ fn sort(arr : int[], l : int, r : int) => void
 // Driver code
 fn main(args : str[]) => void
 {
-    let arr : int[] = new int[] { 12, 11, 13, 5, 6, 7 };
+    let arr : int[] = new int[args.length()];
+
+    for (let i : int = 0; i < args.length(); i++)
+    {
+        arr[i] = (int)args[i];
+    }
 
     print("Given array is");
     print(arr);
