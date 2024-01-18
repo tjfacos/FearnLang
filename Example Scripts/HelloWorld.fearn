@@ -1,4 +1,4 @@
 fn main(args : str[]) => void
 {
-    print("Hello, World!");
+    print("Hello\n, World!");
 }
