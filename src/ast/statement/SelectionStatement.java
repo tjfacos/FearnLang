@@ -93,34 +93,6 @@ public class SelectionStatement extends Statement {
         {
             mv.visitLabel(else_label);
             
-            // WARNING: May be broken
-            try {
-                mv.visitFrame(
-                    F_FULL, 
-                    numLocals, 
-                    locals, 
-                    0, 
-                    new Object[] {}
-                );
-            } catch (IllegalStateException e) {
-                mv.visitFrame(
-                    F_SAME, 
-                    0, 
-                    null, 
-                    0, 
-                    null
-                );
-            }
-
-            else_branch.GenerateBytecode(mv);
-        }
-
-
-        mv.visitLabel(end_label);
-
-        // WARNING this may break stuff
-
-        try {
             mv.visitFrame(
                 F_FULL, 
                 numLocals, 
@@ -128,16 +100,21 @@ public class SelectionStatement extends Statement {
                 0, 
                 new Object[] {}
             );
-        } catch (IllegalStateException e) {
-            mv.visitFrame(
-                F_SAME, 
-                0, 
-                null, 
-                0, 
-                null
-            );
+
+            else_branch.GenerateBytecode(mv);
         }
 
+
+        mv.visitLabel(end_label);
+
+        mv.visitFrame(
+            F_FULL, 
+            numLocals, 
+            locals, 
+            0, 
+            new Object[] {}
+        );
+        
     }
 
     public void validate(SymbolTable symbolTable) {

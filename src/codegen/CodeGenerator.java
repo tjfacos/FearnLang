@@ -1,6 +1,7 @@
 package codegen;
 
 import org.objectweb.asm.*;
+import org.objectweb.asm.tree.MethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -199,42 +200,52 @@ public class CodeGenerator {
         // Write Functions as Methods
 
 
-        for (Function func : functions)
+        for (Function function : functions)
         {
-            MethodVisitor fnVisitor = classWriter.visitMethod(
-                ACC_PUBLIC | ACC_STATIC, 
-                func.identifier, 
-                SymbolTable.GenFuncDescriptor(func.parameters, func.return_type), 
-                null, 
-                null
+            MethodVisitor function_visitor = new FearnMethodVisitor(ASM9, 
+                classWriter.visitMethod(
+                    ACC_PUBLIC | ACC_STATIC, 
+                    function.identifier, 
+                    SymbolTable.GenFuncDescriptor(function.parameters, function.return_type), 
+                    null, 
+                    null
+                )
             );
-            
-            LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(func.identifier);
-            CurrentFuncIdentifier = func.identifier;
 
-            fnVisitor.visitCode();
+            MethodNode function_node = new MethodNode(ASM9);
+            
+            LocalSymbolTable = GlobalSymbolTable.GetFuncSymbolTable(function.identifier);
+            CurrentFuncIdentifier = function.identifier;
+
+            function_node.visitCode();
 
             
             // Initialise all local variables to null
-            for (int i = func.parameters.size(); i < LocalSymbolTable.GetAllVarTypeSpecifiers().size(); i++)
+            for (int i = function.parameters.size(); i < LocalSymbolTable.GetAllVarTypeSpecifiers().size(); i++)
             {
-                fnVisitor.visitInsn(ACONST_NULL);
-                fnVisitor.visitVarInsn(ASTORE, i);
+                function_node.visitInsn(ACONST_NULL);
+                function_node.visitVarInsn(ASTORE, i);
             }
 
 
-            func.body.GenerateBytecode(fnVisitor);
+            function.body.GenerateBytecode(function_node);
 
             // Add a return instruction if void, and no return statement 
             // already included
-            if (func.is_void && !func.body.includesJump)
+            if (function.is_void && !function.body.includesJump)
             {
-                fnVisitor.visitInsn(RETURN);
+                function_node.visitInsn(RETURN);
             }
             
             // End Function Generation
-            fnVisitor.visitMaxs(0, 0);
-            fnVisitor.visitEnd();
+            function_node.visitMaxs(0, 0);
+            function_node.visitEnd();
+
+            // Eliminate redundant casting
+            CastOptimiser.EliminateRedundantCasts(function_node);
+
+            // Write all instructions to method visitor
+            function_node.accept(function_visitor);
         }
                     
         classWriter.visitEnd();
