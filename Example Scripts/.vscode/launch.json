@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "FearnC ${fileBasename} ; cd build ; FearnRun ${fileBasenameNoExtension} ${input:args}",
+            "command": "cd build ; FearnRun ${fileBasenameNoExtension} ${input:args}",
             "name": "Run FearnC",
             "request": "launch",
-            "type": "node-terminal"
+            "type": "node-terminal",
+            "preLaunchTask": "Build Fearn Program"
         }
     ],
     "inputs": [{
