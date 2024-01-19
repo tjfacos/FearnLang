@@ -17,7 +17,7 @@
       "configuration": "./fearn-language-configuration.json",
       "icon": {
         "dark": "./icons/FearnLang_icon.png",
-        "light": "./icons/FearnLang_icon.png"
+        "light": "./icons/FearnLang_icon_lightmode.png"
       }
     }],
     "grammars": [{
