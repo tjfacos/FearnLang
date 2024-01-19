@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "process",
+            "label": "Deploy Jar",
+            "command": "py",
+            "args": [".vscode/deploy.py"],
+            "group": {
+              "kind": "build",
+              "isDefault": true
+            },
+        }
+    ]
+}
