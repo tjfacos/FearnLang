@@ -1,0 +1,322 @@
+{
+	"fileTypes": [
+		"fearn"
+	],
+	"foldingStartMarker": "\\{\\s*$",
+	"foldingStopMarker": "^\\s*\\}",
+	"name": "Fearn",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#punctuation"
+		},
+		{
+			"include": "#annotations"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#constants-and-special-vars"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"fearndoc": {
+			"patterns": [
+				{
+					"match": "(\\[.*?\\])",
+					"captures": {
+						"0": {
+							"name": "variable.name.source.fearn"
+						}
+					}
+				},
+				{
+					"match": "^ {4,}(?![ \\*]).*",
+					"captures": {
+						"0": {
+							"name": "variable.name.source.fearn"
+						}
+					}
+				},
+				{
+					"begin": "```.*?$",
+					"end": "```",
+					"contentName": "variable.other.source.fearn"
+				},
+				{
+					"match": "(`.*?`)",
+					"captures": {
+						"0": {
+							"name": "variable.other.source.fearn"
+						}
+					}
+				},
+				{
+					"match": "(`.*?`)",
+					"captures": {
+						"0": {
+							"name": "variable.other.source.fearn"
+						}
+					}
+				},
+				{
+					"match": "(\\* ((    ).*))$",
+					"captures": {
+						"2": {
+							"name": "variable.other.source.fearn"
+						}
+					}
+				},
+				{
+					"match": "(\\*    .*)$"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.fearn"
+						}
+					},
+					"match": "/\\*\\*/",
+					"name": "comment.block.empty.fearn"
+				},
+				{
+					"include": "#comments-doc-oldschool"
+				},
+				{
+					"include": "#comments-doc"
+				},
+				{
+					"include": "#comments-inline"
+				}
+			]
+		},
+		"comments-doc-oldschool": {
+			"patterns": [
+				{
+					"begin": "/\\*\\*",
+					"end": "\\*/",
+					"name": "comment.block.documentation.fearn",
+					"patterns": [
+						{
+							"include": "#comments-doc-oldschool"
+						},
+						{
+							"include": "#comments-block"
+						},
+						{
+							"include": "#fearndoc"
+						}
+					]
+				}
+			]
+		},
+		"comments-doc": {
+			"patterns": [
+				{
+					"begin": "///",
+					"while": "^\\s*///",
+					"patterns": [
+						{
+							"include": "#fearndoc"
+						}
+					],
+					"name": "comment.block.documentation.fearn"
+				}
+			]
+		},
+		"comments-inline": {
+			"patterns": [
+				{
+					"include": "#comments-block"
+				},
+				{
+					"captures": {
+						"1": {
+							"name": "comment.line.double-slash.fearn"
+						}
+					},
+					"match": "((//).*)$"
+				}
+			]
+		},
+		"comments-block": {
+			"patterns": [
+				{
+					"begin": "/\\*",
+					"end": "\\*/",
+					"name": "comment.block.fearn",
+					"patterns": [
+						{
+							"include": "#comments-block"
+						}
+					]
+				}
+			]
+		},
+		"constants-and-special-vars": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(true|false)\\b(?!\\$)",
+					"name": "constant.language.fearn"
+				},
+				{
+					"match": "(?<!\\$)\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b(?!\\$)",
+					"name": "constant.numeric.fearn"
+				},
+				{
+					"match": "(?<![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*|bool\\b|int\\b|str\\b|float\\b)",
+					"name": "support.class.fearn"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(fn|break|continue|else|for|if|return)\\b(?!\\$)",
+					"name": "keyword.control.fearn"
+				},
+				{
+					"match": "(?<!\\$)\\b(new)\\b(?!\\$)",
+					"name": "keyword.control.new.fearn"
+				},
+				{
+					"match": "\\b(let)\\b",
+					"name": "keyword.control.let.fearn"
+				},
+				{
+					"match": "(=>)",
+					"name": "keyword.operator.closure.fearn"
+				},
+				{
+					"match": "(==|!=|<=?|>=?)",
+					"name": "keyword.operator.comparison.fearn"
+				},
+				{
+					"match": "(([+*/%-])=)",
+					"name": "keyword.operator.assignment.arithmetic.fearn"
+				},
+				{
+					"match": "(=)",
+					"name": "keyword.operator.assignment.fearn"
+				},
+				{
+					"match": "(\\-\\-|\\+\\+)",
+					"name": "keyword.operator.increment-decrement.fearn"
+				},
+				{
+					"match": "(\\-|\\+|\\*|\\/|%)",
+					"name": "keyword.operator.arithmetic.fearn"
+				},
+				{
+					"match": "(!|&&|\\|\\|)",
+					"name": "keyword.operator.logical.fearn"
+				},
+				{
+					"match": "(?<!\\$)\\b(?:void)\\b(?!\\$)",
+					"name": "storage.type.primitive.fearn"
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"begin": "(?<!r)\"\"\"",
+					"end": "\"\"\"(?!\")",
+					"name": "string.interpolated.triple.double.fearn"
+				},
+				{
+					"begin": "(?<!r)'''",
+					"end": "'''(?!')",
+					"name": "string.interpolated.triple.single.fearn"
+				},
+				{
+					"begin": "r\"\"\"",
+					"end": "\"\"\"(?!\")",
+					"name": "string.quoted.triple.double.fearn"
+				},
+				{
+					"begin": "r'''",
+					"end": "'''(?!')",
+					"name": "string.quoted.triple.single.fearn"
+				},
+				{
+					"begin": "(?<!\\|r)\"",
+					"end": "\"",
+					"name": "string.interpolated.double.fearn",
+					"patterns": [
+						{
+							"match": "\\n",
+							"name": "invalid.string.newline"
+						},
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"begin": "r\"",
+					"end": "\"",
+					"name": "string.quoted.double.fearn",
+					"patterns": [
+						{
+							"match": "\\n",
+							"name": "invalid.string.newline"
+						}
+					]
+				},
+				{
+					"begin": "(?<!\\|r)'",
+					"end": "'",
+					"name": "string.interpolated.single.fearn",
+					"patterns": [
+						{
+							"match": "\\n",
+							"name": "invalid.string.newline"
+						},
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"begin": "r'",
+					"end": "'",
+					"name": "string.quoted.single.fearn",
+					"patterns": [
+						{
+							"match": "\\n",
+							"name": "invalid.string.newline"
+						}
+					]
+				}
+			]
+		},
+		"punctuation": {
+			"patterns": [
+				{
+					"match": ",",
+					"name": "punctuation.comma.fearn"
+				},
+				{
+					"match": ";",
+					"name": "punctuation.terminator.fearn"
+				},
+				{
+					"match": "\\.",
+					"name": "punctuation.dot.fearn"
+				}
+			]
+		}
+	},
+	"scopeName": "source.fearn"
+}

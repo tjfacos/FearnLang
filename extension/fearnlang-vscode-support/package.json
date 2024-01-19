@@ -1,0 +1,29 @@
+{
+  "name": "fearnlang-vscode-support",
+  "displayName": "FearnLang VSCode Support",
+  "description": "Language Support (syntax highlighting) for FearnLang on VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "fearn",
+      "aliases": ["Fearn", "fearn"],
+      "extensions": [".fearn"],
+      "configuration": "./fearn-language-configuration.json",
+      "icon": {
+        "dark": "./icons/FearnLang_icon.png",
+        "light": "./icons/FearnLang_icon.png"
+      }
+    }],
+    "grammars": [{
+      "language": "fearn",
+      "scopeName": "source.fearn",
+      "path": "./syntaxes/fearn.tmLanguage.json"
+    }]
+  }
+}
