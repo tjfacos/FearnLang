@@ -277,12 +277,6 @@ public class CodeGenerator {
 
         File dir = new File(buildPath.toString());
         
-        if (dir.exists())
-        {
-            dir.delete();
-        }
-        
-        System.out.println(dir.toString());
         dir.mkdir();
 
         // Generate Class files to represent structs
@@ -296,11 +290,22 @@ public class CodeGenerator {
             finalProgramPath
         );
 
+        Path parent = Paths.get(sPath).getParent();
+
+        if (parent == null) 
+        Reporter.ReportSuccess(
+            String.format(
+                "Compilation Successful! \n\t -> Run `FearnRun %s [args...]` to run Program", 
+                mainProgramName
+            ), 
+            true
+        );
+
         
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
-                Paths.get(sPath).getParent().toString(),
+                parent.toString(),
                 mainProgramName
             ), 
             true

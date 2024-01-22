@@ -9,7 +9,7 @@
             "name": "Launch Fearn Compiler",
             "request": "launch",
             "mainClass": "FearnC",
-            "args": ["test/${input:testFile}", "--dir", "test/build"],
+            "args": ["-d", "output", "HelloWorld.fearn"],
             "stepFilters": {
                 "skipClasses": [
                     "$JDK",
@@ -32,7 +32,7 @@
             "type": "promptString",
             "id": "testFile",
             "description": "Enter Source File Path",
-            "default": "test.fearn"
+            "default": "test/test.fearn"
         }
     ]
 }

@@ -82,9 +82,6 @@ public class IterationStatement extends Statement {
             }
         }
 
-        // System.out.println(toString());
-
-
         // Visit start of loop
         mv.visitLabel(startLoopLabel);
 
