@@ -9,7 +9,7 @@
             "name": "Launch Fearn Compiler",
             "request": "launch",
             "mainClass": "FearnC",
-            "args": ["test/${input:testFile}"],
+            "args": ["test/${input:testFile}", "--dir", "test/build"],
             "stepFilters": {
                 "skipClasses": [
                     "$JDK",

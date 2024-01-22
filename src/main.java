@@ -9,6 +9,7 @@ import semantics.table.SymbolTable;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
+import java.nio.file.*;
 
 // Local
 import util.*;
@@ -45,7 +46,21 @@ class FearnC
         {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.");
         }
+        
+        // Get Build Path
+        if (args[1].equals("--dir"))
+        {
+            String program_name = Paths.get(args[0]).getFileName().toString();
 
+            try {
+                Path NewSourcePath = Paths.get(args[2], program_name);
+                args[0] = NewSourcePath.toString();
+            } catch (IndexOutOfBoundsException e) {
+                Reporter.ReportErrorAndExit("--dir command must be followed by output path.");
+            }
+        }
+
+        
         lexer = new FearnGrammarLexer(input);
         tokens = new CommonTokenStream(lexer);
         parser = new FearnGrammarParser(tokens);
@@ -65,6 +80,8 @@ class FearnC
 
         // Perform Type Analysis
         root.validate(symTable);
+
+
 
         cg.Generate(root, symTable, args[0]);
     }

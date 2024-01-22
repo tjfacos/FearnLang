@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Stack;
 
 public class CodeGenerator {
@@ -271,28 +270,20 @@ public class CodeGenerator {
 
         GlobalSymbolTable = symTab;
 
-        Path srcParent = Paths.get(sPath).toAbsolutePath().getParent();
+        Path buildPath = Paths.get(sPath).toAbsolutePath().getParent();
         mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
-        buildPath = Paths.get(srcParent.toString(), "build");
-
+        
         Path finalProgramPath = Paths.get( buildPath.toString(), mainProgramName + ".class" ).toAbsolutePath();
 
         File dir = new File(buildPath.toString());
-        dir.mkdir();
         
-        for (File file: Objects.requireNonNull(dir.listFiles())) {
-            file.delete();
+        if (dir.exists())
+        {
+            dir.delete();
         }
-
-
-        // Copy Runtime file to build directory
-        try {
-            Path RuntimePath = Paths.get(System.getenv("FEARNPATH"), "runtime", "FearnRuntime.class");
-            Files.copy(RuntimePath, buildPath.resolve(Paths.get("FearnRuntime.class")));
-        } catch (Exception e) {
-            Reporter.ReportErrorAndExit("Error Copying Runtime to build directory. Please define FEARNPATH at Compiler root.");;
-        }
-
+        
+        System.out.println(dir.toString());
+        dir.mkdir();
 
         // Generate Class files to represent structs
         GenerateStructs(root.structs);
@@ -305,16 +296,11 @@ public class CodeGenerator {
             finalProgramPath
         );
 
-        Path parent = Paths.get(sPath).getParent();
-        String pathString;
-
-        if (parent != null) pathString = parent.resolve("build").toString();
-        else pathString = "build";
-
+        
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
-                pathString,
+                Paths.get(sPath).getParent().toString(),
                 mainProgramName
             ), 
             true
