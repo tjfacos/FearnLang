@@ -1,7 +1,6 @@
 // ANTLR4 Dependencies
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-// import org.assertj.core.internal.Paths;
 
 // Generated ANTLR Dependencies
 import parser.*;
@@ -10,7 +9,6 @@ import semantics.table.SymbolTable;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
-import java.nio.file.Paths;
 
 // Local
 import util.*;
@@ -31,30 +29,19 @@ class FearnC
 
     public static void main(String[] args)
     {
-
-        // System.out.println(args.toString());
-
         if ( args.length == 0) {
             Reporter.ReportErrorAndExit("NO SOURCE FILE");
         }
 
         CharStream input = null;
 
-        if ( args[0].equals("--help") )
-        {
-            System.out.println("Usage: FearnC [--help |--dir <output directory>] <source file path>");
-            System.exit(0);
-        }
-
-        String program_path = args[args.length - 1];
-
         try {
-            input = CharStreams.fromStream(new FileInputStream(program_path));
+            input = CharStreams.fromStream(new FileInputStream(args[0]));
         } catch (Exception e) {
-            Reporter.ReportErrorAndExit("FILE " + program_path + " NOT FOUND");
+            Reporter.ReportErrorAndExit("FILE " + args[0] + " NOT FOUND");
         }
 
-        if (program_path.endsWith("FearnRuntime.fearn") )
+        if (args[0].endsWith("FearnRuntime.fearn") )
         {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.");
         }
@@ -76,13 +63,8 @@ class FearnC
 
         CodeGenerator.GlobalSymbolTable = symTable;
 
-        // Perform Semantic Analysis Traversal
+        // Perform Type Analysis
         root.validate(symTable);
-
-
-        String program_name = Paths.get(program_path).getFileName().toString();
-        System.out.println(program_name);
-
 
         cg.Generate(root, symTable, args[0]);
     }

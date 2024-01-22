@@ -1,4 +1,6 @@
 fn main(args : str[]) => void
 {
-    print("Hello, World!");
+
+    print(1-3);
+
 }
