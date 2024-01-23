@@ -3,7 +3,7 @@
 This repository also stores additional files for my AQA A-level Computer Science NEA.
 
 <p align="center">
-  <img src="https://github.com/tjfacos/FearnLang/blob/main/docs/images/FearnLang_logo_transparent.png "FearnLang" title="FearnLang" alt="FearnLang Logo"/>
+  <img src="https://github.com/tjfacos/FearnLang/blob/main/assets/images/FearnLang_logo_transparent.png "FearnLang" title="FearnLang" alt="FearnLang Logo"/>
 </p>
 
 
