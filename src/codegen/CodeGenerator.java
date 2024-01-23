@@ -270,13 +270,14 @@ public class CodeGenerator {
 
         GlobalSymbolTable = symTab;
 
-        buildPath = Paths.get(sPath).toAbsolutePath().getParent();
+        buildPath = Paths.get(sPath).toAbsolutePath().getParent().resolve("build");
         mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
         
-        Path finalProgramPath = Paths.get( buildPath.toString(), mainProgramName + ".class" ).toAbsolutePath();
+        Path finalProgramPath = buildPath.resolve(mainProgramName + ".class").toAbsolutePath();
 
         File dir = new File(buildPath.toString());
-        
+
+        if (dir.exists()) dir.delete();
         dir.mkdir();
 
         // Generate Class files to represent structs
@@ -290,18 +291,8 @@ public class CodeGenerator {
             finalProgramPath
         );
 
-        Path parent = Paths.get(sPath).getParent();
-
-        if (parent == null) 
-        Reporter.ReportSuccess(
-            String.format(
-                "Compilation Successful! \n\t -> Run `FearnRun %s [args...]` to run Program", 
-                mainProgramName
-            ), 
-            true
-        );
-
-        
+        Path parent = Paths.get(sPath).getParent().resolve("build");
+     
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 

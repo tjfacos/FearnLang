@@ -5,7 +5,7 @@
             "name": "Compile and Run Fearn Program",
             "type": "f5anything",
             "request": "launch",
-            "command": "FearnRun ${fileBasenameNoExtension} ${input:args}",
+            "command": "cd ${relativeFileDirname}\\build; FearnRun ${fileBasenameNoExtension} ${input:args}",
             "preLaunchTask": "Build Fearn Program"
         }
     ],

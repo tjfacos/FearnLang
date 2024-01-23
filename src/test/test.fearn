@@ -1,51 +1,14 @@
-fn main(args : str[]) => void
-{
-    let list : int[] = new int[args.length()];
-
-    for (let i : int = 0; i < args.length(); i++)
-    {
-        list[i] = (int)args[i];
-    }
-
-    print(list.stalinSort());
-
+struct Person {
+    let name : str;
+    let age : int;
 }
 
-fn stalinSort(list : int[]) => int[]
+fn main(args : str[]) => void
 {
-    
-    let temp_list : int[];
-    let final_list : int[];
-    let temp_ptr : int;
-    let last : int;
+    let user : $Person = new Person(
+        args[0],
+        (int)args[1]
+    );
 
-    if (list.length() == 0)
-    {
-        return list;
-    }
-
-    temp_list = new int[list.length()];
-    temp_ptr = 1;
-    last = list[0];
-    
-
-    temp_list[0] = last;
-
-    for (let i : int = 1; i < list.length(); i++)
-    {
-        if (list[i] >= last)
-        {
-            last = list[i];
-            temp_list[temp_ptr++] = list[i];
-        }
-    }
-
-    final_list = new int[temp_ptr];
-    for (i = 0; i < temp_ptr; i++)
-    {
-        final_list[i] = temp_list[i];
-    }
-
-    return final_list;
-
+    print("The user is " + user.name + ", a " + (str)user.age + " year old.");
 }

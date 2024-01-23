@@ -5,7 +5,7 @@
             "type": "shell",
             "label": "Build Fearn Program",
             "command": "FearnC",
-            "args": ["${fileBasename}"],
+            "args": ["${relativeFile}"],
             "group": {
                 "kind": "build",
                 "isDefault": false
