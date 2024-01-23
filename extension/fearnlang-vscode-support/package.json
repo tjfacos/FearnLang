@@ -3,6 +3,16 @@
   "displayName": "FearnLang VSCode Support",
   "description": "Language Support (syntax highlighting) for FearnLang on VSCode",
   "version": "0.0.1",
+  "author": {
+    "name": "Thomas Facos",
+    "email": "tjfacos@gmail.com"
+  },
+  "publisher": "Thomas Facos",
+  "icon": "./icons/FearnLang_icon.png",
+  "repository": {
+    "url": "https://github.com/tjfacos/FearnLang/tree/main",
+    "directory": "extension/fearnlang-vscode-support"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
