@@ -33,7 +33,7 @@
             "type": "process",
             "label": "Deploy Jar",
             "command": "py",
-            "args": ["util/DeployJar.py"],
+            "args": [".vscode/DeployJar.py"],
             "group": {
               "kind": "build",
               "isDefault": false
