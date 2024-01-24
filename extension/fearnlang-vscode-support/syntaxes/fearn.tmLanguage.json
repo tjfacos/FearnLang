@@ -182,7 +182,7 @@
 		"keywords": {
 			"patterns": [
 				{
-					"match": "(?<!\\$)\\b(fn|break|continue|else|for|if|return)\\b(?!\\$)",
+					"match": "(?<!\\$)\\b(fn|struct|break|continue|else|for|if|return)\\b(?!\\$)",
 					"name": "keyword.control.fearn"
 				},
 				{
