@@ -46,12 +46,12 @@ public class ReturnStatement extends JumpStatement {
         {
             // Expect expression to be null, error otherwise
             if (expression == null) return;
-            else Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected void", null);
+            else Reporter.ReportErrorAndExit("Incorrect return type, expected void", this);
         } else {
             // Expect type of expression to match current return type
             if (expression == null || !expression.validate(symbolTable).equals(CodeGenerator.CurrentReturnType)) 
             {
-                Reporter.ReportErrorAndExit(toString() + ": Incorrect return type, expected " + CodeGenerator.CurrentReturnType.toString(), null);
+                Reporter.ReportErrorAndExit("Incorrect return type, expected " + CodeGenerator.CurrentReturnType.toString(), this);
             }
             else return;
         }

@@ -15,7 +15,7 @@ fn main(args : str[]) => void
 
     for (let i : int = 0; i < args.length() - 1; i++)
     {
-        list[i] = (str)args[i];
+        list[i] = (int)args[i];
     }
 
     print("SEARCH TERM IS : " + (str)term);

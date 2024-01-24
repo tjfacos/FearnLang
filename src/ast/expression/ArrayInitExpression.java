@@ -113,7 +113,7 @@ public class ArrayInitExpression extends Expression {
                 TypeSpecifier dim_type = e.validate(symTable);
                 if (!dim_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Dimensions of arrays must be of type int.", this);
+                    Reporter.ReportErrorAndExit("Dimensions of arrays must be of type int.", this);
                 }
             }
             

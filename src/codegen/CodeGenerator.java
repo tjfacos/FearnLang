@@ -81,15 +81,15 @@ public class CodeGenerator {
                     );  
     
                         
-                    // Generate Constructor Instructions that take in an arguement, and load it into the attribute, specified by decl
+                    // Generate Constructor Instructions that take in an argument, and load it into the attribute, specified by decl
                     
                     // Load 'this' to operand stack
                     cv.visitVarInsn(ALOAD, 0);
                     
-                    // Load Arguement to operand stack
+                    // Load argument to operand stack
                     cv.visitVarInsn(ALOAD, ++i);
                     
-                    // Assign Arguement to Field
+                    // Assign argument to Field
                     cv.visitFieldInsn(
                         PUTFIELD, 
                         "$"+struct.identifier, 

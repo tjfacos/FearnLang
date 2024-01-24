@@ -42,7 +42,7 @@ public class ExpressionStatement extends Statement {
         
         if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.", null);
+            Reporter.ReportErrorAndExit("Invalid Statement.", this);
         }
 
         expression.validate(symbolTable);

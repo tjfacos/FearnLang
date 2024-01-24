@@ -24,7 +24,8 @@ public class PrimaryExpression<T> extends Expression {
     @Override
     public String toString()
     {
-        return value.toString();
+        if (type == ExprType.StrLiteral) return "\"" + value.toString() + "\"";
+        else return value.toString();
     }
 
     public void GenerateBytecode(MethodVisitor mv)

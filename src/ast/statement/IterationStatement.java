@@ -175,13 +175,13 @@ public class IterationStatement extends Statement {
         // raise an error
         if (continue_expression == null)
         {
-            Reporter.ReportErrorAndExit(toString() + ": Iteration condition missing.", null);
+            Reporter.ReportErrorAndExit("Iteration condition missing.", this);
         }
 
         // Raise Error is the continue expression doesn evaluate to a boolean value
         if (!continue_expression.validate(symbolTable).equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Iteration condition must be a boolean value.", null);
+            Reporter.ReportErrorAndExit("Iteration condition must be a boolean value.", this);
         }
 
         // If an iteration expression is present (runs at the end of every loop, e.g. i++), validate it
