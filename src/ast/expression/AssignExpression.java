@@ -37,7 +37,7 @@ public class AssignExpression extends Expression {
     @Override 
     public String toString()
     {
-        String opString;
+        String opString = null;
 
         switch (operator) {
             case Equals:
@@ -60,7 +60,7 @@ public class AssignExpression extends Expression {
                 break;
         }
 
-        return target.toString() + " " + operator.name() + expression.toString();
+        return target.toString() + " " + opString + " " + expression.toString();
     }
 
 
