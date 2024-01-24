@@ -27,7 +27,7 @@ public class JumpStatement extends Statement {
 
     @Override public String toString()
     {
-        return type.name() + ";";
+        return type.name().toLowerCase() + ";";
     }
 
 

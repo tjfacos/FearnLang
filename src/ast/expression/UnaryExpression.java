@@ -26,7 +26,19 @@ public class UnaryExpression extends Expression {
     @Override
     public String toString()
     {
-        return '(' + operator.name() + ' ' + operand.toString() + ')';
+        String opString = null;
+
+        switch (operator) {
+            case Negate:
+                opString = "-";
+                break;
+            case LogicalNot:
+                opString = "!";
+            default:
+                break;
+        }
+
+        return opString + operand.toString();
     }
 
     @Override

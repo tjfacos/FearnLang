@@ -19,7 +19,7 @@ import util.Reporter;
 public class FnCallExpression extends Expression {
     
     public String identifier;
-    public ArrayList<Expression> arguements;
+    public ArrayList<Expression> arguments;
     
     static List<String> builtins = Arrays.asList("print", "input", "length", "slice");
 
@@ -27,13 +27,13 @@ public class FnCallExpression extends Expression {
     public FnCallExpression(String fn_name, ArrayList<Expression> args)
     {
         identifier = fn_name;
-        arguements = args;
+        arguments = args;
     }
     
     @Override
     public String toString()
     {
-        return identifier + "(" + arguements.toString() + ")";
+        return identifier + "(" + arguments.toString() + ")";
     }
     
     @Override
@@ -41,7 +41,7 @@ public class FnCallExpression extends Expression {
         
         
         // Gen args, then INVOKESTATIC
-        for (Expression arg : arguements) arg.GenerateBytecode(mv);
+        for (Expression arg : arguments) arg.GenerateBytecode(mv);
         
         String desc;
         
@@ -62,7 +62,7 @@ public class FnCallExpression extends Expression {
             case "slice":
                 String t = null;
 
-                if (arguements.get(0).expression_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR))) t = "Ljava/lang/String;";
+                if (arguments.get(0).expression_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR))) t = "Ljava/lang/String;";
                 else t = "[Ljava/lang/Object;";
 
                 desc = String.format( "(%sLjava/lang/Integer;Ljava/lang/Integer;)%s", t, t );
@@ -87,7 +87,7 @@ public class FnCallExpression extends Expression {
             
             if (identifier.equals("slice") && desc.contains("Object"))
             {
-                mv.visitTypeInsn(CHECKCAST, SymbolTable.GenBasicDescriptor(arguements.get(0).expression_type));
+                mv.visitTypeInsn(CHECKCAST, SymbolTable.GenBasicDescriptor(arguments.get(0).expression_type));
             }
             
             return;
@@ -117,12 +117,12 @@ public class FnCallExpression extends Expression {
             // input(str)
             case "input":
                 
-                if (arguements.size() != 1)
+                if (arguments.size() != 1)
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
-                if (!arguements.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
+                if (!arguments.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong data type, expected String.");
                 }
@@ -133,12 +133,12 @@ public class FnCallExpression extends Expression {
 
             // print(obj)
             case "print":
-                if (arguements.size() != 1)
+                if (arguments.size() != 1)
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
-                arguements.get(0).validate(symTable);
+                arguments.get(0).validate(symTable);
 
                 return null;
             
@@ -146,14 +146,14 @@ public class FnCallExpression extends Expression {
 
             // length(<str|arr>)
             case "length":
-                if (arguements.size() != 1)
+                if (arguments.size() != 1)
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 1.");
                 }
 
                 if (!(
-                    arguements.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)) ||
-                    arguements.get(0).validate(symTable) instanceof ArraySpecifier
+                    arguments.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)) ||
+                    arguments.get(0).validate(symTable) instanceof ArraySpecifier
                 ))
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong arguement data type, expected string or array.");
@@ -166,28 +166,28 @@ public class FnCallExpression extends Expression {
 
             // slice(<str|arr>, int, int);
             case "slice":
-                if (arguements.size() != 3)
+                if (arguments.size() != 3)
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected 3.");
                 }
 
                 if (!(
-                    arguements.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)) ||
-                    arguements.get(0).validate(symTable) instanceof ArraySpecifier
+                    arguments.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)) ||
+                    arguments.get(0).validate(symTable) instanceof ArraySpecifier
                 ))
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong arguement data type, expected string or array.");
                 }
 
                 if (!(
-                    arguements.get(1).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.INT)) ||
-                    arguements.get(2).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.INT))
+                    arguments.get(1).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.INT)) ||
+                    arguments.get(2).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.INT))
                 ))
                 {
                     Reporter.ReportErrorAndExit(toString() + ": Wrong arguement data type, expected int.");
                 }
 
-                expression_type =  arguements.get(0).expression_type;
+                expression_type =  arguments.get(0).expression_type;
                 return expression_type;
 
                 
@@ -201,12 +201,12 @@ public class FnCallExpression extends Expression {
 
         ArrayList<TypeSpecifier> param_types = CodeGenerator.GlobalSymbolTable.GetFuncParameterSpecifiers(identifier);
 
-        for (Expression arg : arguements)
+        for (Expression arg : arguments)
         {
             arg_types.add(arg.validate(symTable));
         }
 
-        if (arguements.size() != param_types.size())
+        if (arguments.size() != param_types.size())
         {
             Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements for " + identifier + " , expected" + param_types.size() + ".");
         }
@@ -215,7 +215,7 @@ public class FnCallExpression extends Expression {
         {
             if (!param_types.get(i).equals(arg_types.get(i)))
             {
-                Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguements.get(i).toString() + ", expected " + param_types.get(i).toString());
+                Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguments.get(i).toString() + ", expected " + param_types.get(i).toString());
             }
         }
 

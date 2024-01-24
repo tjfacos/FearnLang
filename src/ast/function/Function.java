@@ -32,14 +32,13 @@ public class Function extends ASTNode {
 
     @Override public String toString()
     {
-        String r = "void";
-        if (return_type != null) {r = return_type.toString();}
+        String ret_type_str = "void";
+        if (return_type != null) {ret_type_str = return_type.toString();}
         return String.format(
-            "%s FUNC %s %s %s", 
-            r, 
+            "fn %s%s => %s {...}",  
             identifier,
-            parameters.toString(),
-            body.toString()
+            parameters.toString().replace("[", "(").replace("]", ")"),
+            ret_type_str
         );
     }
 

@@ -20,7 +20,7 @@ public class ReturnStatement extends JumpStatement {
 
     @Override public String toString()
     {
-        return type.name() + " " + expression.toString() + ";";
+        return "return " + expression == null ? "" : expression.toString() + ";";
     }
 
     @Override

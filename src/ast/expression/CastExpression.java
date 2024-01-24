@@ -23,7 +23,7 @@ public class CastExpression extends Expression {
     @Override
     public String toString()
     {
-        return "( " + Operand.toString() + " -> " + target.name() + " )";
+        return "(" + target.name().toLowerCase() + ")" + Operand.toString();
     }
 
     @Override

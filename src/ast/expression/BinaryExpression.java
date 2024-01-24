@@ -26,7 +26,57 @@ public class BinaryExpression extends Expression {
     @Override
     public String toString()
     {
-        return '(' + Op1.toString() + ' ' + Operation.name() + ' ' + Op2.toString() + ')';
+
+        String opString = null;
+
+        switch (Operation) {
+            case Add:
+                opString = "+";
+                break;
+            case Sub:
+                opString = "-";
+                break;
+            case Mult:
+                opString = "*";
+                break;
+            case Div:
+                opString = "/";
+                break;
+            case Mod:
+                opString = "%";
+                break;
+            case Exponent:
+                opString = "^";
+                break;
+            case Less:
+                opString = "<";
+                break;
+            case LessEq:
+                opString = "<=";
+                break;
+            case Greater:
+                opString = ">";
+                break;
+            case GreaterEq:
+                opString = ">=";
+                break;
+            case LogicalAnd:
+                opString = "&&";
+                break;
+            case LogicalOr:
+                opString = "||";
+                break;
+            case Eq:
+                opString = "==";
+                break;
+            case NotEq:
+                opString = "!=";
+                break;
+            default:
+                break;
+        }
+
+        return Op1.toString() + ' ' + opString + ' ' + Op2.toString();
     }
 
     @Override

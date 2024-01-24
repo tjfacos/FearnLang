@@ -22,7 +22,7 @@ public class ExpressionStatement extends Statement {
     
     @Override public String toString()
     {
-        return expression.toString();
+        return expression.toString() + ";";
     }
 
     @Override

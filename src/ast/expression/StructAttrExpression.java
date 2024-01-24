@@ -26,7 +26,7 @@ public class StructAttrExpression extends Expression {
     @Override
     public String toString()
     {
-        return  "$" + instance.toString() + "." + attribute.toString();
+        return  instance.toString() + "." + attribute.toString();
     }
 
     @Override

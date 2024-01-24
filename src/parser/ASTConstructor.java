@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import parser.gen.*;
-import semantics.table.FunctionRow;
-import semantics.table.StructRow;
-import semantics.table.SymbolTable;
-import semantics.table.VariableRow;
+import semantics.table.*;
 import util.*;
-
 
 import ast.*;
 import ast.expression.*;
@@ -339,7 +335,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
             FnCallExpression Ufunction_call = (FnCallExpression)postdot;
     
-            Ufunction_call.arguements.add(0, predot);
+            Ufunction_call.arguments.add(0, predot);
             return Ufunction_call;
         }
         else if (postdot.getClass() == PrimaryExpression.class && ((PrimaryExpression)postdot).type == ExprType.VariableReference)

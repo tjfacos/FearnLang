@@ -32,10 +32,35 @@ public class AssignExpression extends Expression {
         operator = op;
     }
 
+
+
     @Override 
     public String toString()
     {
-        return target.toString() + " " + operator.name() + " ( " + expression.toString() + " ) ";
+        String opString;
+
+        switch (operator) {
+            case Equals:
+                opString = "=";
+                break;
+            case AddEquals:
+                opString = "+=";
+                break;
+            case SubEquals:
+                opString = "-=";
+                break;
+            case MultEquals:
+                opString = "*=";
+                break;
+            case DivEquals:
+                opString = "/=";
+                break;
+            case ModEquals:
+                opString = "%=";
+                break;
+        }
+
+        return target.toString() + " " + operator.name() + expression.toString();
     }
 
 

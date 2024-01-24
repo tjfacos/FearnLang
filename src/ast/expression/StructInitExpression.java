@@ -25,7 +25,7 @@ public class StructInitExpression extends Expression {
     @Override
     public String toString()
     {
-        return "$" + name + "( " + arguements.toString() + " )";
+        return "new " + name + arguements.toString().replace("[", "(").replace("]", ")");
     }
 
     @Override

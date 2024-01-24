@@ -23,7 +23,7 @@ public class ArrayBody extends Expression {
     @Override
     public String toString()
     {
-        return "{" + elements.toString() + "}";
+        return elements.toString().replace("[", "{").replace("]", "}");
     }
 
     @Override
