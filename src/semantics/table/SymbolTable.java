@@ -21,7 +21,7 @@ public class SymbolTable {
         {
             if (new_row.getClass() == r.getClass() && r.identifier.equals(new_row.identifier))
             {
-                Reporter.ReportErrorAndExit("Symbol " + new_row.identifier + " can only exist once within scope.");
+                Reporter.ReportErrorAndExit("Symbol " + new_row.identifier + " can only exist once within scope.", null);
             }
         }
 
@@ -83,7 +83,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.");
+        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", null);
         
         return null;
     }
@@ -107,7 +107,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Unknown Variable " + id);
+        Reporter.ReportErrorAndExit("Unknown Variable " + id, null);
         
         return null;
     }
@@ -118,7 +118,7 @@ public class SymbolTable {
             if (Rows.get(i).identifier.equals(id))  { return i; }
         }
         
-        Reporter.ReportErrorAndExit("Unknown Variable " + id);
+        Reporter.ReportErrorAndExit("Unknown Variable " + id, null);
         
         return null;
     }
@@ -155,7 +155,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.");
+        Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.", null);
         
         return null;
     }
@@ -171,7 +171,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.");
+        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.", null);
         
         return null;
     }
@@ -193,7 +193,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Function " + id + " is not defined.");
+        Reporter.ReportErrorAndExit("Function " + id + " is not defined.", null);
         
         return t_list;
     }
@@ -212,7 +212,7 @@ public class SymbolTable {
             }
         }
 
-        Reporter.ReportErrorAndExit("Struct " + id + " not defined.");
+        Reporter.ReportErrorAndExit("Struct " + id + " not defined.", null);
 
         return null;
 
@@ -256,7 +256,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Descriptor for struct " + id + " not found.");
+        Reporter.ReportErrorAndExit("Descriptor for struct " + id + " not found.", null);
         
         return null;
     }
@@ -270,7 +270,7 @@ public class SymbolTable {
             }
         }
         
-        Reporter.ReportErrorAndExit("Symbol Table for struct " + id + " not found.");
+        Reporter.ReportErrorAndExit("Symbol Table for struct " + id + " not found.", null);
         
         return null;
     }

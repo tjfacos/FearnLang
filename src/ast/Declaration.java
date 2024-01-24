@@ -53,7 +53,7 @@ public class Declaration extends ASTNode {
 
         if (!targetType.equals(exprType))
         {
-            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString(), this);
         }
     }
 

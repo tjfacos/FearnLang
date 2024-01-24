@@ -97,12 +97,12 @@ public class ArrayInitExpression extends Expression {
     
             if (!typeOfElements.equals(type))
             {
-                Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.");
+                Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.", this);
             }
 
             if (bodySpecifier.dimensions.size() != dimenisons.size())
             {
-                Reporter.ReportErrorAndExit("Dimensions of Array Body don't match dimensions of Array Initialisation.");
+                Reporter.ReportErrorAndExit("Dimensions of Array Body don't match dimensions of Array Initialisation.", this);
             }
 
             expression_type = new ArraySpecifier(type, bodySpecifier.dimensions.size());
@@ -113,7 +113,7 @@ public class ArrayInitExpression extends Expression {
                 TypeSpecifier dim_type = e.validate(symTable);
                 if (!dim_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
                 {
-                    Reporter.ReportErrorAndExit(toString() + ": Dimensions of arrays must be of type int.");
+                    Reporter.ReportErrorAndExit(toString() + ": Dimensions of arrays must be of type int.", this);
                 }
             }
             

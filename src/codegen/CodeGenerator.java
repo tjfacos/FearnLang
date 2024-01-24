@@ -110,7 +110,7 @@ public class CodeGenerator {
                 try {
                     Files.write(destination, classWriter.toByteArray());
                 } catch (IOException e) {
-                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString());;
+                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), null);;
                 }
                 
                 Reporter.ReportSuccess(
@@ -254,7 +254,7 @@ public class CodeGenerator {
         try {
             Files.write(finalProgramPath, bytecode);
         } catch (IOException e) {
-            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString());;
+            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), null);;
         }
         
         Reporter.ReportSuccess(

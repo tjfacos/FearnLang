@@ -30,7 +30,7 @@ class FearnC
     public static void main(String[] args)
     {
         if ( args.length == 0) {
-            Reporter.ReportErrorAndExit("NO SOURCE FILE");
+            Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
 
         CharStream input = null;
@@ -42,12 +42,12 @@ class FearnC
         try {
             input = CharStreams.fromStream(new FileInputStream(sourceFileArgument));
         } catch (Exception e) {
-            Reporter.ReportErrorAndExit("FILE " + sourceFileArgument + " NOT FOUND");
+            Reporter.ReportErrorAndExit("FILE " + sourceFileArgument + " NOT FOUND", null);
         }
 
         if (sourceFileArgument.endsWith("FearnRuntime.fearn") )
         {
-            Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.");
+            Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
 
                

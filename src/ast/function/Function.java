@@ -65,7 +65,7 @@ public class Function extends ASTNode {
 
         if (!body.includesReturn && return_type != null)
         {
-            Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.");
+            Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.", null);
         }
     }
 }

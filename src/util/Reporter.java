@@ -1,5 +1,7 @@
 package util;
 
+import ast.ASTNode;
+
 public class Reporter {
 
     static String ANSI_RESET   = (char)27 + "[0m";
@@ -11,8 +13,9 @@ public class Reporter {
 
 
     
-    static public void ReportErrorAndExit(String err)
+    static public void ReportErrorAndExit(String err, ASTNode offendingNode)
     {
+        if (offendingNode == null)
         System.out.println(
             String.format(
                 "FearnC: %s%sERROR: %s %s", 
@@ -22,6 +25,18 @@ public class Reporter {
                 ANSI_RESET
             )
         );
+        else 
+        System.out.println(
+            String.format(
+                "FearnC: %s%sERROR: %s - %s %s", 
+                ANSI_BOLD,
+                ANSI_RED,
+                offendingNode.toString(),
+                err,
+                ANSI_RESET
+            )
+        );
+        
         
         System.exit(1);
     }

@@ -56,12 +56,12 @@ public class IndexExpression extends Expression {
 
         if (seq_type.getClass() != ArraySpecifier.class && !seq_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Can only take index of Arrays and Strings.");
+            Reporter.ReportErrorAndExit(toString() + ": Can only take index of Arrays and Strings.", null);
         }
 
         if (!index_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Index can only be an int.");
+            Reporter.ReportErrorAndExit(toString() + ": Index can only be an int.", null);
         }
 
         

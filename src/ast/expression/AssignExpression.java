@@ -143,7 +143,7 @@ public class AssignExpression extends Expression {
 
         if (!targetType.equals(exprType))
         {
-            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString(), this);
         }
 
 
@@ -151,7 +151,7 @@ public class AssignExpression extends Expression {
         else if (target.getClass() == IndexExpression.class) {}
         else if (target.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName());
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
         }
 
 

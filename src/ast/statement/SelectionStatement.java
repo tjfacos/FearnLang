@@ -130,7 +130,7 @@ public class SelectionStatement extends Statement {
     public void validate(SymbolTable symbolTable) {
         if(!condition.validate(symbolTable).equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)))
         {
-            Reporter.ReportErrorAndExit(condition.toString() + ": Condition must be boolean.");
+            Reporter.ReportErrorAndExit(condition.toString() + ": Condition must be boolean.", null);
         }
 
         if_branch.validate(symbolTable);

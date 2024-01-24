@@ -40,7 +40,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 " Line %s : Variable Identifer Unknown in Scope: %s .",
                 ctx.getStart().getLine(),
                 id
-            ));
+            ), null);
         }
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
@@ -69,7 +69,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 return new PrimaryExpression<String>(ctx.getText().substring( 1, ctx.getText().length() - 1), ExprType.StrLiteral);
             
             default:
-                Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value");
+                Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value", null);
         }
         
         return null;
@@ -347,7 +347,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 "%s.%s is not an attribute expression or a function call.", 
                 predot.toString(), 
                 postdot.toString()
-            ));
+            ), null);
             return null;
         }
     }

@@ -54,14 +54,14 @@ public class StructInitExpression extends Expression {
 
         if (attr_types.size() != arguements.size())
         {
-            Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected " + attr_types.size());
+            Reporter.ReportErrorAndExit("Wrong number of arguements, expected " + attr_types.size(), this);
         }
 
         for (int i = 0; i< attr_types.size(); i++)
         {
             if (!arguements.get(i).validate(symTable).equals(attr_types.get(i)))
             {
-                Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguements.get(i).toString() + ", expected " + attr_types.get(i).toString());
+                Reporter.ReportErrorAndExit("Wrong arguement type for " + arguements.get(i).toString() + ", expected " + attr_types.get(i).toString(), this);
             }
         }
 

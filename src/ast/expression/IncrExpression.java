@@ -60,7 +60,7 @@ public class IncrExpression extends Expression {
         else if (expression.getClass() == IndexExpression.class) {}
         else if (expression.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + expression.getClass().getName());
+            Reporter.ReportErrorAndExit("Cannot assign value to " + expression.getClass().getName(), null);
         }
 
 
@@ -68,7 +68,7 @@ public class IncrExpression extends Expression {
         
         if ((!expr_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT))))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Can only increment/decrement ints.");
+            Reporter.ReportErrorAndExit(toString() + ": Can only increment/decrement ints.", null);
         }
 
         incStatement = new ExpressionStatement(

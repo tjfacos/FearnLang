@@ -242,7 +242,7 @@ public class BinaryExpression extends Expression {
                 mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
                 return;
             default:
-                Reporter.ReportErrorAndExit("Error in Generating Binary Expression.");
+                Reporter.ReportErrorAndExit("Error in Generating Binary Expression.", null);
                 break;
         }
     }
@@ -284,7 +284,7 @@ public class BinaryExpression extends Expression {
                             break;
                     }
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + ": Operators must be either (a) both ints, or (b) both floats.");
+                    Reporter.ReportErrorAndExit("Operators must be either (a) both ints, or (b) both floats.", this);
                 }
                 break;   
                 
@@ -300,7 +300,7 @@ public class BinaryExpression extends Expression {
                 ) {
                     expression_type = op1_type; // This may cause errors, I dunno...
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + ": Operators must be either (a) both ints, (b) both floats, or (c) both strings.");
+                    Reporter.ReportErrorAndExit("Operators must be either (a) both ints, (b) both floats, or (c) both strings.", this);
                 }
                 break;   
             
@@ -309,7 +309,7 @@ public class BinaryExpression extends Expression {
                 if ( op1_type.equals(op2_type) && op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)) ) {
                     expression_type = op1_type; // This may cause errors, I dunno...
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + ": Operators must both be ints.");
+                    Reporter.ReportErrorAndExit("Operators must both be ints.", this);
                 }
                 break;
         
@@ -319,7 +319,7 @@ public class BinaryExpression extends Expression {
                 if ( op1_type.equals(op2_type) && op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)) ) {
                     expression_type = op1_type; // This may cause errors, I dunno...
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + ": Operators must both be boolean values.");
+                    Reporter.ReportErrorAndExit("Operators must both be boolean values.", this);
                 }
                 break;
 
@@ -329,12 +329,12 @@ public class BinaryExpression extends Expression {
                 if ( op1_type.equals(op2_type)) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + ": Operators must both be of the same type.");
+                    Reporter.ReportErrorAndExit("Operators must both be of the same type.", this);
                 }
                 break;
             
             default:
-                Reporter.ReportErrorAndExit(toString() + ": An Error has occured.");
+                Reporter.ReportErrorAndExit("An Error has occured.", this);
                 break;
         
         }
