@@ -4,7 +4,7 @@ Outfile "FearnInstaller.exe"
 InstallDir $PROGRAMFILES\FearnLang
 
 ; The text to prompt the user to enter a directory
-DirText "This will install My Cool Program on your computer. Choose a directory"
+DirText "This will install the Fearn Programming Language on your computer. Choose a directory"
 
 RequestExecutionLevel admin
 
