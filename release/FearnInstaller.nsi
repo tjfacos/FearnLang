@@ -10,32 +10,41 @@ RequestExecutionLevel admin
 
 Section
  
-  # define the output path for this file
+  ; define the output path for this file
   SetOutPath $INSTDIR
 
   File /r FearnC.jar
   File /r FearnC.cmd
   File /r FearnRun.cmd
 
-  # define uninstaller name
+  ; Add INSTDIR to the system's PATH
+  StrCpy $0 $INSTDIR
+  StrCmp $0 "" 0 +3
+    StrCpy $1 "$0;$0" ; append the directory twice to handle the case when PATH is empty
+    System::Call 'kernel32::SetEnvironmentVariable(t "Path", t "$1")'
+
+  ; Set the CLASSPATH environment variable to include the .jar file
+  System::Call 'kernel32::SetEnvironmentVariable(t "CLASSPATH", t "$INSTDIR\FearnC.jar;%CLASSPATH%")'
+
+  ; define uninstaller name
   WriteUninstaller $INSTDIR\uninstaller.exe
  
 SectionEnd
 
  
-# create a section to define what the uninstaller does.
-# the section will always be named "Uninstall"
+; create a section to define what the uninstaller does.
+; the section will always be named "Uninstall"
 Section "Uninstall"
   
-  # Delete installed file
+  ; Delete installed file
   Delete $INSTDIR\FearnC.jar
   Delete $INSTDIR\FearnC.cmd
   Delete $INSTDIR\FearnRun.cmd
   
-  # Delete the uninstaller
+  ; Delete the uninstaller
   Delete $INSTDIR\uninstaller.exe
   
-  # Delete the directory
+  ; Delete the directory
   RMDir $INSTDIR
 
 SectionEnd
