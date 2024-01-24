@@ -5,10 +5,12 @@ struct Person {
 
 fn main(args : str[]) => void
 {
+
     let user : $Person = new Person(
         args[0],
         (int)args[1]
     );
 
     print("The user is " + user.name + ", a " + (str)user.age + " year old.");
+
 }

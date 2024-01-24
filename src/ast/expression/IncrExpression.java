@@ -4,7 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.AssignExpression.AssignmentOperator;
 import ast.statement.ExpressionStatement;
-import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;

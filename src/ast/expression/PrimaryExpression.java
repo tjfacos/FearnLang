@@ -4,7 +4,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.MethodVisitor;
 
-import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import codegen.CodeGenerator;

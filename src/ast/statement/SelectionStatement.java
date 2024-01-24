@@ -6,7 +6,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.Expression;
-import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;

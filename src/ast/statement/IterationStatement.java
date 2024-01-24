@@ -8,7 +8,7 @@ import org.objectweb.asm.Label;
 import ast.ASTNode;
 import ast.Declaration;
 import ast.expression.*;
-import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import codegen.CodeGenerator;
 import semantics.table.SymbolTable;

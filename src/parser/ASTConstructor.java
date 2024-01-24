@@ -18,7 +18,7 @@ import ast.expression.Expression.ExprType;
 import ast.function.Function;
 import ast.function.Parameter;
 import ast.type.ArraySpecifier;
-import ast.type.PrimitiveDataType;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
