@@ -131,9 +131,19 @@ public class FearnRuntime {
         return in;
     }
 
-    public static Boolean Obj2B(Object x)
+    public static Boolean Obj2B(Object o)
     {
-        return !(x.equals(0) || x.equals(0.0));
+        return !(o.equals(0) || o.equals(0.0));
+    }
+
+    public static String Obj2Str(Object o)
+    {
+        if (o.getClass().isArray())
+        {
+            return Arrays.deepToString((Object[])o);
+        } else {
+            return o.toString();
+        }
     }
 
 

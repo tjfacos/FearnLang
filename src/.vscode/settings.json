@@ -9,7 +9,8 @@
     ],
     "java.project.sourcePaths": [
         ".",
-        "runtime"
+        "runtime",
+        "stdlib"
     ],
     "java.project.explorer.showNonJavaResources": false,
     "java.dependency.packagePresentation": "hierarchical",
