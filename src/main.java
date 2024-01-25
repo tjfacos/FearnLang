@@ -9,6 +9,8 @@ import semantics.table.SymbolTable;
 
 // Java IO Dependencies
 import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 // Local
 import util.*;
@@ -26,19 +28,39 @@ class FearnC
     
     static CodeGenerator cg = new CodeGenerator();
 
+    static String sourceFileArgument;
+
 
     public static void main(String[] args)
     {
         if ( args.length == 0) {
             Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
+    
+        sourceFileArgument = args[0];
+        
+        ImportCompiler.originProgramPath = sourceFileArgument;
+
+        Compile(sourceFileArgument);
+                
+        Path parent = Paths.get(sourceFileArgument).getParent().resolve("build");
+        
+        
+        Reporter.ReportSuccess(
+            String.format(
+                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
+                parent.toString(),
+                Paths.get(sourceFileArgument).getFileName().toString().replace(".fearn", "")
+            ), 
+            true
+        );
+    }
+            
+    static void Compile(String path)
+    {
 
         CharStream input = null;
-
-
-        String sourceFileArgument = args[0];
-
-
+        
         try {
             input = CharStreams.fromStream(new FileInputStream(sourceFileArgument));
         } catch (Exception e) {
@@ -71,9 +93,18 @@ class FearnC
         // Perform Type Analysis
         root.validate(symTable);
 
-
-
         cg.Generate(root, symTable, sourceFileArgument);
+    }
+
+    public static SymbolTable CompileImportFile(String path)
+    {
+
+        String pathFromCurrentDir = Paths.get(path).getParent().resolve(path).toString();
+
+        Compile(pathFromCurrentDir);
+
+        return CodeGenerator.GlobalSymbolTable;
+
     }
   
 };

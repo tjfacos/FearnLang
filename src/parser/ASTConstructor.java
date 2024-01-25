@@ -15,6 +15,7 @@ import ast.function.Function;
 import ast.function.Parameter;
 import ast.type.ArraySpecifier;
 import ast.type.PrimitiveSpecifier.PrimitiveDataType;
+import codegen.ImportCompiler;
 import ast.type.PrimitiveSpecifier;
 import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
@@ -700,20 +701,48 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
 
-    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+    
+    @Override
+    public ASTNode visitImp(FearnGrammarParser.ImpContext ctx)
+    {
 
+        if (ctx.IDENTIFIER() == null)
+        {
+            symTabStack.peek().addRowsFromTable(
+                ImportCompiler.Compile(ctx.STR_LIT().toString())
+            );
+        } else {
+            symTabStack.peek().addRowsFromTable(
+                ImportCompiler.GetStdLib(ctx.IDENTIFIER().toString())
+            );
+        }
+        
+        return null;
+    
+    }
+    
+    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
     /* Program (root of AST) */
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
     {
+
         ArrayList<Declaration> global_declarations = new ArrayList<Declaration>(); 
         ArrayList<Struct> structs = new ArrayList<Struct>(); 
         ArrayList<Function> functions = new ArrayList<Function>();
-
-
+        
+        
         symTabStack.add(new SymbolTable());
+        
+        
+        for (int i = 0; i < ctx.imp().size(); i++) visit(ctx.imp(i));
 
-
+        for (int i = 0; i < ctx.declaration().size(); i++)
+        {
+            Declaration decl = visitDeclaration(ctx.declaration(i));
+            global_declarations.add(decl);
+        }
+        
         for (int i = 0; i < ctx.declaration().size(); i++)
         {
             Declaration decl = visitDeclaration(ctx.declaration(i));

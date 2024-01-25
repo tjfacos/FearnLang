@@ -28,6 +28,15 @@ public class SymbolTable {
         Rows.add(new_row);
     }
 
+    public void addRowsFromTable(SymbolTable table) {
+        for (Row r : table.GetAllRows()) Rows.add(r);
+    }
+    
+    public ArrayList<Row> GetAllRows()
+    {
+        return Rows;
+    }
+
     
     static public String GenBasicDescriptor(TypeSpecifier typeSpecifier)
     {
@@ -274,7 +283,6 @@ public class SymbolTable {
         
         return null;
     }
-    
 
     
 }

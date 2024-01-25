@@ -1,0 +1,4 @@
+fn myFunc() => int
+{
+    return 5;
+}

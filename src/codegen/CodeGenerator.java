@@ -291,15 +291,5 @@ public class CodeGenerator {
             finalProgramPath
         );
 
-        Path parent = Paths.get(sPath).getParent().resolve("build");
-     
-        Reporter.ReportSuccess(
-            String.format(
-                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
-                parent.toString(),
-                mainProgramName
-            ), 
-            true
-        );
     }
 }
