@@ -45,13 +45,11 @@ public class PrimaryExpression<T> extends Expression {
             {
                 mv.visitFieldInsn(
                     GETSTATIC, 
-                    CodeGenerator.generatorStack.peek().programName, 
+                    CodeGenerator.GlobalSymbolTable.GetOwner(this.value.toString(), false), 
                     this.value.toString(), 
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(this.value.toString())
                 );
             }
-
-
             
             
         // Handle Literals

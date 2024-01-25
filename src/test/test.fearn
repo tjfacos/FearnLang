@@ -1,6 +1,11 @@
 import io
+import from 'Person.fearn'
 
 fn main(args : str[]) => void
 {
-    print((str)1);
+    let user : $Person = new Person(args[0], (int)args[1]);
+
+    // print(user.toString());
+    print(x);
+    
 }

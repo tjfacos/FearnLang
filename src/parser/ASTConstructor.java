@@ -718,6 +718,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 comp.GetStdLib(ctx.IDENTIFIER().toString())
             );
         }
+
+        for (Row row : symTabStack.peek().GetAllRows())
+        {
+            if (row instanceof VariableRow)
+            {
+                symAnalysisStack.push(row.identifier);
+            }
+        }
         
         return null;
     
@@ -740,12 +748,6 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
         for (int i = 0; i < ctx.imp().size(); i++) visit(ctx.imp(i));
 
-        for (int i = 0; i < ctx.declaration().size(); i++)
-        {
-            Declaration decl = visitDeclaration(ctx.declaration(i));
-            global_declarations.add(decl);
-        }
-        
         for (int i = 0; i < ctx.declaration().size(); i++)
         {
             Declaration decl = visitDeclaration(ctx.declaration(i));
