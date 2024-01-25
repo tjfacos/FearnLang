@@ -1,12 +1,16 @@
 package codegen;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import ast.ASTNode;
 import ast.Program;
+import ast.function.Parameter;
+import ast.type.PrimitiveSpecifier;
+import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import parser.ASTConstructor;
 import parser.gen.*;
 import semantics.table.*;
@@ -74,7 +78,51 @@ public class ImportCompiler {
         
         SymbolTable table = new SymbolTable();
 
+        ArrayList<Parameter> params;
+
+        // Switch makes stdlib easy to expand
         switch (id) {
+            case "io":
+
+            // Add Print Function
+
+            params = new ArrayList<>();
+            params.add(new Parameter(
+                "", new PrimitiveSpecifier(PrimitiveDataType.STR)
+            ));
+
+            table.addRow(
+                new FunctionRow(
+                    "print", 
+                    params, 
+                    null, 
+                    null
+                )
+            );
+
+            table.GetAllRows().getLast().owner = "FearnStdLib/io";
+            
+            // Add Input Function
+
+            params = new ArrayList<>();
+            params.add(new Parameter(
+                "", new PrimitiveSpecifier(PrimitiveDataType.STR)
+            ));
+
+            table.addRow(
+                new FunctionRow(
+                    "input", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.STR), 
+                    null
+                )
+            );
+
+            table.GetAllRows().getLast().owner = "FearnStdLib/io";
+
+
+            return table;
+
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);
                 break;

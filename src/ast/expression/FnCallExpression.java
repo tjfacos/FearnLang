@@ -21,7 +21,7 @@ public class FnCallExpression extends Expression {
     public String identifier;
     public ArrayList<Expression> arguments;
     
-    static List<String> builtins = Arrays.asList("print", "input", "length", "slice");
+    static List<String> builtins = Arrays.asList("length", "slice");
 
     
     public FnCallExpression(String fn_name, ArrayList<Expression> args)
@@ -46,14 +46,6 @@ public class FnCallExpression extends Expression {
         String desc;
         
         switch (identifier){
-
-            case "print":
-                desc = "(Ljava/lang/Object;)V";
-                break;
-
-            case "input":
-                desc = "(Ljava/lang/String;)Ljava/lang/String;";
-                break;
 
             case "length":
                 desc = "(Ljava/lang/Object;)Ljava/lang/Integer;";
@@ -102,6 +94,7 @@ public class FnCallExpression extends Expression {
             desc, 
             false
         );
+        
 
     }
 
@@ -113,37 +106,6 @@ public class FnCallExpression extends Expression {
         ArrayList<TypeSpecifier> arg_types = new ArrayList<TypeSpecifier>();
         
         switch (identifier) {
-            
-
-            // input(str)
-            case "input":
-                
-                if (arguments.size() != 1)
-                {
-                    Reporter.ReportErrorAndExit("Wrong number of arguments for " + identifier + " , expected 1.", this);
-                }
-
-                if (!arguments.get(0).validate(symTable).equals(new PrimitiveSpecifier(PrimitiveDataType.STR)))
-                {
-                    Reporter.ReportErrorAndExit("Wrong data type, expected String.", this);
-                }
-                
-                expression_type =  new PrimitiveSpecifier(PrimitiveDataType.STR);
-                return expression_type;
-        
-
-            // print(obj)
-            case "print":
-                if (arguments.size() != 1)
-                {
-                    Reporter.ReportErrorAndExit("Wrong number of arguments for " + identifier + " , expected 1.", this);
-                }
-
-                arguments.get(0).validate(symTable);
-
-                return null;
-            
-
 
             // length(<str|arr>)
             case "length":

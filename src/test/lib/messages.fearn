@@ -1,4 +1,0 @@
-fn message() => str
-{
-    return "Hello from messages.fearn!";
-}

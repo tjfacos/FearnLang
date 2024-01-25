@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class FearnRuntime {
     
@@ -107,29 +106,29 @@ public class FearnRuntime {
     }
 
     // I/O
-    public static void print(Object a)
-    {
-        // Print Array
-        if (a.getClass().isArray())
-        {
-            System.out.println(Arrays.deepToString((Object[])a));
-        } else {
-            System.out.println(a);
-        }
-    }
+    // public static void print(Object a)
+    // {
+    //     // Print Array
+    //     if (a.getClass().isArray())
+    //     {
+    //         System.out.println(Arrays.deepToString((Object[])a));
+    //     } else {
+    //         System.out.println(a);
+    //     }
+    // }
 
 
-    static Scanner scan = new Scanner(System.in); 
+    // static Scanner scan = new Scanner(System.in); 
 
-    public static String input(String prompt)
-    {
-        String in;
+    // public static String input(String prompt)
+    // {
+    //     String in;
         
-        System.out.print(prompt); 
-        in = scan.nextLine();
+    //     System.out.print(prompt); 
+    //     in = scan.nextLine();
 
-        return in;
-    }
+    //     return in;
+    // }
 
     public static Boolean Obj2B(Object o)
     {

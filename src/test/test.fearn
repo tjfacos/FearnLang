@@ -1,6 +1,6 @@
-import from 'lib\messages.fearn'
+import io
 
 fn main(args : str[]) => void
 {
-    print(message());
+    print((str)1);
 }

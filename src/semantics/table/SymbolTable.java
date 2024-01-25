@@ -217,7 +217,7 @@ public class SymbolTable {
         
         for (Row r : Rows)
         {
-            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
+            if (r.identifier.equals(id) && r instanceof FunctionRow)
             {
                 for (Parameter p : ((FunctionRow)r).parameters)
                 {
