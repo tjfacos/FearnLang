@@ -1,6 +1,7 @@
 package util;
 
 import ast.ASTNode;
+import codegen.CodeGenerator;
 
 public class Reporter {
 
@@ -18,7 +19,8 @@ public class Reporter {
         if (offendingNode == null)
         System.out.println(
             String.format(
-                "FearnC: %s%sERROR: %s %s", 
+                "FearnC (%s): %s%sERROR: %s %s", 
+                CodeGenerator.generatorStack.peek().programName,
                 ANSI_BOLD,
                 ANSI_RED,
                 err,
@@ -28,7 +30,8 @@ public class Reporter {
         else 
         System.out.println(
             String.format(
-                "FearnC: %s%sERROR: %s - %s %s", 
+                "FearnC (%s): %s%sERROR: %s - %s %s", 
+                CodeGenerator.generatorStack.peek().programName,
                 ANSI_BOLD,
                 ANSI_RED,
                 offendingNode.toString(),
@@ -43,14 +46,14 @@ public class Reporter {
 
     static public void ReportSuccess(String message, boolean exit)
     {
-        String x = ANSI_PURPLE;
-        if (exit) { x = ANSI_GREEN; }
+        String colour = ANSI_PURPLE;
+        if (exit) { colour = ANSI_GREEN; }
 
         System.out.println(
             String.format(
                 "FearnC: %s%s%s%s", 
                 ANSI_BOLD,
-                x,
+                colour,
                 message,
                 ANSI_RESET
             )

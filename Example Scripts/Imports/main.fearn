@@ -1,6 +1,10 @@
-import from 'lib\messages.fearn'
+import io
+import from 'Person.fearn'
 
 fn main(args : str[]) => void
 {
-    print(message());
+    let user : $Person = new Person(args[0], (int)args[1]);
+
+    print(user.toString());
+    
 }

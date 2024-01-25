@@ -7,6 +7,7 @@ Greatest Common Divisor of two numbers, A and B.
 
 */
 
+import io
 
 fn gcd(A : int, B : int) => int
 {
@@ -24,5 +25,5 @@ fn main() => void
     let A : int = (int)input("Enter A: ");
     let B : int = (int)input("Enter B: ");
     
-    print(gcd(A, B));
+    print((str)gcd(A, B));
 }

@@ -105,31 +105,6 @@ public class FearnRuntime {
         return a + b;
     }
 
-    // I/O
-    // public static void print(Object a)
-    // {
-    //     // Print Array
-    //     if (a.getClass().isArray())
-    //     {
-    //         System.out.println(Arrays.deepToString((Object[])a));
-    //     } else {
-    //         System.out.println(a);
-    //     }
-    // }
-
-
-    // static Scanner scan = new Scanner(System.in); 
-
-    // public static String input(String prompt)
-    // {
-    //     String in;
-        
-    //     System.out.print(prompt); 
-    //     in = scan.nextLine();
-
-    //     return in;
-    // }
-
     public static Boolean Obj2B(Object o)
     {
         return !(o.equals(0) || o.equals(0.0));

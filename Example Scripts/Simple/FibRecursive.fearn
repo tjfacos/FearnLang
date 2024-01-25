@@ -1,3 +1,5 @@
+import io
+
 let i : int = 0;
 let arr : int[];
 
@@ -6,7 +8,7 @@ fn main(args : str[]) => void
     let n : int = (int)input("Enter n : ");
     arr = new int[n];
     fib(n);
-    print(arr);
+    print((str)arr);
 }
 
 fn fib(n : int) => void
