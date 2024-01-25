@@ -45,7 +45,7 @@ public class PrimaryExpression<T> extends Expression {
             {
                 mv.visitFieldInsn(
                     GETSTATIC, 
-                    CodeGenerator.mainProgramName, 
+                    CodeGenerator.generatorStack.peek().programName, 
                     this.value.toString(), 
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(this.value.toString())
                 );

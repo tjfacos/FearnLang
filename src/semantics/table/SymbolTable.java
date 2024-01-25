@@ -26,7 +26,7 @@ public class SymbolTable {
             }
         }
 
-        new_row.owner = CodeGenerator.mainProgramName;
+        new_row.owner = CodeGenerator.generatorStack.peek().programName;
 
         Rows.add(new_row);
     }

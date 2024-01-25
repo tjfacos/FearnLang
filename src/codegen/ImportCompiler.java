@@ -16,17 +16,12 @@ import util.Reporter;
 
 public class ImportCompiler {
 
-    static CodeGenerator cg = new CodeGenerator();
-
+    
     public String originProgramPath;
-
+    
     public SymbolTable Compile(String path) {
 
-        String initialProgramName = CodeGenerator.mainProgramName;
-
-        path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\')", "")).toString();
-
-        cg.SetBuildPath(path);
+        path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
 
         CharStream input = null;
         
@@ -40,7 +35,12 @@ public class ImportCompiler {
         {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
-
+        
+        CodeGenerator cg = new CodeGenerator();
+        
+        cg.SetProgramName(path);
+        
+        CodeGenerator.generatorStack.push(cg);
                
         FearnGrammarLexer lexer = new FearnGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -62,9 +62,10 @@ public class ImportCompiler {
         // Perform Type Analysis
         root.validate(symTable);
 
+
         cg.Generate(root, symTable);
 
-        CodeGenerator.mainProgramName = initialProgramName;
+        CodeGenerator.generatorStack.pop();
 
         return CodeGenerator.GlobalSymbolTable;        
     }

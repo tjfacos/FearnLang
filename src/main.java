@@ -26,8 +26,8 @@ class FearnC
     public static CommonTokenStream tokens;
     public static FearnGrammarParser parser;
     
+    
     static CodeGenerator cg = new CodeGenerator();
-
     static String sourceFileArgument;
 
 
@@ -40,10 +40,13 @@ class FearnC
         sourceFileArgument = args[0];
 
         cg.SetBuildPath(sourceFileArgument);
+        cg.SetProgramName(sourceFileArgument);
 
         Compile(sourceFileArgument);
                 
-        Path parent = Paths.get(sourceFileArgument).getParent().resolve("build");
+        Path parent = Paths.get(sourceFileArgument).getParent();
+
+        parent = parent == null ? Paths.get("build") : parent.resolve("build");
         
         Reporter.ReportSuccess(
             String.format(
@@ -71,6 +74,8 @@ class FearnC
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
 
+        CodeGenerator.generatorStack.push(cg);
+
                
         lexer = new FearnGrammarLexer(input);
         tokens = new CommonTokenStream(lexer);
@@ -93,6 +98,8 @@ class FearnC
         root.validate(symTable);
 
         cg.Generate(root, symTable);
+
+        CodeGenerator.generatorStack.pop();
     }
   
 };

@@ -26,8 +26,10 @@ public class CodeGenerator {
     
     public static Path buildPath;
 
+    public String programName;
     
-    public static String mainProgramName;
+    public static Stack<CodeGenerator> generatorStack = new Stack<>();
+
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
     public static TypeSpecifier CurrentReturnType;
@@ -127,11 +129,10 @@ public class CodeGenerator {
         
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-
         classWriter.visit(
             V19,
             ACC_PUBLIC | ACC_SUPER,
-            mainProgramName,
+            generatorStack.peek().programName,
             null, 
             "java/lang/Object", 
             null
@@ -165,7 +166,7 @@ public class CodeGenerator {
                 decl.init_expression.GenerateBytecode(sv);
                 sv.visitFieldInsn(
                     PUTSTATIC, 
-                    mainProgramName, 
+                    generatorStack.peek().programName, 
                     decl.identifier, 
                     SymbolTable.GenBasicDescriptor(decl.type)
                 );
@@ -270,7 +271,7 @@ public class CodeGenerator {
 
         GlobalSymbolTable = symTab;
 
-        Path finalProgramPath = buildPath.resolve(mainProgramName + ".class").toAbsolutePath();
+        Path finalProgramPath = buildPath.resolve(generatorStack.peek().programName + ".class").toAbsolutePath();
 
         File dir = new File(buildPath.toString());
 
@@ -293,7 +294,10 @@ public class CodeGenerator {
 
     public void SetBuildPath(String path) {
         buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
-        mainProgramName = Paths.get(path).getFileName().toString().replace(".fearn", "");
-        
+    }
+    
+    public void SetProgramName(String path)
+    {
+        programName = Paths.get(path).getFileName().toString().replace(".fearn", "");
     }
 }

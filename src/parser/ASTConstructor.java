@@ -724,6 +724,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+    
     /* Program (root of AST) */
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
