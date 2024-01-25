@@ -38,13 +38,12 @@ class FearnC
         }
     
         sourceFileArgument = args[0];
-        
-        ImportCompiler.originProgramPath = sourceFileArgument;
+
+        cg.SetBuildPath(sourceFileArgument);
 
         Compile(sourceFileArgument);
                 
         Path parent = Paths.get(sourceFileArgument).getParent().resolve("build");
-        
         
         Reporter.ReportSuccess(
             String.format(
@@ -93,18 +92,7 @@ class FearnC
         // Perform Type Analysis
         root.validate(symTable);
 
-        cg.Generate(root, symTable, sourceFileArgument);
-    }
-
-    public static SymbolTable CompileImportFile(String path)
-    {
-
-        String pathFromCurrentDir = Paths.get(path).getParent().resolve(path).toString();
-
-        Compile(pathFromCurrentDir);
-
-        return CodeGenerator.GlobalSymbolTable;
-
+        cg.Generate(root, symTable);
     }
   
 };

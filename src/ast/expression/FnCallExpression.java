@@ -94,9 +94,10 @@ public class FnCallExpression extends Expression {
 
         }
 
+
         mv.visitMethodInsn(
             INVOKESTATIC, 
-            CodeGenerator.mainProgramName, 
+            CodeGenerator.GlobalSymbolTable.GetOwner(identifier, true), 
             identifier, 
             desc, 
             false

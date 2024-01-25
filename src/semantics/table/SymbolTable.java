@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ast.function.Parameter;
 import ast.type.*;
+import codegen.CodeGenerator;
 import util.Reporter;
 
 
@@ -25,6 +26,8 @@ public class SymbolTable {
             }
         }
 
+        new_row.owner = CodeGenerator.mainProgramName;
+
         Rows.add(new_row);
     }
 
@@ -36,6 +39,7 @@ public class SymbolTable {
     {
         return Rows;
     }
+
 
     
     static public String GenBasicDescriptor(TypeSpecifier typeSpecifier)
@@ -106,6 +110,26 @@ public class SymbolTable {
         return false;
     }
 
+    public String GetOwner(String id, Boolean isFunction)
+    {
+        for (Row r : Rows)
+        {
+            if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
+            {
+                return r.owner;
+            }
+            
+            else if (r.identifier.equals(id) && !isFunction) 
+            { 
+                return r.owner; 
+            }
+        }
+        
+        Reporter.ReportErrorAndExit("Owner for " + id + " not found.", null);
+        
+        return null;
+    }
+
     /* Variable Methods */
     public String GetVarDescriptor(String id) {
         for (Row r : Rows)
@@ -155,6 +179,7 @@ public class SymbolTable {
         
     }
     
+
     public SymbolTable GetFuncSymbolTable(String id) {
         for (Row r : Rows)
         {

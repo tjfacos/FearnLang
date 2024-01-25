@@ -1,7 +1,6 @@
 package codegen;
 
 import java.io.FileInputStream;
-import java.nio.file.Paths;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -19,13 +18,15 @@ public class ImportCompiler {
 
     static CodeGenerator cg = new CodeGenerator();
 
-    public static String originProgramPath;
+    public String originProgramPath;
 
-    public static SymbolTable Compile(String path) {
-        
-        String currentOrigin = originProgramPath;
+    public SymbolTable Compile(String path) {
 
-        path = Paths.get(originProgramPath).getParent().resolve(path.replaceAll("(\')", "")).toString();
+        String initialProgramName = CodeGenerator.mainProgramName;
+
+        path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\')", "")).toString();
+
+        cg.SetBuildPath(path);
 
         CharStream input = null;
         
@@ -61,19 +62,14 @@ public class ImportCompiler {
         // Perform Type Analysis
         root.validate(symTable);
 
-        cg.Generate(root, symTable, path);
+        cg.Generate(root, symTable);
 
-        for (Row row : symTable.GetAllRows())
-        {
-            row.owner = Paths.get(path).getFileName().toString().replace(".fearn", "");
-        }
-
-        originProgramPath = currentOrigin;
+        CodeGenerator.mainProgramName = initialProgramName;
 
         return CodeGenerator.GlobalSymbolTable;        
     }
 
-    public static SymbolTable GetStdLib(String id) {
+    public SymbolTable GetStdLib(String id) {
         
         SymbolTable table = new SymbolTable();
 

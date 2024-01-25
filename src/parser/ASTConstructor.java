@@ -706,14 +706,16 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     public ASTNode visitImp(FearnGrammarParser.ImpContext ctx)
     {
 
+        ImportCompiler comp = new ImportCompiler();
+
         if (ctx.IDENTIFIER() == null)
         {
             symTabStack.peek().addRowsFromTable(
-                ImportCompiler.Compile(ctx.STR_LIT().toString())
+                comp.Compile(ctx.STR_LIT().toString())
             );
         } else {
             symTabStack.peek().addRowsFromTable(
-                ImportCompiler.GetStdLib(ctx.IDENTIFIER().toString())
+                comp.GetStdLib(ctx.IDENTIFIER().toString())
             );
         }
         

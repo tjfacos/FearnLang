@@ -24,7 +24,7 @@ import java.util.Stack;
 
 public class CodeGenerator {
     
-    private Path buildPath;
+    public static Path buildPath;
 
     
     public static String mainProgramName;
@@ -265,14 +265,11 @@ public class CodeGenerator {
     }
 
     
-    public void Generate(Program root, SymbolTable symTab, String sPath)
+    public void Generate(Program root, SymbolTable symTab)
     {
 
         GlobalSymbolTable = symTab;
 
-        buildPath = Paths.get(sPath).toAbsolutePath().getParent().resolve("build");
-        mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
-        
         Path finalProgramPath = buildPath.resolve(mainProgramName + ".class").toAbsolutePath();
 
         File dir = new File(buildPath.toString());
@@ -291,5 +288,12 @@ public class CodeGenerator {
             finalProgramPath
         );
 
+    }
+
+
+    public void SetBuildPath(String path) {
+        buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
+        mainProgramName = Paths.get(path).getFileName().toString().replace(".fearn", "");
+        
     }
 }
