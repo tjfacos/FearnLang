@@ -13,6 +13,6 @@ public class StructInstanceSpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return String.format("$", name);
+        return String.format("$%s", name);
     }
 }

@@ -33,6 +33,9 @@ class FearnC
 
     public static void main(String[] args)
     {
+        
+        CodeGenerator.generatorStack.push(cg);
+
         if ( args.length == 0) {
             Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
@@ -74,7 +77,6 @@ class FearnC
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
 
-        CodeGenerator.generatorStack.push(cg);
 
                
         lexer = new FearnGrammarLexer(input);
