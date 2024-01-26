@@ -2,6 +2,51 @@ import java.util.Arrays;
 
 public class FearnRuntime {
     
+    /* 
+     * FearnRuntime.java
+     * 
+     * This file is part of the compiled .jar file
+     * that the compiler is distributed in.
+     * 
+     * Its purpose is to implement functions that are 
+     * too unwealdy to implement manually in bytecode, 
+     * at runtime.
+     * 
+     * This includes:
+     * -> The implememntation for mathematical exponentiation
+     * -> Boolean functions to compare values
+     * -> Concatenation
+     * -> Casting functions
+     * -> The implementation for the two built-in functions, 
+     *    length() and slice()
+     * 
+     */
+
+    // Maths functions
+    public static Integer exp(int op1, int op2)
+    {
+        Double d = Math.pow((double)op1, (double)op2);
+        return d.intValue();
+    }
+
+    public static Double exp(double op1, double op2)
+    {
+        Double d = Math.pow((double)op1, (double)op2);
+        return d;
+    }
+
+    // Boolean functions
+
+    /* 
+
+    The `equals` function is used to evaluate the equality of two 
+    objects. it includes a case to compare arrays (a facility many 
+    languages sdon't offer), by recursively comparing the equality 
+    of every item  in the array, as well as the arrays length, 
+    returning the AND of these comparisons.
+    
+    */ 
+    
     public static Boolean equals(Object op1, Object op2)
     {
         if (op1 == null && op2 == null)
@@ -28,20 +73,6 @@ public class FearnRuntime {
         return op1.equals(op2);
     }
     
-    // Maths functions
-    public static Integer exp(int op1, int op2)
-    {
-        Double d = Math.pow((double)op1, (double)op2);
-        return d.intValue();
-    }
-
-    public static Double exp(double op1, double op2)
-    {
-        Double d = Math.pow((double)op1, (double)op2);
-        return d;
-    }
-
-    // Boolean functions
     public static Boolean less(int op1, int op2)
     {
         return op1 < op2;
