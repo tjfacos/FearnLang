@@ -14,25 +14,25 @@ import util.Reporter;
 public class StructInitExpression extends Expression {
     
     public String name;
-    public ArrayList<Expression> arguements;
+    public ArrayList<Expression> arguments;
     
     public StructInitExpression(String n, ArrayList<Expression> args)
     {
         name = n;
-        arguements = args;
+        arguments = args;
     }
 
     @Override
     public String toString()
     {
-        return "$" + name + "( " + arguements.toString() + " )";
+        return "new " + name + arguments.toString().replace("[", "(").replace("]", ")");
     }
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         mv.visitTypeInsn(NEW, "$" + name);
         mv.visitInsn(DUP);
-        for (Expression arg : arguements)
+        for (Expression arg : arguments)
         {
             arg.GenerateBytecode(mv);
         }
@@ -52,16 +52,16 @@ public class StructInitExpression extends Expression {
 
         ArrayList<TypeSpecifier> attr_types = CodeGenerator.GlobalSymbolTable.GetStructAttributeSpecifiers(name);
 
-        if (attr_types.size() != arguements.size())
+        if (attr_types.size() != arguments.size())
         {
-            Reporter.ReportErrorAndExit(toString() + ": Wrong number of arguements, expected " + attr_types.size());
+            Reporter.ReportErrorAndExit("Wrong number of arguments, expected " + attr_types.size(), this);
         }
 
         for (int i = 0; i< attr_types.size(); i++)
         {
-            if (!arguements.get(i).validate(symTable).equals(attr_types.get(i)))
+            if (!arguments.get(i).validate(symTable).equals(attr_types.get(i)))
             {
-                Reporter.ReportErrorAndExit(toString() + ": Wrong arguement type for " + arguements.get(i).toString() + ", expected " + attr_types.get(i).toString());
+                Reporter.ReportErrorAndExit("Wrong argument type for " + arguments.get(i).toString() + ", expected " + attr_types.get(i).toString(), this);
             }
         }
 

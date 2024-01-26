@@ -22,7 +22,7 @@ public class ExpressionStatement extends Statement {
     
     @Override public String toString()
     {
-        return expression.toString();
+        return expression.toString() + ";";
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ExpressionStatement extends Statement {
         
         if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))
         {
-            Reporter.ReportErrorAndExit(toString() + ": Invalid Statement.");
+            Reporter.ReportErrorAndExit("Invalid Statement.", this);
         }
 
         expression.validate(symbolTable);

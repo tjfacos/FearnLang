@@ -26,7 +26,19 @@ public class UnaryExpression extends Expression {
     @Override
     public String toString()
     {
-        return '(' + operator.name() + ' ' + operand.toString() + ')';
+        String opString = null;
+
+        switch (operator) {
+            case Negate:
+                opString = "-";
+                break;
+            case LogicalNot:
+                opString = "!";
+            default:
+                break;
+        }
+
+        return opString + operand.toString();
     }
 
     @Override
@@ -63,14 +75,14 @@ public class UnaryExpression extends Expression {
                     case INT:     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT  ); break;
                     case FLOAT:   expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT); break;
 
-                    default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.");break;
+                    default: Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be an INT or FLOAT value.", this);break;
                 
                 }
             }
 
         } else { // Logical Not
             if (operand.validate(symTable).getClass() == PrimitiveSpecifier.class && ((PrimitiveSpecifier)operand.expression_type).element_type == PrimitiveDataType.BOOL ) { expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL); }
-            else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value."); }
+            else { Reporter.ReportErrorAndExit("Type Error: " + operand.toString() + " must be a Boolean value.", this); }
         }
 
         return expression_type;

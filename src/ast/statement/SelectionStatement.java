@@ -28,21 +28,31 @@ public class SelectionStatement extends Statement {
     
     @Override public String toString()
     {
-        if (else_branch != null)
+        if (else_branch == null)
         {
             return String.format(
-                "IF (%s) THEN %s ELSE %s",
+                "if (%s) {...}",
+                condition.toString()
+            );
+            
+        }
+
+        else if (else_branch instanceof SelectionStatement)
+        {
+            return String.format(
+                "if (%s) {...} else %s",
                 condition.toString(),
-                if_branch.toString(),
                 else_branch.toString()
             );
         }
+        else {
+            return String.format(
+                "if (%s) {...} else {...}",
+                condition.toString()
+            );
+            
+        }
         
-        return String.format(
-            "IF (%s) THEN %s",
-            condition.toString(),
-            if_branch.toString()
-        );
 
     }
 
@@ -120,7 +130,7 @@ public class SelectionStatement extends Statement {
     public void validate(SymbolTable symbolTable) {
         if(!condition.validate(symbolTable).equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)))
         {
-            Reporter.ReportErrorAndExit(condition.toString() + ": Condition must be boolean.");
+            Reporter.ReportErrorAndExit(condition.toString() + ": Condition must be boolean.", null);
         }
 
         if_branch.validate(symbolTable);

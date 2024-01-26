@@ -26,7 +26,7 @@ public class StructAttrExpression extends Expression {
     @Override
     public String toString()
     {
-        return  "$" + instance.toString() + "." + attribute.toString();
+        return  instance.toString() + "." + attribute.toString();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class StructAttrExpression extends Expression {
         
         if (inst_type.getClass() != StructInstanceSpecifier.class)
         {
-            Reporter.ReportErrorAndExit(toString() + ": " + inst_type.toString() + " is not a struct.");
+            Reporter.ReportErrorAndExit(inst_type.toString() + " is not a struct.", this);
         }
 
         struct_name = ((StructInstanceSpecifier)inst_type).name;
@@ -59,7 +59,7 @@ public class StructAttrExpression extends Expression {
 
         if (!structTable.Contains(attribute))
         {
-            Reporter.ReportErrorAndExit(toString() + ": " + struct_name + " has no attribute " + attribute);
+            Reporter.ReportErrorAndExit(struct_name + " has no attribute " + attribute, this);
         }
 
         attr_descriptor = structTable.GetVarDescriptor(attribute);

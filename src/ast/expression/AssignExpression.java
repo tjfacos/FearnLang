@@ -32,10 +32,35 @@ public class AssignExpression extends Expression {
         operator = op;
     }
 
+
+
     @Override 
     public String toString()
     {
-        return target.toString() + " " + operator.name() + " ( " + expression.toString() + " ) ";
+        String opString = null;
+
+        switch (operator) {
+            case Equals:
+                opString = "=";
+                break;
+            case AddEquals:
+                opString = "+=";
+                break;
+            case SubEquals:
+                opString = "-=";
+                break;
+            case MultEquals:
+                opString = "*=";
+                break;
+            case DivEquals:
+                opString = "/=";
+                break;
+            case ModEquals:
+                opString = "%=";
+                break;
+        }
+
+        return target.toString() + " " + opString + " " + expression.toString();
     }
 
 
@@ -61,7 +86,7 @@ public class AssignExpression extends Expression {
             } else { // Target is a Global Variable => PUTSTATIC
                 mv.visitFieldInsn(
                     PUTSTATIC, 
-                    CodeGenerator.mainProgramName, 
+                    CodeGenerator.generatorStack.peek().programName, 
                     identifier,
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(identifier)
                 );
@@ -118,7 +143,7 @@ public class AssignExpression extends Expression {
 
         if (!targetType.equals(exprType))
         {
-            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString(), this);
         }
 
 
@@ -126,7 +151,7 @@ public class AssignExpression extends Expression {
         else if (target.getClass() == IndexExpression.class) {}
         else if (target.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName());
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
         }
 
 

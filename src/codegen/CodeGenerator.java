@@ -24,10 +24,12 @@ import java.util.Stack;
 
 public class CodeGenerator {
     
-    private Path buildPath;
+    public static Path buildPath;
 
+    public String programName;
     
-    public static String mainProgramName;
+    public static Stack<CodeGenerator> generatorStack = new Stack<>();
+
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
     public static TypeSpecifier CurrentReturnType;
@@ -81,15 +83,15 @@ public class CodeGenerator {
                     );  
     
                         
-                    // Generate Constructor Instructions that take in an arguement, and load it into the attribute, specified by decl
+                    // Generate Constructor Instructions that take in an argument, and load it into the attribute, specified by decl
                     
                     // Load 'this' to operand stack
                     cv.visitVarInsn(ALOAD, 0);
                     
-                    // Load Arguement to operand stack
+                    // Load argument to operand stack
                     cv.visitVarInsn(ALOAD, ++i);
                     
-                    // Assign Arguement to Field
+                    // Assign argument to Field
                     cv.visitFieldInsn(
                         PUTFIELD, 
                         "$"+struct.identifier, 
@@ -110,7 +112,7 @@ public class CodeGenerator {
                 try {
                     Files.write(destination, classWriter.toByteArray());
                 } catch (IOException e) {
-                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString());;
+                    Reporter.ReportErrorAndExit("Struct Gen Error :- " + e.toString(), null);;
                 }
                 
                 Reporter.ReportSuccess(
@@ -127,11 +129,10 @@ public class CodeGenerator {
         
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-
         classWriter.visit(
             V19,
             ACC_PUBLIC | ACC_SUPER,
-            mainProgramName,
+            generatorStack.peek().programName,
             null, 
             "java/lang/Object", 
             null
@@ -165,7 +166,7 @@ public class CodeGenerator {
                 decl.init_expression.GenerateBytecode(sv);
                 sv.visitFieldInsn(
                     PUTSTATIC, 
-                    mainProgramName, 
+                    generatorStack.peek().programName, 
                     decl.identifier, 
                     SymbolTable.GenBasicDescriptor(decl.type)
                 );
@@ -254,7 +255,7 @@ public class CodeGenerator {
         try {
             Files.write(finalProgramPath, bytecode);
         } catch (IOException e) {
-            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString());;
+            Reporter.ReportErrorAndExit("Program Gen Error :- " + e.toString(), null);;
         }
         
         Reporter.ReportSuccess(
@@ -265,15 +266,12 @@ public class CodeGenerator {
     }
 
     
-    public void Generate(Program root, SymbolTable symTab, String sPath)
+    public void Generate(Program root, SymbolTable symTab)
     {
 
         GlobalSymbolTable = symTab;
 
-        buildPath = Paths.get(sPath).toAbsolutePath().getParent().resolve("build");
-        mainProgramName = Paths.get(sPath).getFileName().toString().replace(".fearn", "");
-        
-        Path finalProgramPath = buildPath.resolve(mainProgramName + ".class").toAbsolutePath();
+        Path finalProgramPath = buildPath.resolve(generatorStack.peek().programName + ".class").toAbsolutePath();
 
         File dir = new File(buildPath.toString());
 
@@ -291,15 +289,15 @@ public class CodeGenerator {
             finalProgramPath
         );
 
-        Path parent = Paths.get(sPath).getParent().resolve("build");
-     
-        Reporter.ReportSuccess(
-            String.format(
-                "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
-                parent.toString(),
-                mainProgramName
-            ), 
-            true
-        );
+    }
+
+
+    public void SetBuildPath(String path) {
+        buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
+    }
+    
+    public void SetProgramName(String path)
+    {
+        programName = Paths.get(path).getFileName().toString().replace(".fearn", "");
     }
 }

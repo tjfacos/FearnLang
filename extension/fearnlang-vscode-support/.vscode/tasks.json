@@ -2,10 +2,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "process",
-            "label": "Deploy Jar",
-            "command": "py",
-            "args": [".vscode/deploy.py"],
+            "type": "shell",
+            "label": "Deploy Package",
+            "command": "vsce",
+            "args": ["package", "--out", "build"],
             "group": {
               "kind": "build",
               "isDefault": true

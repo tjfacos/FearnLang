@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import parser.gen.*;
-import semantics.table.FunctionRow;
-import semantics.table.StructRow;
-import semantics.table.SymbolTable;
-import semantics.table.VariableRow;
+import semantics.table.*;
 import util.*;
-
 
 import ast.*;
 import ast.expression.*;
@@ -19,6 +15,7 @@ import ast.function.Function;
 import ast.function.Parameter;
 import ast.type.ArraySpecifier;
 import ast.type.PrimitiveSpecifier.PrimitiveDataType;
+import codegen.ImportCompiler;
 import ast.type.PrimitiveSpecifier;
 import ast.type.StructInstanceSpecifier;
 import ast.type.TypeSpecifier;
@@ -44,7 +41,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 " Line %s : Variable Identifer Unknown in Scope: %s .",
                 ctx.getStart().getLine(),
                 id
-            ));
+            ), null);
         }
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
@@ -73,7 +70,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 return new PrimaryExpression<String>(ctx.getText().substring( 1, ctx.getText().length() - 1), ExprType.StrLiteral);
             
             default:
-                Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value");
+                Reporter.ReportErrorAndExit("Parse Error: Unable to Parse literal value", null);
         }
         
         return null;
@@ -339,7 +336,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
             FnCallExpression Ufunction_call = (FnCallExpression)postdot;
     
-            Ufunction_call.arguements.add(0, predot);
+            Ufunction_call.arguments.add(0, predot);
             return Ufunction_call;
         }
         else if (postdot.getClass() == PrimaryExpression.class && ((PrimaryExpression)postdot).type == ExprType.VariableReference)
@@ -351,7 +348,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 "%s.%s is not an attribute expression or a function call.", 
                 predot.toString(), 
                 postdot.toString()
-            ));
+            ), null);
             return null;
         }
     }
@@ -704,19 +701,52 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
 
-    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+    
+    @Override
+    public ASTNode visitImp(FearnGrammarParser.ImpContext ctx)
+    {
 
+        ImportCompiler comp = new ImportCompiler();
+
+        if (ctx.IDENTIFIER() == null)
+        {
+            symTabStack.peek().addRowsFromTable(
+                comp.Compile(ctx.STR_LIT().toString())
+            );
+        } else {
+            symTabStack.peek().addRowsFromTable(
+                comp.GetStdLib(ctx.IDENTIFIER().toString())
+            );
+        }
+
+        for (Row row : symTabStack.peek().GetAllRows())
+        {
+            if (row instanceof VariableRow)
+            {
+                symAnalysisStack.push(row.identifier);
+            }
+        }
+        
+        return null;
+    
+    }
+    
+    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+    
     /* Program (root of AST) */
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
     {
+
         ArrayList<Declaration> global_declarations = new ArrayList<Declaration>(); 
         ArrayList<Struct> structs = new ArrayList<Struct>(); 
         ArrayList<Function> functions = new ArrayList<Function>();
-
-
+        
+        
         symTabStack.add(new SymbolTable());
-
+        
+        
+        for (int i = 0; i < ctx.imp().size(); i++) visit(ctx.imp(i));
 
         for (int i = 0; i < ctx.declaration().size(); i++)
         {

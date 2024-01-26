@@ -23,7 +23,7 @@ public class CastExpression extends Expression {
     @Override
     public String toString()
     {
-        return "( " + Operand.toString() + " -> " + target.name() + " )";
+        return "(" + target.name().toLowerCase() + ")" + Operand.toString();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CastExpression extends Expression {
                 return;
 
             case STR:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/String", "valueOf", "(Ljava/lang/Object;)Ljava/lang/String;", false);
+            mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2Str", "(Ljava/lang/Object;)Ljava/lang/String;", false);
                 return;
             case BOOL:
                 mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2B", "(Ljava/lang/Object;)Ljava/lang/Boolean;", false);
@@ -95,7 +95,7 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT);
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + " : Cannot perform cast from " + op_type.toString() + "to int.");
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to int.", this);
                 } 
                 break;
             
@@ -107,7 +107,7 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT);
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + " : Cannot perform cast from " + op_type.toString() + "to float.");
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to float.", this);
                 } 
                 break;
             
@@ -124,12 +124,12 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
                 } else {
-                    Reporter.ReportErrorAndExit(toString() + " : Cannot perform cast from " + op_type.toString() + "to bool.");
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to bool.", this);
                 } 
                 break;
 
             default: // This should never run, but is here for completeness
-                Reporter.ReportErrorAndExit(toString() + " : Cannot perform cast from " + op_type.toString() + "to" + target.name());
+                Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to" + target.name(), this);
                 break;
         }
 

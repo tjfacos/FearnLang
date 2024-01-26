@@ -24,7 +24,8 @@ public class PrimaryExpression<T> extends Expression {
     @Override
     public String toString()
     {
-        return value.toString();
+        if (type == ExprType.StrLiteral) return "\"" + value.toString() + "\"";
+        else return value.toString();
     }
 
     public void GenerateBytecode(MethodVisitor mv)
@@ -44,13 +45,11 @@ public class PrimaryExpression<T> extends Expression {
             {
                 mv.visitFieldInsn(
                     GETSTATIC, 
-                    CodeGenerator.mainProgramName, 
+                    CodeGenerator.GlobalSymbolTable.GetOwner(this.value.toString(), false), 
                     this.value.toString(), 
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(this.value.toString())
                 );
             }
-
-
             
             
         // Handle Literals

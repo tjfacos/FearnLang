@@ -15,7 +15,7 @@ public class Parameter extends ASTNode {
 
     @Override public String toString()
     {
-        return String.format("P(%s): %s", type.toString(), identifier);
+        return String.format("%s : %s", type.toString(), identifier);
     }
     
 }

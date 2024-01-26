@@ -25,10 +25,16 @@ type_specifier_arr
     : (type_specifier_primitive | type_specifier_struct ) ('[]')+
     ;
 
+// Imports
+imp
+    : 'import' (IDENTIFIER | 'from' STR_LIT)
+    ;
+
 // Root Program
 program 
-    : (function | declaration | struct_def )+
+    : (imp)* (function | declaration | struct_def )+ EOF
     ;
+
 
 // Function Definition
 function 

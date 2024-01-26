@@ -20,7 +20,7 @@ public class PrimitiveSpecifier extends TypeSpecifier {
     @Override
     public String toString()
     {
-        return element_type.name();
+        return element_type.name().toLowerCase();
     }
 
 }

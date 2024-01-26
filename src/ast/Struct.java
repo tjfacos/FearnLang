@@ -19,7 +19,7 @@ public class Struct extends ASTNode {
     @Override 
     public String toString()
     {
-        return String.format("STRUCT %s %s", identifier, declarations.toString());
+        return String.format("struct %s {...}", identifier);
     }
 
     public void validate(SymbolTable symbolTable) {
@@ -27,7 +27,7 @@ public class Struct extends ASTNode {
         {
             if (decl.init_expression != null)
             {
-                Reporter.ReportErrorAndExit(decl.toString() + ": Cannot assign default values to struct attributes.");
+                Reporter.ReportErrorAndExit(decl.toString() + ": Cannot assign default values to struct attributes.", null);
             }
         }
     }

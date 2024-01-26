@@ -26,9 +26,9 @@ public class Declaration extends ASTNode {
     @Override public String toString()
     {
         if (!(init_expression == null)) {
-            return "Declare " + type.toString() + " " + identifier + " = " + init_expression.toString();
+            return "let " + identifier + " : "+ type.toString() + " = " + init_expression.toString() + ";";
         } else {
-            return "Declare " + type.toString() + " " + identifier ;
+            return "let " + identifier + " : "+ type.toString() + ";";
         }
     }
 
@@ -53,7 +53,7 @@ public class Declaration extends ASTNode {
 
         if (!targetType.equals(exprType))
         {
-            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString());
+            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString(), this);
         }
     }
 

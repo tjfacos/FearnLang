@@ -27,7 +27,7 @@ public class JumpStatement extends Statement {
 
     @Override public String toString()
     {
-        return type.name() + ";";
+        return type.name().toLowerCase() + ";";
     }
 
 
@@ -63,7 +63,7 @@ public class JumpStatement extends Statement {
                     break;
             }
         } catch (Exception e) {
-            Reporter.ReportErrorAndExit(type.name() + " must be contained with a loop.");
+            Reporter.ReportErrorAndExit(type.name() + " must be contained with a loop.", null);
         }
 
 
@@ -75,7 +75,7 @@ public class JumpStatement extends Statement {
         // is > 0, statement is valid.
         if (CodeGenerator.loopDepth > 0) return;
 
-        Reporter.ReportErrorAndExit("Jump Statement " + type.name() + " is invalid outside a loop.");
+        Reporter.ReportErrorAndExit("Jump Statement " + type.name() + " is invalid outside a loop.", null);
 
     }
 

@@ -23,7 +23,7 @@ public class ArrayBody extends Expression {
     @Override
     public String toString()
     {
-        return "{" + elements.toString() + "}";
+        return elements.toString().replace("[", "{").replace("]", "}");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ArrayBody extends Expression {
             TypeSpecifier e_type = e.validate(symTable);
 
             if (element_type.equals(e_type)) {}
-            else { Reporter.ReportErrorAndExit("Type Error :- ArrayBody " + this.toString() + " has inconsistent element type."); }
+            else { Reporter.ReportErrorAndExit("ArrayBody has inconsistent element type.", this); }
         }
 
         ArrayList<Integer> dimensions = new ArrayList<Integer>();
