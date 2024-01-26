@@ -3,6 +3,26 @@ package util;
 import ast.ASTNode;
 import codegen.CodeGenerator;
 
+/* 
+ * Reporter.java
+ * 
+ * This is a container class for two functions:
+ * 
+ * ->   ReportErrorAndExit : Prints a red error message to
+ *      the terminal, then exits the program. If a node has
+ *      been passed, it also prints the node of the AST causing 
+ *      the error, resonstructing the corresponding source code
+ *      using ASTNode.toString() (DFT, adding to a string representing 
+ *      the offending source code)
+ * 
+ * ->   ReportSuccess: Used to report when binaries have been built, 
+ *      and where. These messages are printed in purple, or green if 
+ *      the option to exit the program has been set to true. If so, 
+ *      function also exits FearnC.
+ * 
+ */
+
+
 public class Reporter {
 
     static String ANSI_RESET   = (char)27 + "[0m";

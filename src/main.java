@@ -19,7 +19,12 @@ import ast.Program;
 import codegen.*;
 
 
-/* This is the compiler's main class, from which compilation begins. */
+/* 
+ * Main.java
+ * 
+ * This is the compiler's main class, from which compilation begins.
+ * 
+*/
 
 class FearnC
 {
@@ -134,7 +139,6 @@ class FearnC
 
         CodeGenerator.GlobalSymbolTable = symTable;
 
-        // Perform Type Analysis
         root.validate(symTable);
 
         cg.Generate(root, symTable);
