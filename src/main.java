@@ -18,10 +18,11 @@ import ast.ASTNode;
 import ast.Program;
 import codegen.*;
 
+
+/* This is the compiler's main class, from which compilation begins. */
+
 class FearnC
 {
-
-
     public static FearnGrammarLexer lexer;
     public static CommonTokenStream tokens;
     public static FearnGrammarParser parser;
@@ -30,6 +31,21 @@ class FearnC
     static CodeGenerator cg = new CodeGenerator();
     static String sourceFileArgument;
 
+    /* The main function is the first to be called.
+     * 
+     * The function...
+     * 1)   Adds the initial CodeGenerator (used to compile the script the 
+     *      user first passes) to the generatorStack
+     * 2)   Raising an error if a source file has not been provided, storing its 
+     *      path otherwise
+     * 3)   Sets the global build path (a static property of the 
+     *      CodeGenerator class - as all files must bew generated in the 
+     *      same place), and the program name of the initial script
+     * 4)   Calls the Compile method
+     * 5)   Assuming no errors have been raised during Compilation, prints a
+     *      success message, including a command-line instruction to run the 
+     *      compiled preogram
+     */
 
     public static void main(String[] args)
     {
@@ -60,7 +76,29 @@ class FearnC
             true
         );
     }
-            
+       
+    /* Compile
+     * 
+     * The method responsible for conducting the compilation of the 
+     * file the user has passed.
+     * 
+     * 1)   Loads the source file, rasing an error if not found
+     * 2)   Calls the ANTLR-Generated lexer/parser, to convert the program to
+     *      a walkable parse tree
+     * 3)   Calls the AST Constructor to walk the parse tree, generating the 
+     *      Abstract Syntax Tree
+     * 4)   Retrieves the AST's root, and the program's Global Symbol Table. 
+     *      The Symbol Table is stored in the CodeGenerator class, to be globally 
+     *      accessible
+     * 5)   The AST is validated, to ensure it follows the rule of the language
+     *      (e.g. type rules, definitions of all functions/structs are present, etc.)
+     * 6)   Given it is valid, calls the CodeGenerator to generate the program binary,
+     *      writing it into the build directory.
+     * 7)   Pops the initial CodeGenerator off the stack.
+     * 
+     */
+
+
     static void Compile(String path)
     {
 
