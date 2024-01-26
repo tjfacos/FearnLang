@@ -331,14 +331,19 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         if (postdot.getClass() == FnCallExpression.class)
         {
-            // This should match a function call using universal function notation
+
+            // This matches a function call using universal function notation
             // e.g. a.equals(b) == equals(a, b)
 
-            FnCallExpression Ufunction_call = (FnCallExpression)postdot;
+            FnCallExpression UFN_call = (FnCallExpression)postdot;
     
-            Ufunction_call.arguments.add(0, predot);
-            return Ufunction_call;
+            UFN_call.arguments.add(0, predot);
+
+            UFN_call.isUFN = true;
+
+            return UFN_call;
         }
+
         else if (postdot.getClass() == PrimaryExpression.class && ((PrimaryExpression)postdot).type == ExprType.VariableReference)
         {
             return new StructAttrExpression(predot, ctx.expression(1).getText());

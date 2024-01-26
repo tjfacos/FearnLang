@@ -21,6 +21,12 @@ public class FnCallExpression extends Expression {
     public String identifier;
     public ArrayList<Expression> arguments;
     
+    // Flag used to indicate if a function is written in Universal Function Notation
+    // e.g. x.func()
+    // It is only used in toString()
+
+    public Boolean isUFN = false;
+
     static List<String> builtins = Arrays.asList("length", "slice");
 
     
@@ -33,7 +39,17 @@ public class FnCallExpression extends Expression {
     @Override
     public String toString()
     {
-        return identifier + arguments.toString().replace("[", "(").replace("]", ")");
+        if (isUFN) 
+        {
+            String str_rep = arguments.get(0).toString() + "." + identifier;
+            arguments.remove(0);
+            str_rep += arguments.toString()
+                .replace("[", "(")
+                .replace("]", ")");
+            return str_rep;
+        }
+        else 
+            return identifier + arguments.toString().replace("[", "(").replace("]", ")");
     }
     
     @Override
