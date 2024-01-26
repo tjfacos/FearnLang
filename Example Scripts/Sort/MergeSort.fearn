@@ -5,6 +5,8 @@ Implements a Merge Sort.
 
 */
 
+import io
+
 
 // Merges two subarrays of arr[].
 // First subarray is arr[l..m]
@@ -110,10 +112,10 @@ fn main(args : str[]) => void
     }
 
     print("Given array is");
-    print(arr);
+    print((str)arr);
 
     sort(arr, 0, arr.length() - 1);
 
     print("Sorted array is");
-    print(arr);
+    print((str)arr);
 }
