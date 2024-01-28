@@ -29,4 +29,24 @@ public class FearnMethodVisitor extends MethodVisitor{
 
     }
 
+    @Override
+    public void visitLdcInsn(Object obj)
+    {
+        if (obj instanceof String)
+        {
+            String input_str = String.valueOf(obj);
+
+            input_str = input_str
+                .replace("\\n", "\n")
+                .replace("\\t", "\t")
+            ;
+            
+            System.out.println(input_str);
+
+            super.visitLdcInsn(input_str);
+            return;
+
+        } else super.visitLdcInsn(obj);
+    }
+
 }
