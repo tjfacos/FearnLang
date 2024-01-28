@@ -2,5 +2,5 @@ import io
 
 fn main(args : str[]) => void
 {
-    print("Hello, \nWorld!");   
+    print("Hello, \ World!");   
 }

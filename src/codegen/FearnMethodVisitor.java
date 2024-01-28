@@ -39,9 +39,8 @@ public class FearnMethodVisitor extends MethodVisitor{
             input_str = input_str
                 .replace("\\n", "\n")
                 .replace("\\t", "\t")
+                .replace("\\b", "\b")
             ;
-            
-            System.out.println(input_str);
 
             super.visitLdcInsn(input_str);
             return;
