@@ -22,7 +22,13 @@ public class FearnRuntime {
      * 
      */
 
-    // Maths functions
+
+    /* Exponentiation
+     * 
+     * Integer and floating-point implementations of
+     * x ^ y
+     */
+
     public static Integer exp(int op1, int op2)
     {
         Double d = Math.pow((double)op1, (double)op2);
@@ -136,11 +142,13 @@ public class FearnRuntime {
         return a + b;
     }
 
+    // Casts an Java object to boolean, by comparing it to zero
     public static Boolean Obj2B(Object o)
     {
         return !(o.equals(0) || o.equals(0.0));
     }
 
+    // Casts objects to strings
     public static String Obj2Str(Object o)
     {
         if (o.getClass().isArray())
@@ -153,7 +161,11 @@ public class FearnRuntime {
 
 
 
-    // Sequence 
+    /* 
+    Sequence functions
+    ->  These implement the two built-in 
+        functions, length() and slice() 
+    */  
     public static Integer length(Object o)
     {
         if (o instanceof String)

@@ -120,7 +120,6 @@ public class ImportCompiler {
 
             table.GetAllRows().getLast().owner = "FearnStdLib/io";
 
-
             return table;
 
             default:

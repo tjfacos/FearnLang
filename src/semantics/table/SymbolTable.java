@@ -8,6 +8,20 @@ import ast.type.*;
 import codegen.CodeGenerator;
 import util.Reporter;
 
+/* 
+ * SymbolTable.java
+ * 
+ * This class represents a Symbol Table, used to keep
+ * track of variables, functions, and structs used in a
+ * program.
+ * 
+ * SymbolTable objects are composed of rows. The methods
+ * are used to add rows, and query their types, owners, etc.
+ * 
+ * Its methods also serve the role of detectinb when a symbol
+ * has not been declared, rasing a relevant error.
+ * 
+*/
 
 public class SymbolTable {
 
@@ -15,9 +29,16 @@ public class SymbolTable {
 
 
     /* General Methods */
+
+    
     public void addRow(Row new_row)
     {
-        // Raise error if two variables in the same function has the same identifier
+        // Add a Single Row object, checking there's no clash
+        // with rows already in the table
+        
+        // Raise error if two symbols (of the same type) in the same 
+        // scope (table) have the same identifier
+
         for (Row r : Rows)
         {
             if (new_row.getClass() == r.getClass() && r.identifier.equals(new_row.identifier))
@@ -26,22 +47,48 @@ public class SymbolTable {
             }
         }
 
+        // Set owner
+        // The owner represents the generated class the row belongs to
+        // E.g. The owner of a function, defined in lib.test, will become
+        // a method in the 'lib' class, and so its owner is 'lib
+        
         new_row.owner = CodeGenerator.generatorStack.peek().programName;
 
         Rows.add(new_row);
     }
 
+    // Add Rows from a Symbol Table (used to add rows symbols 
+    // from imported files/modules)
+    
     public void addRowsFromTable(SymbolTable table) {
         for (Row r : table.GetAllRows()) Rows.add(r);
     }
     
+    // Return all rows
     public ArrayList<Row> GetAllRows()
     {
         return Rows;
     }
 
 
-    
+    /* GenBasicDescriptor
+     * 
+     * This generates the type descriptors for int, float, bool, and str
+     * types in Fearn, which are translated to Integer, Double, Boolean, 
+     * and String Java objects.
+     * 
+     * It also recursively build type descriptors for arrays, and generate 
+     * struct descriptors using their class name ($IDENTIFIER).
+     * 
+     * These are generated from TypeSpecifier objects - which are used by FearnC 
+     * to describe data types.
+     * 
+     * These type descriptor strings are used to specifiy the type of 
+     * elements to the JVM.
+     * 
+     */
+
+
     static public String GenBasicDescriptor(TypeSpecifier typeSpecifier)
     {
         
@@ -80,7 +127,8 @@ public class SymbolTable {
         
     }
     
-
+    // Retrieves the Type Specifier associated with a row in the table (e.g. variable 
+    // data type, function return type).
     public TypeSpecifier GetTypeSpecifier(String id, Boolean isFunction) {
         
         for (Row r : Rows)
@@ -101,6 +149,7 @@ public class SymbolTable {
         return null;
     }
 
+    // Returns true if identifier is contained within the table
     public Boolean Contains(String id) {
         for (int i = 0; i < Rows.size(); i++)
         {
@@ -110,6 +159,7 @@ public class SymbolTable {
         return false;
     }
 
+    // Get the owner associated with an identifier
     public String GetOwner(String id, Boolean isFunction)
     {
         for (Row r : Rows)
