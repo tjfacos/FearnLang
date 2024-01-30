@@ -9,6 +9,8 @@ fn main(args : str[]) => void
 {
     let y : $myTest = new myTest(10);
     print((str)y.num);
-    y.num = 20;
+    y.num %= 7;
+
+
     print((str)y.num);
 }
