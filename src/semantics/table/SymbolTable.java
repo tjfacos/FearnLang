@@ -18,8 +18,10 @@ import util.Reporter;
  * SymbolTable objects are composed of rows. The methods
  * are used to add rows, and query their types, owners, etc.
  * 
- * Its methods also serve the role of detectinb when a symbol
- * has not been declared, rasing a relevant error.
+ * Its methods also serve the role of detecting when a symbol
+ * has not been declared, raising a relevant error. A majority 
+ * of the below methods will raise an error if their function 
+ * fails, using the ReportErrorAndExit() function.
  * 
 */
 
@@ -59,7 +61,6 @@ public class SymbolTable {
 
     // Add Rows from a Symbol Table (used to add rows symbols 
     // from imported files/modules)
-    
     public void addRowsFromTable(SymbolTable table) {
         for (Row r : table.GetAllRows()) Rows.add(r);
     }
@@ -127,7 +128,8 @@ public class SymbolTable {
         
     }
     
-    // Private method to retrieve a row in the table
+    // Private method to retrieve a row in the table, by performing a linear search
+    // Throws an exception if it is not found
     private Row GetRow(String id, Boolean isFunction, Boolean isStruct) throws NoSuchElementException
     {
         for (Row r : Rows)
@@ -159,7 +161,7 @@ public class SymbolTable {
         try {
             Row row = GetRow(id, isFunction, false);
             if (isFunction) return ((FunctionRow)row).return_type;
-            else return ((VariableRow)row).typeSpecifier;
+            else return ((VariableRow)row).dataType;
         } catch (Exception e)
         {
             Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", null);
@@ -191,17 +193,28 @@ public class SymbolTable {
     }
 
     /* Variable Methods */
+    
+    // Get the string type descriptor of a variable in the table
     public String GetVarDescriptor(String id) {
         try {
             return GetRow(id, false, false).descriptor;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             Reporter.ReportErrorAndExit("Unknown Variable " + id, null);
         }
         
         return null;
     }
 
+    /* Gets the index of a variable in the table
+     * 
+     * These indexes are used in Code Genration, as the JVM
+     * stores local variable at indexes, separate to the stack.
+     * 
+     * Since each variable in a function's symbol table is stored
+     * at a different index, starting from 0, the index in the table is
+     * used as the index for the local variable in the stack frame, at 
+     * runtime.
+     */
     public Integer GetIndex(String id) {
         for (int i = 0; i < Rows.size(); i++)
         {
@@ -214,6 +227,22 @@ public class SymbolTable {
     }
 
     /* Function Methods */
+
+    /* Generates the method descriptor for a function.
+     * 
+     * Functions in FearnLang are modelled as public static methods
+     * of the class representing the module/script they are defined in
+     * (e.g. a function f() => void, defined in program.fearn, would 
+     * become `public static void f()`, in the `program` class).
+     * 
+     * In the JVM, as with any typed element, each method has a descriptor 
+     * to define the types of its arguments, and its return type. 
+     * 
+     * Below, The parameter's types are all generated and appended to the descriptor,
+     * along with the descriptor for teh return type. If a function is void (return_type
+     * is null), `V` is used instead.
+     */
+
     static public String GenFuncDescriptor(ArrayList<Parameter> params, TypeSpecifier return_type)
     {
         String desc = "(";
@@ -236,7 +265,7 @@ public class SymbolTable {
         
     }
     
-
+    // Get the function's local symbol table, containing its local variables.
     public SymbolTable GetFuncSymbolTable(String id) {
         
         try {
@@ -248,7 +277,7 @@ public class SymbolTable {
         return null;
     }
     
-    
+    // Get a function's method descriptor
     public String GetGlobalFuncDescriptor(String id) {
         
         try {
@@ -260,7 +289,12 @@ public class SymbolTable {
         return null;
     }
     
-    
+    /* 
+     * Gets the TypeSpecifier objects associated with the arguments of a function
+     * This is called when the program has attempted to call a function, and raises 
+     * an error if the function has not been found (indicating the program has not 
+     * defined it) 
+     */ 
     public ArrayList<TypeSpecifier> GetFuncParameterSpecifiers(String id)
     {
         ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
@@ -278,6 +312,10 @@ public class SymbolTable {
     
 
     /* Struct Methods */
+
+    // Get the TypeSpecifiers for the attributes of a struct (used 
+    // to check the types of the values used to initialise a struct) 
+
     public ArrayList<TypeSpecifier> GetStructAttributeSpecifiers(String id)
     {
         try {
@@ -290,6 +328,23 @@ public class SymbolTable {
 
     }
     
+    /*
+    Generate method descriptor for constructor for the class
+    that represents the struct
+    
+    E.g. Given a struct ...
+
+    struct myStruct
+    {
+        let num : int;
+    }
+    
+    ... a class called `$myStruct` is generated (a `$` is added to differentiate 
+    between program classes and struct classes), with its constructor being ... 
+    
+    public $myStruct(Integer var0)
+
+    */ 
     public static String GenStructDescriptor(SymbolTable localTable) 
     {
         String desc = "(";
@@ -303,6 +358,7 @@ public class SymbolTable {
         return desc;
     }
     
+    // Get the TypeSpecifiers of all variables in a table
     public ArrayList<TypeSpecifier> GetAllVarTypeSpecifiers()
     {
         ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
@@ -311,13 +367,14 @@ public class SymbolTable {
         {
             if (r.getClass() == VariableRow.class)
             {
-                t_list.add(((VariableRow)r).typeSpecifier);
+                t_list.add(((VariableRow)r).dataType);
             }
         }
 
         return t_list;
     }
 
+    // Get Struct class constructor method descriptor
     public String GetGlobalStructDescriptor(String id) {
         
         try {
@@ -329,6 +386,7 @@ public class SymbolTable {
         return null;
     }
 
+    // Get Struct's local Symbol Table (constaining its attributes)
     public SymbolTable GetStructSymbolTable(String id) {
         
         try {
@@ -339,6 +397,5 @@ public class SymbolTable {
 
         return null;
     }
-
     
 }

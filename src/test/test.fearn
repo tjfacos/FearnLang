@@ -1,23 +1,14 @@
 import io
-import from "StalinSort.fearn"
 
-struct test {
-    let x : int;
+struct myTest
+{
+    let num : int;
 }
-
-let y : $test = new test(5);
 
 fn main(args : str[]) => void
 {
-    let list : int[] = new int[args.length()];
-
-    for (let i : int = 0; i < args.length(); i++)
-    {
-        list[i] = (int)args[i];
-    }
-
-    print((str)list.stalinSort());
-
-    print((str)y.x);
-
+    let y : $myTest = new myTest(10);
+    print((str)y.num);
+    y.num = 20;
+    print((str)y.num);
 }
