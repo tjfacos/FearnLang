@@ -74,7 +74,6 @@ public class AssignExpression extends Expression {
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
-        
         if (target.getClass() == PrimaryExpression.class) // Variable Reference
         {
             expression.GenerateBytecode(mv);
@@ -134,7 +133,7 @@ public class AssignExpression extends Expression {
 
     @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable) {
-        
+
         HandleOperators();
 
         // Check the TypeSpecifiers of the target and expression are equal
@@ -160,7 +159,7 @@ public class AssignExpression extends Expression {
 
     }
 
-    void HandleOperators()
+    private void HandleOperators()
     {
         switch (operator) {
             case Equals:
