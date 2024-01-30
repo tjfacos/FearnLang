@@ -3,12 +3,10 @@ import io
 
 fn main(args : str[]) => void
 {
-    let i : int = 10;
+    let i : int = 1;
+    
+    i++;
 
-    print((str)--i);
-
-    i %= ;
-
+    print((str)i++);
     print((str)i);
-
 }
