@@ -135,7 +135,7 @@ public class AssignExpression extends Expression {
     @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable) {
         
-        HandleOperators(symTable);
+        HandleOperators();
 
         // Check the TypeSpecifiers of the target and expression are equal
         TypeSpecifier targetType =  target.validate(symTable);
@@ -151,7 +151,7 @@ public class AssignExpression extends Expression {
         else if (target.getClass() == IndexExpression.class) {}
         else if (target.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName().toLowerCase(), this);
         }
 
 
@@ -160,7 +160,7 @@ public class AssignExpression extends Expression {
 
     }
 
-    void HandleOperators(SymbolTable symTable)
+    void HandleOperators()
     {
         switch (operator) {
             case Equals:
