@@ -71,18 +71,19 @@ public class IncrExpression extends Expression {
             Reporter.ReportErrorAndExit("Can only increment/decrement ints.", this);
         }
 
-        incStatement = new ExpressionStatement(
-            new AssignExpression(
-                expression, 
-                new PrimaryExpression<Integer>(1, ExprType.IntLiteral), 
-                isDecrement ? AssignmentOperator.SubEquals : AssignmentOperator.AddEquals
-            ), true
+        AssignExpression assignment = new AssignExpression(
+            expression, 
+            new PrimaryExpression<Integer>(1, ExprType.IntLiteral), 
+            isDecrement ? AssignmentOperator.SubEquals : AssignmentOperator.AddEquals
         );
-                
-        incStatement.validate(symTable);
+
+        assignment.expression.expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT);
+
+        incStatement = new ExpressionStatement(assignment, true);
         
         expression_type = expr_type;
         return expression_type;
+
     }
             
 }
