@@ -1,7 +1,7 @@
 package semantics.table;
 
 import java.util.ArrayList;
-
+import java.util.NoSuchElementException;
 
 import ast.function.Parameter;
 import ast.type.*;
@@ -127,25 +127,44 @@ public class SymbolTable {
         
     }
     
+    // Private method to retrieve a row in the table
+    private Row GetRow(String id, Boolean isFunction, Boolean isStruct) throws NoSuchElementException
+    {
+        for (Row r : Rows)
+        {
+            
+            if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
+            {
+                return r;
+            }
+            
+            else if (r.identifier.equals(id) && r instanceof StructRow && isStruct) 
+            { 
+                return r; 
+            }
+
+            else if (r.identifier.equals(id) && r instanceof VariableRow && !isFunction && !isStruct)
+            {
+                return r;
+            }
+        }
+
+        throw new NoSuchElementException(id);
+    }
+
     // Retrieves the Type Specifier associated with a row in the table (e.g. variable 
     // data type, function return type).
     public TypeSpecifier GetTypeSpecifier(String id, Boolean isFunction) {
         
-        for (Row r : Rows)
+        try {
+            Row row = GetRow(id, isFunction, false);
+            if (isFunction) return ((FunctionRow)row).return_type;
+            else return ((VariableRow)row).typeSpecifier;
+        } catch (Exception e)
         {
-            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class && isFunction)
-            {
-                return ((FunctionRow)r).return_type;
-            }
-            
-            else if (r.identifier.equals(id) && !isFunction) 
-            { 
-                return ((VariableRow)r).typeSpecifier; 
-            }
+            Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", null);
         }
-        
-        Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", null);
-        
+
         return null;
     }
 
@@ -162,35 +181,23 @@ public class SymbolTable {
     // Get the owner associated with an identifier
     public String GetOwner(String id, Boolean isFunction)
     {
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
-            {
-                return r.owner;
-            }
-            
-            else if (r.identifier.equals(id) && !isFunction) 
-            { 
-                return r.owner; 
-            }
+        try {
+            return GetRow(id, isFunction, false).owner;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Owner for " + id + " not found.", null);
         }
-        
-        Reporter.ReportErrorAndExit("Owner for " + id + " not found.", null);
         
         return null;
     }
 
     /* Variable Methods */
     public String GetVarDescriptor(String id) {
-        for (Row r : Rows)
+        try {
+            return GetRow(id, false, false).descriptor;
+        } catch (Exception e)
         {
-            if (r.identifier.equals(id) && r.getClass() == VariableRow.class)
-            {
-                return ((VariableRow)r).descriptor;
-            }
+            Reporter.ReportErrorAndExit("Unknown Variable " + id, null);
         }
-        
-        Reporter.ReportErrorAndExit("Unknown Variable " + id, null);
         
         return null;
     }
@@ -231,15 +238,12 @@ public class SymbolTable {
     
 
     public SymbolTable GetFuncSymbolTable(String id) {
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
-            {
-                return ((FunctionRow)r).localSymbolTable;
-            }
-        }
         
-        Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.", null);
+        try {
+            return ((FunctionRow)GetRow(id, true, false)).localSymbolTable;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Symbol Table for function " + id + " not found.", null);
+        }
         
         return null;
     }
@@ -247,16 +251,12 @@ public class SymbolTable {
     
     public String GetGlobalFuncDescriptor(String id) {
         
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r.getClass() == FunctionRow.class)
-            {
-                return ((FunctionRow)r).descriptor;
-            }
+        try {
+            return GetRow(id, true, false).descriptor;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.", null);
         }
-        
-        Reporter.ReportErrorAndExit("Descriptor for function " + id + " not found.", null);
-        
+
         return null;
     }
     
@@ -265,38 +265,26 @@ public class SymbolTable {
     {
         ArrayList<TypeSpecifier> t_list = new ArrayList<TypeSpecifier>();
         
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r instanceof FunctionRow)
-            {
-                for (Parameter p : ((FunctionRow)r).parameters)
-                {
-                    t_list.add(p.type);
-                }
-                return t_list;
-            }
+        try {
+            for (Parameter p : ((FunctionRow)GetRow(id, true, false)).parameters) t_list.add(p.type);
+            return t_list;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Function " + id + " is not defined.", null);
         }
         
-        Reporter.ReportErrorAndExit("Function " + id + " is not defined.", null);
-        
         return t_list;
+    
     }
     
 
     /* Struct Methods */
     public ArrayList<TypeSpecifier> GetStructAttributeSpecifiers(String id)
     {
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
-            {
-                SymbolTable symTable = ((StructRow)r).localSymbolTable;
-
-                return symTable.GetAllVarTypeSpecifiers();
-            }
+        try {
+            return ((StructRow)GetRow(id, false, true)).localSymbolTable.GetAllVarTypeSpecifiers();
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Struct " + id + " not defined.", null);
         }
-
-        Reporter.ReportErrorAndExit("Struct " + id + " not defined.", null);
 
         return null;
 
@@ -332,30 +320,23 @@ public class SymbolTable {
 
     public String GetGlobalStructDescriptor(String id) {
         
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
-            {
-                return ((StructRow)r).descriptor;
-            }
+        try {
+            return GetRow(id, false, true).descriptor;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Descriptor for struct " + id + " not found.", null);
         }
-        
-        Reporter.ReportErrorAndExit("Descriptor for struct " + id + " not found.", null);
         
         return null;
     }
 
     public SymbolTable GetStructSymbolTable(String id) {
-        for (Row r : Rows)
-        {
-            if (r.identifier.equals(id) && r.getClass() == StructRow.class)
-            {
-                return ((StructRow)r).localSymbolTable;
-            }
+        
+        try {
+            return ((StructRow)GetRow(id, false, true)).localSymbolTable;
+        } catch (Exception e) {
+            Reporter.ReportErrorAndExit("Symbol Table for struct " + id + " not found.", null);
         }
-        
-        Reporter.ReportErrorAndExit("Symbol Table for struct " + id + " not found.", null);
-        
+
         return null;
     }
 
