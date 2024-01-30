@@ -1,12 +1,14 @@
 import io
 
+struct myTest
+{
+    let num : int;
+}
 
 fn main(args : str[]) => void
 {
-    let i : int = 1;
-    
-    i++;
-
-    print((str)i++);
-    print((str)i);
+    let y : $myTest = new myTest(10);
+    print((str)y.num);
+    y.num = 20;
+    print((str)y.num);
 }
