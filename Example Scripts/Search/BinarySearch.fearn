@@ -22,7 +22,7 @@ fn main(args : str[]) => void
 
     print("SEARCH TERM IS : " + (str)term);
     
-    index = BinarySearch(list, term);
+    index = list.BinarySearch(term);
 
     if (index > -1) {
         print("INDEX IS : " + (str)index);

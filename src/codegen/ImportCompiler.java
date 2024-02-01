@@ -59,7 +59,7 @@ public class ImportCompiler {
         ASTNode AST = astConstructor.visit(parseTree);
 
         Program root = (Program)AST;
-        SymbolTable symTable = astConstructor.symTabStack.pop();
+        SymbolTable symTable = astConstructor.symbolTableStack.pop();
 
         CodeGenerator.GlobalSymbolTable = symTable;
 

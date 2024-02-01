@@ -70,7 +70,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      *     raises an error
      */
     
-    Stack<String> symAnalysisStack = new Stack<String>();
+    Stack<String> symbolAnalysisStack = new Stack<String>();
 
 
     /* PRIMARY EXPRESSIONS
@@ -96,7 +96,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     {
         String id = ctx.getText();
 
-        if (!symAnalysisStack.contains(id))
+        if (!symbolAnalysisStack.contains(id))
         {
             Reporter.ReportErrorAndExit(String.format(
                 " Line %s : Variable Identifer Unknown in Scope: %s .",
@@ -547,6 +547,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * -> Struct: A struct instance, shown as `$IDENTIFIER`, where IDENTIFIER
      *    indicates the struct used
      * -> Array: An N-dimensional array, that stores primitives or struct instances
+     * 
      */
     
     public PrimitiveSpecifier visitType_specifier_primitive(FearnGrammarParser.Type_specifier_primitiveContext ctx)
@@ -579,11 +580,25 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 
 
-    /* DECLARATION */
+    /* DECLARATIONS
+     * 
+     * New variables are declared at the start of the compound statement in 
+     * which they're in scope. This function...
+     *  1)  Gets the identifer for the variable, its type specifier, and the 
+     *      initialisation expression, if present.
+     *  2)  Adds the identifer to the stack
+     *  3)  Adds a row for the variable to the local/global symbol table (this 
+     *      will throw an error if another variable of the same name exists in 
+     *      scope), by adding the row to the SymbolTable at the top of the 
+     *      symbolTableStack
+     * 4)   Returns a Declaration object
+     * 
+     */
+
     public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
     {
         String identifer = ctx.IDENTIFIER().getText();
-        symAnalysisStack.push(identifer);
+        symbolAnalysisStack.push(identifer);
         TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.type_specifier());
 
         Expression init_expression = null;
@@ -593,7 +608,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             init_expression = (Expression)visit(ctx.expression());
         }
 
-        symTabStack.peek().addRow(
+        symbolTableStack.peek().addRow(
             new VariableRow(
                 identifer, 
                 type_spec
@@ -608,13 +623,26 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* STATEMENTS */
 
-    // Compound Statement
+    /* COMPOUND STATEMENTS
+     * 
+     * A collection of statements, surrounded by curly braces.
+     * 
+     * This function:
+     *  1)  Records the number of symbols in the stack initially
+     *  2)  Visits all nested declarations (at the start of the statement)
+     *  3)  Visits all nested statements (at the end of the statement)
+     *  4)  Removes any new symbols added to the stack during the traversal 
+     *      of its subtree (by popping the stack for the difference between
+     *      the new size of the stack, and the initial number). This is done
+     *      because said variables declared within the statement are out of 
+     *      scope beyond it.
+     */
     @Override
     public CompoundStatement visitCompound_statement(FearnGrammarParser.Compound_statementContext ctx)
     {
         
         
-        int numOfSyms = symAnalysisStack.size();
+        int numOfSyms = symbolAnalysisStack.size();
 
         ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
         ArrayList<Statement> local_stmts = new ArrayList<Statement>();
@@ -630,9 +658,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         }   
         
         // Remove Symbols added within the compound statement
-        for (int i = 0; i < symAnalysisStack.size() - numOfSyms; i++)
+        for (int i = 0; i < symbolAnalysisStack.size() - numOfSyms; i++)
         {
-            symAnalysisStack.pop();
+            symbolAnalysisStack.pop();
         }
             
         return new CompoundStatement(local_decls, local_stmts);
@@ -641,7 +669,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
     
     
-    // Expression Statements
+    /* EXPRESSION STATEMENTS
+     * 
+     * Simply a simple expression or assignment expression. The expressions are visited, and
+     * the resulting Expression object is used to return an ExpressionStatement.
+     * 
+     * The boolean flag at the end indicates the ExpressStatement is an assignment expression 
+     * if true.
+     */
     @Override
     public ExpressionStatement visitSimple_expr_stmt(FearnGrammarParser.Simple_expr_stmtContext ctx)
     {
@@ -656,8 +691,18 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 
 
-    // Selection Statements
-    @Override
+    /* SELECTION STATEMENTS
+     * 
+     * Statements used for branching (if and if-else)
+     * 
+     * Each of the belowreturns a SelectionStatement, which takes three arguments: 
+     * the condition expression, the if branch body (a compound statement), and 
+     * the else branch statement (either a compound statement, or another selection 
+     * statement - to build a if-else chain)
+     * 
+     */
+    
+     @Override
     public SelectionStatement visitSingle_if(FearnGrammarParser.Single_ifContext ctx)
     {
 
@@ -682,7 +727,6 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public SelectionStatement visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx)
     {
-
         return new SelectionStatement(
             (Expression)visit(ctx.expression()),
             (CompoundStatement)visit(ctx.compound_statement()),
@@ -690,7 +734,23 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         );
     }
 
-    // Iteration Statement
+    /* ITERATION STATEMENTS
+     * 
+     * Statements used for loops (for loops, to be precise - Fearn doesn't 
+     * support while loop, but the syntax for for loops is permissive enough 
+     * for it to be used as a while loop)
+     * 
+     * This function:
+     *  1)  Visits the initialisation expression/declaration (run before the loop),
+     *      if present
+     *  2)  Visits the continue expression (a boolean expression that must evaluate 
+     *      to true for the loop body to run)
+     *  3)  Visits the iteration expression, run at the end of each iteration, if 
+     *      present
+     *  4)  Visits the compound statement, that is the body of the loop
+     *  5)  Returns an IterationStatment
+     * 
+     */
     @Override
     public IterationStatement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx)
     {
@@ -713,13 +773,18 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     }
 	    
-    
-	
-        
-    
-	
+    /* JUMP STATEMENTS
+     * 
+     * Statements used to jump around a program (return, break, and continue)
+     * 
+     * Each one returns a JumpStatement, with return statements returning the 
+     * subclass ReturnStatement, which allows an expression for the statement to 
+     * return to be passed.
+     * 
+     * Jump Statements use the enum JumpType to differentiate themselves.
+     * 
+     */
 
-    // Jump Statements
     @Override
     public JumpStatement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx)
     {
@@ -741,13 +806,26 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new ReturnStatement(JumpType.Return, expr);
     }
 	
+    /* HIGH-LEVEL STRUCTURES */
 
-
-
-
-    /* FUNCTIONS AND STRUCTURES */
-
-    // Function Definition
+    /* FUNCTION DEFINITIONS
+     * 
+     * In the form `fn IDENTIFIER(parameter*) => return_type_specifier`
+     * 
+     * This function:
+     *  1)  Determines if the function returns void, by checking for a type_specifier
+     *  2)  Visits the return type specifier if present
+     *  3)  Visits the parameters, adding them to a list. These are added to the 
+     *      symbol table before any local variables within the function, as the JVM
+     *      adds arguments in the first indexes of the local variable list. Thus, since
+     *      this table is used to get variable indexes during code generation, arguments
+     *      have to be first.
+     *  4)  Visits the body
+     *  5)  Pops the arguments form the symbol stack (they are added when the paramaters 
+     *      are visited)
+     *  6)  Returns a Function object, retrieving the string identifer from the IDENTIFIER 
+     *      token
+     */
     @Override
     public Function visitFunction(FearnGrammarParser.FunctionContext ctx)
     {
@@ -767,7 +845,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             Parameter param = (Parameter)visit(ctx.parameter(i));
             
             // Add parameter to symbol table
-            symTabStack.peek().addRow(
+            symbolTableStack.peek().addRow(
                 new VariableRow(
                     param.identifier, 
                     param.type
@@ -781,23 +859,36 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         CompoundStatement body = (CompoundStatement)visit(ctx.compound_statement());
 
-        for (int i = 0; i < parameters.size(); i++)
-        {
-            symAnalysisStack.pop();
-        }
+        for (int i = 0; i < parameters.size(); i++) symbolAnalysisStack.pop();
 
         return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, body);
     }
 
-    // Parameter
+    /* 
+    
+    Parameter, in the form `IDENTIFIER : type_specifier`. 
+    
+    The function visits the type_specifier, gets the string identifier, and adds the parameter 
+    to the symbol stack, to ensure referecnes to the paramaters are detected as valid during 
+    traversal of the function body.
+    
+    */ 
 	@Override
     public Parameter visitParameter(FearnGrammarParser.ParameterContext ctx)
     {
-        symAnalysisStack.push(ctx.IDENTIFIER().getText());
+        symbolAnalysisStack.push(ctx.IDENTIFIER().getText());
         return new Parameter(ctx.IDENTIFIER().getText(), (TypeSpecifier)visit(ctx.type_specifier()));
     }
 
-    // Struct Definition
+    /* STRUCT DEFINITIONS
+     * 
+     * In the form `struct IDENTIFIER {declaration*}`
+     * 
+     * This function:
+     *  1)  Visits all the declarations within the struct (its attributes)
+     *  2)  Gets the identifer string
+     *  3)  Returns a Struct object
+     */
     @Override
     public Struct visitStruct_def(FearnGrammarParser.Struct_defContext ctx)
     {
@@ -811,7 +902,18 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
 
-    
+    /* IMPORTS
+     * 
+     * An Import Compiler is used to compile other fearn programs,
+     * imported by the current program, and returns their symbol table,
+     * the rows of which atre added to the current global symbol table.
+     * 
+     * If an identifier is used, the import is from a standard library 
+     * module (e.g. io). The Import Compiler will construct a symbol table
+     * for the functions contained within, and add tyhem to the global symbol
+     * table, so they can be used anywhere within the program.
+     * 
+     */
     @Override
     public ASTNode visitImp(FearnGrammarParser.ImpContext ctx)
     {
@@ -820,20 +922,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         if (ctx.IDENTIFIER() == null)
         {
-            symTabStack.peek().addRowsFromTable(
+            symbolTableStack.peek().addRowsFromTable(
                 comp.Compile(ctx.STR_LIT().toString())
             );
         } else {
-            symTabStack.peek().addRowsFromTable(
+            symbolTableStack.peek().addRowsFromTable(
                 comp.GetStdLib(ctx.IDENTIFIER().toString())
             );
         }
 
-        for (Row row : symTabStack.peek().GetAllRows())
+        // All new symbols from the import are added to the 
+        // symbol stack
+        for (Row row : symbolTableStack.peek().GetAllRows())
         {
             if (row instanceof VariableRow)
             {
-                symAnalysisStack.push(row.identifier);
+                symbolAnalysisStack.push(row.identifier);
             }
         }
         
@@ -841,9 +945,31 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     
     }
     
-    public Stack<SymbolTable> symTabStack = new Stack<SymbolTable>();
+    /* The symbol table stack is used to store symbol tables for 
+     * functions, structs, and the global scope. When new rows are
+     * created, they are added to the table at the top of the stack.
+     * These can then be popped off to be used, say within a FunctionRow
+     * or StructRow, stored within the global symbol table. This means rows
+     * are always added to the symbol table for the part of the program
+     * currently being traversed.
+     */
+
+    public Stack<SymbolTable> symbolTableStack = new Stack<SymbolTable>();
     
-    /* Program (root of AST) */
+    
+    /* Program (root of AST) 
+     * 
+     * This visits all imports, global declarations, structs, and functions.
+     * 
+     * For structs and functions, a new symbol table is added to the stack.
+     * This means newly-delcared symbols are added to this symbol table. It
+     * is then popped off the stack, and stored within a row for the larger
+     * structurem, which is finally stored in the global symbol table (always
+     * at the bottom of the stack).
+     * 
+     * The function returns a Program object, representing the root of the tree.
+    */
+    
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx)
     {
@@ -853,7 +979,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         ArrayList<Function> functions = new ArrayList<Function>();
         
         
-        symTabStack.add(new SymbolTable());
+        symbolTableStack.add(new SymbolTable());
         
         
         for (int i = 0; i < ctx.imp().size(); i++) visit(ctx.imp(i));
@@ -867,14 +993,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         for (int i = 0; i < ctx.struct_def().size(); i++)
         {
-            symTabStack.add(new SymbolTable());
+            symbolTableStack.add(new SymbolTable());
 
             Struct struct = visitStruct_def(ctx.struct_def(i));
             structs.add(struct);
 
-            SymbolTable local_syms = symTabStack.pop();
+            SymbolTable local_syms = symbolTableStack.pop();
 
-            symTabStack.peek().addRow(
+            symbolTableStack.peek().addRow(
                 new StructRow(struct.identifier, local_syms)
             );
         }
@@ -882,14 +1008,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         for (int i = 0; i < ctx.function().size(); i++)
         {
-            symTabStack.add(new SymbolTable());
+            symbolTableStack.add(new SymbolTable());
             
             Function func = visitFunction(ctx.function(i));
             functions.add(func);
 
-            SymbolTable local_syms = symTabStack.pop();
+            SymbolTable local_syms = symbolTableStack.pop();
             
-            symTabStack.peek().addRow(
+            symbolTableStack.peek().addRow(
                 new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms)
             );
         }

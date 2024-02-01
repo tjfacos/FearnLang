@@ -148,7 +148,7 @@ class FearnC
 
         // Retrieve AST root, and Symbol Table
         Program root = (Program)AST;
-        SymbolTable symTable = astConstructor.symTabStack.pop();
+        SymbolTable symTable = astConstructor.symbolTableStack.pop();
 
         CodeGenerator.GlobalSymbolTable = symTable;
 

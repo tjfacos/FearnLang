@@ -87,7 +87,6 @@ public class IterationStatement extends Statement {
 
         // Verify Frame State
         
-        // WARNING May break stuff
         mv.visitFrame(
             F_FULL, 
             numLocals, 
