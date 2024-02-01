@@ -74,9 +74,18 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
 
     /* PRIMARY EXPRESSIONS
+     * 
      * Fundamental, atomic expression
-     *  -> 
+     *  -> visitId_expr : visits references to variables
+     *      -> Raises an error if the variable referenced isn't in the stack
+     *         (hence, out of scope when it is used)
+     *  -> visitLiteral : visit literal values
+     * Both return PrimaryExpression objects, which are generic objects 
+     * when hold the data value they represent, or the string ID of the 
+     * referenced variable.
+     * 
      */
+
     @Override
     public Expression visitId_expr(FearnGrammarParser.Id_exprContext ctx)
     {
@@ -93,7 +102,6 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         return new PrimaryExpression<String>(id, ExprType.VariableReference);
     }
-    
     
     
     @Override
@@ -125,7 +133,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
     
     
-    
+    // Bracket expressions, ( expression ), are basically used to clarify precedence. 
+    // Since this is natural as part of a tree, bracket expressions simply return 
+    // whatever's in the brackets
     @Override
     public Expression visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) { return (Expression)visit(ctx.expression()); }
     
