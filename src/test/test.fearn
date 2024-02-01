@@ -1,16 +1,7 @@
 import io
 
-struct myTest
-{
-    let num : int;
-}
-
 fn main(args : str[]) => void
 {
-    let y : $myTest = new myTest(10);
-    print((str)y.num);
-    y.num %= 7;
-
-
-    print((str)y.num);
+    let y : int[][] = new int[][] {{1, 2}, {3, 4}};
+    print((str)y);
 }
