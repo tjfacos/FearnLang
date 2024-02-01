@@ -8,7 +8,6 @@ struct myTest
 fn main(args : str[]) => void
 {
     let y : $myTest = new myTest(10);
-    print((str)y.num);
-    y.num = 20;
+    print((str)y.num++);
     print((str)y.num);
 }

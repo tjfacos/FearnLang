@@ -54,24 +54,32 @@ class FearnC
 
     public static void main(String[] args)
     {
-        
+        // Add initial code generator to stack
         CodeGenerator.generatorStack.push(cg);
 
+        // Raise error if no source file has been passed
         if ( args.length == 0) {
             Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
     
-        sourceFileArgument = args[0];
+        // Set Build Path and Program name for generator
+        
+        // Build Path describes where to put all generated class file, and 
+        // is the same for all generators
 
+        sourceFileArgument = args[0];
         cg.SetBuildPath(sourceFileArgument);
         cg.SetProgramName(sourceFileArgument);
 
+        // Compile source file
         Compile(sourceFileArgument);
-                
-        Path parent = Paths.get(sourceFileArgument).getParent();
-
-        parent = parent == null ? Paths.get("build") : parent.resolve("build");
         
+        // Pop generator from statck, as it's no longer in use
+        CodeGenerator.generatorStack.pop();
+
+        // Print green Success Message
+        Path parent = Paths.get(sourceFileArgument).getParent();
+        parent = parent == null ? Paths.get("build") : parent.resolve("build");
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
@@ -107,6 +115,7 @@ class FearnC
     static void Compile(String path)
     {
 
+        // Read source file
         CharStream input = null;
         
         try {
@@ -115,35 +124,39 @@ class FearnC
             Reporter.ReportErrorAndExit("FILE " + sourceFileArgument + " NOT FOUND", null);
         }
 
+        // FearnRuntime.fearn is prohibited, as the resulting class would conflict with the runtime
         if (sourceFileArgument.endsWith("FearnRuntime.fearn") )
         {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
 
-
-               
+        // Create lexer and parser objects
         lexer = new FearnGrammarLexer(input);
         tokens = new CommonTokenStream(lexer);
         parser = new FearnGrammarParser(tokens);
 
+        // Add custom error listener (to styalise error messages)
         parser.removeErrorListeners();
         parser.addErrorListener(new FearnErrorListener());
 
+        // Parse program from the root 'program' production
         ParseTree parseTree = parser.program();
 
+        // Construct AST
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
+        // Retrieve AST root, and Symbol Table
         Program root = (Program)AST;
         SymbolTable symTable = astConstructor.symTabStack.pop();
 
         CodeGenerator.GlobalSymbolTable = symTable;
 
+        // Perform semantic analysis
         root.validate(symTable);
 
+        // Generate program and struct class files
         cg.Generate(root, symTable);
-
-        CodeGenerator.generatorStack.pop();
     }
   
 };
