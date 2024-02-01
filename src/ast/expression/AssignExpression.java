@@ -135,7 +135,7 @@ public class AssignExpression extends Expression {
     @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable) {
         
-        HandleOperators(symTable);
+        HandleOperators();
 
         // Check the TypeSpecifiers of the target and expression are equal
         TypeSpecifier targetType =  target.validate(symTable);
@@ -160,7 +160,7 @@ public class AssignExpression extends Expression {
 
     }
 
-    void HandleOperators(SymbolTable symTable)
+    private void HandleOperators()
     {
         switch (operator) {
             case Equals:
