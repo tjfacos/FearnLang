@@ -7,7 +7,7 @@ package semantics.table;
  * Includes:
     -> identifier - the symbol's name in the program
     -> descriptor - the symbol's type/method descriptor
-    -> owner - the program class the symbol belongs to
+    -> owner      - the program class the symbol belongs to
 */
 
 public abstract class Row {

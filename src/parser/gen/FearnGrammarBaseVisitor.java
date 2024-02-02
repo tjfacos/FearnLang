@@ -18,28 +18,7 @@ public class FearnGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInt_type_keyword(FearnGrammarParser.Int_type_keywordContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitFloat_type_keyword(FearnGrammarParser.Float_type_keywordContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitBool_type_keyword(FearnGrammarParser.Bool_type_keywordContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitStr_type_keyword(FearnGrammarParser.Str_type_keywordContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType_name(FearnGrammarParser.Type_nameContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -74,7 +53,7 @@ public class FearnGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitImp(FearnGrammarParser.ImpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitModule_import(FearnGrammarParser.Module_importContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

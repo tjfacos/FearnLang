@@ -915,7 +915,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      */
     @Override
-    public ASTNode visitImp(FearnGrammarParser.ImpContext ctx)
+    public ASTNode visitModule_import(FearnGrammarParser.Module_importContext ctx)
     {
 
         ImportCompiler comp = new ImportCompiler();
@@ -982,7 +982,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         symbolTableStack.add(new SymbolTable());
         
         
-        for (int i = 0; i < ctx.imp().size(); i++) visit(ctx.imp(i));
+        for (int i = 0; i < ctx.module_import().size(); i++) visit(ctx.module_import(i));
 
         for (int i = 0; i < ctx.declaration().size(); i++)
         {

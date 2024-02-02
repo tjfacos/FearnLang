@@ -11,33 +11,11 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface FearnGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by the {@code int_type_keyword}
-	 * labeled alternative in {@link FearnGrammarParser#type_name}.
+	 * Visit a parse tree produced by {@link FearnGrammarParser#type_name}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInt_type_keyword(FearnGrammarParser.Int_type_keywordContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code float_type_keyword}
-	 * labeled alternative in {@link FearnGrammarParser#type_name}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFloat_type_keyword(FearnGrammarParser.Float_type_keywordContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code bool_type_keyword}
-	 * labeled alternative in {@link FearnGrammarParser#type_name}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBool_type_keyword(FearnGrammarParser.Bool_type_keywordContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code str_type_keyword}
-	 * labeled alternative in {@link FearnGrammarParser#type_name}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStr_type_keyword(FearnGrammarParser.Str_type_keywordContext ctx);
+	T visitType_name(FearnGrammarParser.Type_nameContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FearnGrammarParser#type_specifier}.
 	 * @param ctx the parse tree
@@ -63,11 +41,11 @@ public interface FearnGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FearnGrammarParser#imp}.
+	 * Visit a parse tree produced by {@link FearnGrammarParser#module_import}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitImp(FearnGrammarParser.ImpContext ctx);
+	T visitModule_import(FearnGrammarParser.Module_importContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FearnGrammarParser#program}.
 	 * @param ctx the parse tree

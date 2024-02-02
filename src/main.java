@@ -49,7 +49,7 @@ class FearnC
      * 4)   Calls the Compile method
      * 5)   Assuming no errors have been raised during Compilation, prints a
      *      success message, including a command-line instruction to run the 
-     *      compiled preogram
+     *      compiled program
      */
 
     public static void main(String[] args)
@@ -74,7 +74,7 @@ class FearnC
         // Compile source file
         Compile(sourceFileArgument);
         
-        // Pop generator from statck, as it's no longer in use
+        // Pop generator from stack, as it's no longer in use
         CodeGenerator.generatorStack.pop();
 
         // Print green Success Message
@@ -135,7 +135,7 @@ class FearnC
         tokens = new CommonTokenStream(lexer);
         parser = new FearnGrammarParser(tokens);
 
-        // Add custom error listener (to styalise error messages)
+        // Add custom error listener (to stylise error messages)
         parser.removeErrorListeners();
         parser.addErrorListener(new FearnErrorListener());
 

@@ -1,58 +1,121 @@
+/*
+
+FearnGrammar.g4
+
+Unlike every other file that forms the compiler, this is 
+not a java source file. This is an ANTLR grammar file, 
+written using EBNF. The difference between EBNF and regular
+BNF is that it allows the use of regex-style metacharacters,
+allowing me to write more concise production, and less of them.
+The allows me to write a far neater grammar.
+
+Each rule has one or more patterns associated with it, 
+containing the rules or tokens it is made up of. 
+
+The rule at the bottom of file (in UPPER CASE) are token
+rules - used by the lexer to match patterns for tokens 
+in the source code, which have a large language that couldn't 
+be explicitly specified (such as keywords, e.g. 'new', 'fn', 
+'int', etc.) 
+
+Some rules have labels next to them ( indicted with #). These 
+instruct ANTLR to generate the custom walker class with separate
+visit methods and contexts for each 
+
+*/
+
+
 grammar FearnGrammar;
 
+
+/* DATA TYPES AND TYPE SPECIFIERS */
+
+// type_name matches the literal names of the 4 primitive types
 type_name
-    : 'int'         # int_type_keyword
-    | 'float'       # float_type_keyword
-    | 'bool'        # bool_type_keyword
-    | 'str'         # str_type_keyword
+    : 'int'         
+    | 'float'       
+    | 'bool'        
+    | 'str'         
     ; 
 
+// type_specifiers can describe a type which is primitive, an array, 
+// or a struct
 type_specifier
     : type_specifier_primitive
     | type_specifier_struct
     | type_specifier_arr
     ;
 
+// primitive specifiers are just the type name (e.g. let num : int; )
 type_specifier_primitive
     : type_name
     ;
 
+// To use a struct as a data type, it can be done in the form $[MyStruct]
+// A $ prefix is used to differentiate a struct instance specifier from 
+// other source code references to the struct
 type_specifier_struct
     : '$' IDENTIFIER
     ;
 
+// An array specifier will be the type specifier of the elements contained, 
+// and the N '[]'s, to indicate an N-dimensional array
 type_specifier_arr
     : (type_specifier_primitive | type_specifier_struct ) ('[]')+
     ;
 
-// Imports
-imp
+/* HIGH LEVEL STRUCTURES */
+
+// Imports start with the 'import' keyword, followed with either
+//  ->  An identifier, indicating the import of a standard library module 
+//      (e.g. `io` or  `maths`) 
+//  ->  The 'from' keyword, followed by a string literal, of the relative 
+//      path, from the main program file, of the file being imported
+module_import
     : 'import' (IDENTIFIER | 'from' STR_LIT)
     ;
 
-// Root Program
+// Fearn Programs, at their root, are 0 or more imports, followed by one 
+// or more instances of a function, global variable, or struct definition
+//  ->  EOF is a special token for the end of a file, included to ensure
+//      this production as consumed the entire source file, and would raise
+//      an error if it had, due to poor syntax, not consumed it all.
 program 
-    : (imp)* (function | declaration | struct_def )+ EOF
+    : (module_import)* (function | declaration | struct_def )+ EOF
     ;
 
 
-// Function Definition
+// Functions are defined using the 'fn' keyword, a list of parameters, a 
+// return type (a type specifier or 'void'), and then a compound statement 
+// for the function body. 
+//  ->  The '=>' symbol is simply to indicate the data type returned.
 function 
     : 'fn' IDENTIFIER '(' (( parameter ',' )* parameter)? ')' '=>' ( type_specifier | 'void' )  compound_statement 
     ;
 
+// Function parameters have an identifier, and a data type specifier
 parameter
     : IDENTIFIER ':' type_specifier
     ;
 
-// Struct Definition
+// Structs are defined using the 'struct' keyword, an identifer, as well as a 
+// list of 0 or more declarations, used to declare variables. These declared 
+// variables become the attributes of the struct, with each instance of a struct 
+// having a value for each attribute.
 struct_def
     : 'struct' IDENTIFIER '{' declaration* '}'
     ;
 
+// Declarations represent the creation of new variables within a defined scope.
+// It uses the 'let' keyword, an identifier for the variable, and a type specifier.
+// An expression (to initialiswe the variable) can also be added.
+declaration
+    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
+    ;
 
+/* STATEMENTS */
 
-// Statement Definitions
+// Statements can be one of the five below types
 statement 
     : compound_statement        
     | expression_statement      
@@ -61,6 +124,10 @@ statement
     | jump_statement            
     ;
 
+// A compound statement, syntactically, is a collection of declarations and statements,
+// between '{}'. A compound statement starts with 0 or more declarations, followed by 0
+// or more statements. This means that new variables can only be declared at the start of 
+// a compound statement
 compound_statement
     : '{' (declaration)* (statement)* '}'
     ;
@@ -100,10 +167,6 @@ jump_statement
     : 'continue' ';'                # cont_stmt
     | 'break' ';'                   # break_stmt
     | 'return' expression? ';'       # return_stmt
-    ;
-
-declaration
-    : 'let' IDENTIFIER ':' type_specifier ( '=' expression)? ';'
     ;
 
 // Expression Rules
