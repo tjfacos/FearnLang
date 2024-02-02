@@ -117,13 +117,6 @@ public interface FearnGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIf_else(FearnGrammarParser.If_elseContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code if_else_chain}
-	 * labeled alternative in {@link FearnGrammarParser#selection_statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link FearnGrammarParser#iteration_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

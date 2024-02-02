@@ -688,7 +688,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * Statements used for branching (if and if-else)
      * 
-     * Each of the belowreturns a SelectionStatement, which takes three arguments: 
+     * Each of the below returns a SelectionStatement, which takes three arguments: 
      * the condition expression, the if branch body (a compound statement), and 
      * the else branch statement (either a compound statement, or another selection 
      * statement - to build a if-else chain)
@@ -713,17 +713,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new SelectionStatement(
             (Expression)visit(ctx.expression()),
             (CompoundStatement)visit(ctx.compound_statement(0)),
-            (Statement)visit(ctx.compound_statement(1))
-        );
-    }
-    
-    @Override
-    public SelectionStatement visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx)
-    {
-        return new SelectionStatement(
-            (Expression)visit(ctx.expression()),
-            (CompoundStatement)visit(ctx.compound_statement()),
-            (Statement)visit(ctx.selection_statement())
+            (Statement)visit(ctx.getChild(ctx.getChildCount() - 1))
         );
     }
 
@@ -752,13 +742,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression iter_expr = null;
         CompoundStatement body = null;
 
-        if (!ctx.init_expression().getText().equals(";")) 
-        {
-            init = visit(ctx.init_expression().getChild(0)); // Either an Expression or a Declaration
-        }
+        if (!ctx.init_expression().getText().equals(";")) init = visit(ctx.init_expression().getChild(0)); // Either an Expression or a Declaration
+        if (!ctx.continue_condition().getText().equals(";")) cont_expr = (Expression)visit(ctx.continue_condition().getChild(0));
 
-        if (ctx.continue_condition() != null)   { cont_expr =   (Expression)visit(ctx.continue_condition().getChild(0));            }
-        if (ctx.iteration_expression() != null) { iter_expr =   (Expression)visit(ctx.iteration_expression().getChild(0));    }
+        if (ctx.iteration_expression().getChildCount() > 0) iter_expr =   (Expression)visit(ctx.iteration_expression().getChild(0));
 
         body = (CompoundStatement)visit(ctx.compound_statement());
 

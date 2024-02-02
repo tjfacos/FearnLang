@@ -130,19 +130,28 @@ compound_statement
     : '{' (declaration | statement)* '}'
     ;
 
+// An expression statement is an expression (e.g. a function call), or an assignment 
+// (changing the value of a variable)
 expression_statement
     : expression ';'            # simple_expr_stmt
     | assign_expression ';'     # assign_expr_stmt
     ;
 
+// A selection statement is a standard 'if-else' statement. It can be either:
+//  ->  A single if, where the body is only run if the condition is met
+//  ->  An if-else chain, where another body/selection is run if the first doesn't
 selection_statement
-    : 'if' '(' expression ')' compound_statement                                # single_if
-    | 'if' '(' expression ')' compound_statement 'else' compound_statement      # if_else
-    | 'if' '(' expression ')' compound_statement 'else' selection_statement     # if_else_chain
+    : 'if' '(' expression ')' compound_statement                                                        # single_if
+    | 'if' '(' expression ')' compound_statement 'else' (compound_statement | selection_statement)      # if_else
     ;
 
+// Fearn doesn't support while loops, but does feature a highly permissive for loop,
+// which can perform the same purpose. The following few rules all the user to create 
+// a loop, in the form `for (int i = 0; i < 10; i++) {...}`
+
+// The last expression is the only optional one (in the grammar), purely because it doesn't match a semi-colon
 iteration_statement
-    : 'for' '(' init_expression continue_condition? ';' iteration_expression? ')' compound_statement
+    : 'for' '(' init_expression continue_condition iteration_expression ')' compound_statement
     ;
 
 init_expression
@@ -153,12 +162,14 @@ init_expression
     ;
 
 continue_condition
-    : expression
+    : expression ';'
+    | ';'
     ;
 
 iteration_expression
     : expression
     | assign_expression
+    |
     ;
 
 jump_statement

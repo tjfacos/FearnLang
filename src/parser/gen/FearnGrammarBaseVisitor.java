@@ -137,13 +137,6 @@ public class FearnGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIf_else_chain(FearnGrammarParser.If_else_chainContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
