@@ -4,54 +4,50 @@ import java.util.ArrayList;
 
 import org.objectweb.asm.MethodVisitor;
 
+import ast.ASTNode;
 import ast.Declaration;
 import semantics.table.SymbolTable;
 
 public class CompoundStatement extends Statement {
-    public ArrayList<Declaration> declarations;
-    public ArrayList<Statement> statements;
+
+    public ArrayList<ASTNode> nested_nodes;
     public Boolean includesJump = false;
     public Boolean includesReturn = false;
 
-    public CompoundStatement(ArrayList<Declaration> decls, ArrayList<Statement> stmts)
+    public CompoundStatement(ArrayList<ASTNode> nodes)
     {
-        declarations = decls;
-        statements = stmts;
+        nested_nodes = nodes;
     }
 
     @Override public String toString()
     {
-        return "{" + declarations.toString() + statements.toString() + "}";
+        return "{" + nested_nodes.toString() + "}";
     }
 
     public void GenerateBytecode(MethodVisitor mv) 
     {
-        /* Iterates through declarations, then statements, generating their bytecode
+        /* Iterates through nested nodes, generating their bytecode
          * by calling the common GenerateBytecode method
          * 
          * A small optimisation is performed here: if a JumpStatement is encountered,
          * the code beyond is unreachable, and so is not generated.
          * 
          */
-        for (Declaration decl : declarations) decl.GenerateBytecode(mv);
 
-        for (Statement stmt : statements) 
+        for (ASTNode node : nested_nodes)
         {
-            stmt.GenerateBytecode(mv);
+            if (node instanceof Declaration) ((Declaration)node).GenerateBytecode(mv);
+            else ((Statement)node).GenerateBytecode(mv);
 
-            if (stmt instanceof JumpStatement)
-            {
-                return;
-            }
-
+            if (node instanceof JumpStatement) return;
         }
+
         
     }
     
     public void validate(SymbolTable symbolTable) {
-        /* First, the declaration (which always come first) are validated.
+        /* Iterate nested_nodes, and validates them
          * 
-         * Secondly, the statements are also validated. 
          * includesJump and includesReturn are also set at this point.
          * 
          * These exist both for validatation  and code generatiomn reasons:
@@ -60,23 +56,13 @@ public class CompoundStatement extends Statement {
          *  ->  If this CompoundStatement is part of an if-else statement, includesJump 
          *      indicates no more code should be generated to finish of the block.
          */
-        
-        
-        for (Declaration decl : declarations) decl.validate(symbolTable);
-        
-        for (Statement stmt : statements)
-        { 
-            stmt.validate(symbolTable); 
-            
-            if (stmt instanceof JumpStatement)
-            {
-                includesJump = true;
-                if (stmt instanceof ReturnStatement)
-                {
-                    includesReturn = true;
-                }
-            }
-        
+        for (ASTNode node : nested_nodes)
+        {
+            if (node instanceof Declaration) ((Declaration)node).validate(symbolTable);
+            else ((Statement)node).validate(symbolTable);
+
+            if (node instanceof JumpStatement) includesJump = true;
+            if (node instanceof ReturnStatement) includesReturn = true;
         }
     }
 }

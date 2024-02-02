@@ -71,6 +71,12 @@ public interface FearnGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStruct_def(FearnGrammarParser.Struct_defContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FearnGrammarParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaration(FearnGrammarParser.DeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FearnGrammarParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -162,12 +168,6 @@ public interface FearnGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link FearnGrammarParser#declaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeclaration(FearnGrammarParser.DeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code pre_inc_expr}
 	 * labeled alternative in {@link FearnGrammarParser#expression}.

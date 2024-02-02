@@ -1,8 +1,58 @@
-import maths
 import io
 
 fn main(args : str[]) => void
 {
-    let y : float = PI() / 2.0;
-    print((str)sin(y));
+    if (args.length() < 2)
+    {
+        print("Must provide list and search terms (min. 2 args)");
+        return;
+    }
+
+    let list : int[] = new int[ args.length() - 1 ];
+    let term : int = (int)args[ args.length() - 1 ];
+
+    for (let i : int = 0; i < args.length() - 1; i++)
+    {
+        list[i] = (int)args[i];
+    }
+
+    print("SEARCH TERM IS : " + (str)term);
+    
+    let index : int = list.BinarySearch(term);
+
+    if (index > -1) {
+        print("INDEX IS : " + (str)index);
+    } else {
+        print("ITEM NOT FOUND");
+    }
+
+    print(x);
+}
+
+fn BinarySearch(list : int[], term : int) => int
+{
+    let m : int = list.length() / 2;
+    let index : int;
+
+    if (list[m] == term)
+    {
+        index = m;
+    } else if (list.length() <= 1)
+    {
+        index = -1;
+    } else if (list[m] > term)
+    {
+        index = BinarySearch(list.slice(0, m), term);
+        return index;
+    } else {
+        index = BinarySearch( list.slice(m + 1, list.length()) , term);
+        
+        if (index > -1 )
+        {
+            index += m + 1;
+        }
+
+    }
+    
+    return index;
 }

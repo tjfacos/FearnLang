@@ -125,11 +125,9 @@ statement
     ;
 
 // A compound statement, syntactically, is a collection of declarations and statements,
-// between '{}'. A compound statement starts with 0 or more declarations, followed by 0
-// or more statements. This means that new variables can only be declared at the start of 
-// a compound statement
+// between '{}'.
 compound_statement
-    : '{' (declaration)* (statement)* '}'
+    : '{' (declaration | statement)* '}'
     ;
 
 expression_statement

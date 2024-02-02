@@ -629,8 +629,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * This function:
      *  1)  Records the number of symbols in the stack initially
-     *  2)  Visits all nested declarations (at the start of the statement)
-     *  3)  Visits all nested statements (at the end of the statement)
+     *  2)  Visits all nested declarations and statements
      *  4)  Removes any new symbols added to the stack during the traversal 
      *      of its subtree (by popping the stack for the difference between
      *      the new size of the stack, and the initial number). This is done
@@ -644,18 +643,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         
         int numOfSyms = symbolAnalysisStack.size();
 
-        ArrayList<Declaration> local_decls = new ArrayList<Declaration>();
-        ArrayList<Statement> local_stmts = new ArrayList<Statement>();
-        
-        for (int i = 0; i < ctx.declaration().size(); i++)
-        {
-            local_decls.add((Declaration)visit(ctx.declaration(i)));
-        }
+        ArrayList<ASTNode> local_nodes = new ArrayList<ASTNode>();
 
-        for (int i = 0; i < ctx.statement().size(); i++)
+        for (int i = 1; i < ctx.getChildCount() - 1; i++)
         {
-            local_stmts.add((Statement)visit(ctx.statement(i)));
-        }   
+            local_nodes.add(visit(ctx.getChild(i)));
+        }
         
         // Remove Symbols added within the compound statement
         for (int i = 0; i < symbolAnalysisStack.size() - numOfSyms; i++)
@@ -663,7 +656,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             symbolAnalysisStack.pop();
         }
             
-        return new CompoundStatement(local_decls, local_stmts);
+        return new CompoundStatement(local_nodes);
             
     }
         
