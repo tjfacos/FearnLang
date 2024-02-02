@@ -1,7 +1,8 @@
+import maths
 import io
 
 fn main(args : str[]) => void
 {
-    let y : int[][] = new int[][] {{1, 2}, {3, 4}};
-    print((str)y);
+    let y : float = PI() / 2.0;
+    print((str)sin(y));
 }

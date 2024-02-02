@@ -122,6 +122,67 @@ public class ImportCompiler {
 
             return table;
 
+        case "maths":
+            params = new ArrayList<>(); 
+            
+            // Add PI() -> value of PI
+            table.addRow(
+                new FunctionRow(
+                    "PI", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                    null
+                )
+            );
+            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+
+            // Add Eulers() -> value of Euler's number
+            table.addRow(
+                new FunctionRow(
+                    "Eulers", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                    null
+                )
+            );
+            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+
+            params = new ArrayList<>();
+            params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
+
+            // Add sine, cosine, and tangent functions
+            table.addRow(
+                new FunctionRow(
+                    "sin", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                    null
+                )
+            );
+            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+            
+            table.addRow(
+                new FunctionRow(
+                    "cos", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                    null
+                )
+            );
+            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+            
+            table.addRow(
+                new FunctionRow(
+                    "tan", 
+                    params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                    null
+                )
+            );
+            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+
+            return table;
+
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);
                 break;
