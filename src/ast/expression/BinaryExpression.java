@@ -30,53 +30,26 @@ public class BinaryExpression extends Expression {
         String opString = null;
 
         switch (Operation) {
-            case Add:
-                opString = "+";
-                break;
-            case Sub:
-                opString = "-";
-                break;
-            case Mult:
-                opString = "*";
-                break;
-            case Div:
-                opString = "/";
-                break;
-            case Mod:
-                opString = "%";
-                break;
-            case Exponent:
-                opString = "^";
-                break;
-            case Less:
-                opString = "<";
-                break;
-            case LessEq:
-                opString = "<=";
-                break;
-            case Greater:
-                opString = ">";
-                break;
-            case GreaterEq:
-                opString = ">=";
-                break;
-            case LogicalAnd:
-                opString = "&&";
-                break;
-            case LogicalOr:
-                opString = "||";
-                break;
-            case Eq:
-                opString = "==";
-                break;
-            case NotEq:
-                opString = "!=";
-                break;
-            default:
-                break;
+            
+            case Add        : opString = "+" ;  break;
+            case Sub        : opString = "-" ;  break;
+            case Mult       : opString = "*" ;  break;
+            case Div        : opString = "/" ;  break;
+            case Mod        : opString = "%" ;  break;
+            case Exponent   : opString = "^" ;  break;
+            case Less       : opString = "<" ;  break;
+            case Greater    : opString = ">" ;  break;
+            case LessEq     : opString = "<=";  break;
+            case GreaterEq  : opString = ">=";  break;
+            case LogicalAnd : opString = "&&";  break;
+            case LogicalOr  : opString = "||";  break;
+            case Eq         : opString = "==";  break;
+            case NotEq      : opString = "!=";  break;
+            
+            default: break;
         }
 
-        return Op1.toString() + ' ' + opString + ' ' + Op2.toString();
+        return String.format("%s %s %s", Op1.toString(), opString, Op2.toString());
     }
 
     @Override

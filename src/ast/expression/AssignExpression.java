@@ -160,25 +160,51 @@ public class AssignExpression extends Expression {
 
     }
 
+    
     private void HandleOperators()
     {
+        
+        class OpEqualsExpr extends BinaryExpression {
+            
+            public OpEqualsExpr(Expression op1, Expression op2, ExprType op) { super(op1, op2, op ); }
+
+            @Override
+            public String toString() {
+
+                String opString = null;
+
+                switch (Operation) {
+                    case ExprType.Add   : opString = "+="; break;
+                    case ExprType.Sub   : opString = "+="; break;
+                    case ExprType.Mult  : opString = "+="; break;
+                    case ExprType.Div   : opString = "+="; break;
+                    case ExprType.Mod   : opString = "+="; break;
+                    default: break;
+                }
+
+                return String.format("%s %s %s", Op1.toString(), opString, Op2.toString());
+
+            }
+
+        }
+
         switch (operator) {
             case Equals:
                 return;
             case AddEquals:
-                expression = new BinaryExpression(target, expression, ExprType.Add);
+                expression = new OpEqualsExpr(target, expression, ExprType.Add);
                 return;
             case SubEquals:
-                expression = new BinaryExpression(target, expression, ExprType.Sub);
+                expression = new OpEqualsExpr(target, expression, ExprType.Sub);
                 return;
             case MultEquals:
-                expression = new BinaryExpression(target, expression, ExprType.Mult);
+                expression = new OpEqualsExpr(target, expression, ExprType.Mult);
                 return;
             case DivEquals:
-                expression = new BinaryExpression(target, expression, ExprType.Div);
+                expression = new OpEqualsExpr(target, expression, ExprType.Div);
                 return;
             case ModEquals:
-                expression = new BinaryExpression(target, expression, ExprType.Mod);
+                expression = new OpEqualsExpr(target, expression, ExprType.Mod);
                 return;
         }
     }

@@ -15,20 +15,14 @@ fn main(args : str[]) => void
 
 fn stalinSort(list : int[]) => int[]
 {
-    
-    let temp_list : int[];
-    let final_list : int[];
-    let temp_ptr : int;
-    let last : int;
-
     if (list.length() == 0)
     {
         return list;
     }
 
-    temp_list = new int[list.length()];
-    temp_ptr = 1;
-    last = list[0];
+    let temp_list : int[] = new int[list.length()];
+    let temp_ptr : int = 1;
+    let last : int = list[0];
     
 
     temp_list[0] = last;
@@ -42,7 +36,7 @@ fn stalinSort(list : int[]) => int[]
         }
     }
 
-    final_list = new int[temp_ptr];
+    let final_list : int[] = new int[temp_ptr];
     for (i = 0; i < temp_ptr; i++)
     {
         final_list[i] = temp_list[i];

@@ -3,9 +3,5 @@ import io
 fn main(args : str[]) => void
 {
     let i : int = 1000000;
-    for (; true ;) 
-    {
-        print((str)(i--));
-        if (i == 0) { break; }
-    }
+    i += "Hello";
 }

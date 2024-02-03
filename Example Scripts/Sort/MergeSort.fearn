@@ -22,12 +22,9 @@ fn merge(arr : int[], l : int, m : int, r : int) => void
     let L : int[] = new int[n1];
     let R : int[] = new int[n2];
     
-
     let i : int;
     let j : int;
-    let k : int;
 
-    
     // Copy data to temp arrays
     for (i = 0; i < n1; i += 1)
     {
@@ -46,7 +43,7 @@ fn merge(arr : int[], l : int, m : int, r : int) => void
     j = 0;
 
     // Initial index of merged subarray array
-    k = l;
+    let k : int = l;
     
     for (; i < n1 && j < n2; ) {
     
