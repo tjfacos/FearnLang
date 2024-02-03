@@ -40,24 +40,12 @@ public class AssignExpression extends Expression {
         String opString = null;
 
         switch (operator) {
-            case Equals:
-                opString = "=";
-                break;
-            case AddEquals:
-                opString = "+=";
-                break;
-            case SubEquals:
-                opString = "-=";
-                break;
-            case MultEquals:
-                opString = "*=";
-                break;
-            case DivEquals:
-                opString = "/=";
-                break;
-            case ModEquals:
-                opString = "%=";
-                break;
+            case Equals     : opString = "="    ; break;
+            case AddEquals  : opString = "+="   ; break;
+            case SubEquals  : opString = "-="   ; break;
+            case MultEquals : opString = "*="   ; break;
+            case DivEquals  : opString = "/="   ; break;
+            case ModEquals  : opString = "%="   ; break;
         }
 
         return target.toString() + " " + opString + " " + expression.toString();
@@ -135,6 +123,13 @@ public class AssignExpression extends Expression {
     @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable) {
         
+        if (target instanceof PrimaryExpression && ( (PrimaryExpression)target ).type == ExprType.VariableReference) {}
+        else if (target.getClass() == IndexExpression.class) {}
+        else if (target.getClass() == StructAttrExpression.class) {}
+        else {
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
+        }
+
         HandleOperators();
 
         // Check the TypeSpecifiers of the target and expression are equal
@@ -145,15 +140,6 @@ public class AssignExpression extends Expression {
         {
             Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + targetType.toString(), this);
         }
-
-
-        if (target instanceof PrimaryExpression && ( (PrimaryExpression)target ).type == ExprType.VariableReference) {}
-        else if (target.getClass() == IndexExpression.class) {}
-        else if (target.getClass() == StructAttrExpression.class) {}
-        else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
-        }
-
 
         expression_type = null; // Assign Expression perform a job, they don't evaluate to anything
         return expression_type;
@@ -175,10 +161,10 @@ public class AssignExpression extends Expression {
 
                 switch (Operation) {
                     case ExprType.Add   : opString = "+="; break;
-                    case ExprType.Sub   : opString = "+="; break;
-                    case ExprType.Mult  : opString = "+="; break;
-                    case ExprType.Div   : opString = "+="; break;
-                    case ExprType.Mod   : opString = "+="; break;
+                    case ExprType.Sub   : opString = "-="; break;
+                    case ExprType.Mult  : opString = "*="; break;
+                    case ExprType.Div   : opString = "/="; break;
+                    case ExprType.Mod   : opString = "%="; break;
                     default: break;
                 }
 
