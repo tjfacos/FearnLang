@@ -60,7 +60,7 @@ public class IncrExpression extends Expression {
         else if (expression.getClass() == IndexExpression.class) {}
         else if (expression.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + expression.getClass().getName(), this);
+            Reporter.ReportErrorAndExit("Cannot increment " + expression.toString() + ". Only int variables can be incremented/decremented.", this);
         }
 
 

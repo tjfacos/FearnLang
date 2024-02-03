@@ -127,7 +127,7 @@ public class AssignExpression extends Expression {
         else if (target.getClass() == IndexExpression.class) {}
         else if (target.getClass() == StructAttrExpression.class) {}
         else {
-            Reporter.ReportErrorAndExit("Cannot assign value to " + target.getClass().getName(), this);
+            Reporter.ReportErrorAndExit("Cannot assign value to " + target.toString(), this);
         }
 
         HandleOperators();
