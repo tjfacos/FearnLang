@@ -2,5 +2,10 @@ import io
 
 fn main(args : str[]) => void
 {
-    print((str)(123 + 1));
+    test_func();
+}
+
+fn test_func() => void
+{
+    print("Hello, World!");
 }

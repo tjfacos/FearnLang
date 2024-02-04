@@ -45,12 +45,12 @@ public class Function extends ASTNode {
     /* No Function.GenerateBytecode is provided, as the generation of 
      * functions using the method visitor is performed by CodeGenerator,
      * as the program's Class Writer is needed to add the method to the 
-     * main program class (see codegen/CodeGenerator.java).
+     * main program class (see CodeGenerator.java).
      */
 
     public void validate(SymbolTable symbolTable) {
         /* Sets Current Return Type to the return type specifier
-         * for this function. This is used during the treversal of 
+         * for this function. This is used during the traversal of 
          * the body, as return statements must return an expression 
          * the evaluates to the right type.
          * 
