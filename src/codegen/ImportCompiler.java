@@ -80,108 +80,100 @@ public class ImportCompiler {
 
         ArrayList<Parameter> params;
 
-        // Switch makes stdlib easy to expand
+        // Switch makes standard library easy to expand
         switch (id) {
             case "io":
 
-            // Add Print Function
+                // Add Print Function
+                params = new ArrayList<>();
+                params.add(new Parameter(
+                    "", new PrimitiveSpecifier(PrimitiveDataType.STR)
+                ));
+                table.addRow(
+                    new FunctionRow(
+                        "print", 
+                        params, 
+                        null, 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/io";
+                
+                // Add Input Function
+                params = new ArrayList<>();
+                params.add(new Parameter(
+                    "", new PrimitiveSpecifier(PrimitiveDataType.STR)
+                ));
+                table.addRow(
+                    new FunctionRow(
+                        "input", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.STR), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/io";
+                return table;
 
-            params = new ArrayList<>();
-            params.add(new Parameter(
-                "", new PrimitiveSpecifier(PrimitiveDataType.STR)
-            ));
 
-            table.addRow(
-                new FunctionRow(
-                    "print", 
-                    params, 
-                    null, 
-                    null
-                )
-            );
+            case "maths":
+                
+                // Add PI() -> value of PI
+                params = new ArrayList<>(); 
+                table.addRow(
+                    new FunctionRow(
+                        "PI", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+                // Add Eulers() -> value of Euler's number
+                table.addRow(
+                    new FunctionRow(
+                        "Eulers", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+                
+                // Add sine, cosine, and tangent functions
+                params = new ArrayList<>();
+                params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
+                table.addRow(
+                    new FunctionRow(
+                        "sin", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+                
+                table.addRow(
+                    new FunctionRow(
+                        "cos", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+                
+                table.addRow(
+                    new FunctionRow(
+                        "tan", 
+                        params, 
+                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
+                        null
+                    )
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
 
-            table.GetAllRows().getLast().owner = "FearnStdLib/io";
-            
-            // Add Input Function
-
-            params = new ArrayList<>();
-            params.add(new Parameter(
-                "", new PrimitiveSpecifier(PrimitiveDataType.STR)
-            ));
-
-            table.addRow(
-                new FunctionRow(
-                    "input", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.STR), 
-                    null
-                )
-            );
-
-            table.GetAllRows().getLast().owner = "FearnStdLib/io";
-
-            return table;
-
-        case "maths":
-            params = new ArrayList<>(); 
-            
-            // Add PI() -> value of PI
-            table.addRow(
-                new FunctionRow(
-                    "PI", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                    null
-                )
-            );
-            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-
-            // Add Eulers() -> value of Euler's number
-            table.addRow(
-                new FunctionRow(
-                    "Eulers", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                    null
-                )
-            );
-            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-
-            params = new ArrayList<>();
-            params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
-
-            // Add sine, cosine, and tangent functions
-            table.addRow(
-                new FunctionRow(
-                    "sin", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                    null
-                )
-            );
-            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-            
-            table.addRow(
-                new FunctionRow(
-                    "cos", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                    null
-                )
-            );
-            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-            
-            table.addRow(
-                new FunctionRow(
-                    "tan", 
-                    params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                    null
-                )
-            );
-            table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-
-            return table;
+                return table;
 
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);
