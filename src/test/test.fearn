@@ -2,5 +2,8 @@ import io
 
 fn main(args : str[]) => void
 {
-    let x : int = 100++;
+    for (let i : int = 0 ;; i++)
+    {
+        print(i);
+    }
 }

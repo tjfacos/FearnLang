@@ -9,11 +9,11 @@ public class FearnRuntime {
      * that the compiler is distributed in.
      * 
      * Its purpose is to implement functions that are 
-     * too unwealdy to implement manually in bytecode, 
+     * too unwieldy to implement manually in bytecode, 
      * at runtime.
      * 
      * This includes:
-     * -> The implememntation for mathematical exponentiation
+     * -> The implementation for mathematical exponentiation
      * -> Boolean functions to compare values
      * -> Concatenation
      * -> Casting functions
@@ -47,7 +47,7 @@ public class FearnRuntime {
 
     The `equals` function is used to evaluate the equality of two 
     objects. it includes a case to compare arrays (a facility many 
-    languages sdon't offer), by recursively comparing the equality 
+    languages don't offer), by recursively comparing the equality 
     of every item  in the array, as well as the arrays length, 
     returning the AND of these comparisons.
     

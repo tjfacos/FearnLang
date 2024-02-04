@@ -54,7 +54,7 @@ import ast.statement.JumpStatement.JumpType;
  *      expression node of the ctx)
  *  B)  Access children by index
  *  C)  Retrieve the number of children, the text representing the node (which matches the grammar 
- *      production) in the source file, or get the line number (by geting the line number of the 
+ *      production) in the source file, or get the line number (by getting the line number of the 
  *      first token in the production rule match (the subtree of the production) )
  * 
  */
@@ -99,7 +99,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         if (!symbolAnalysisStack.contains(id))
         {
             Reporter.ReportErrorAndExit(String.format(
-                " Line %s : Variable Identifer Unknown in Scope: %s .",
+                " Line %s : Variable identifier Unknown in Scope: %s .",
                 ctx.getStart().getLine(),
                 id
             ), null);
@@ -145,7 +145,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * These all have two operands, and all function (roughly) in the same way
      *  1)  Visit both operands
-     *  2)  Perform any addititional processing (e.g. setting the ExprType)
+     *  2)  Perform any additional processing (e.g. setting the ExprType)
      *  3)  Return an Binary Expression object
      * 
      * ExprType is again used to specify the operation
@@ -322,7 +322,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             isDecrement = true;
         }
 
-        // Last argument is dicates if the expression is prefix (important for code generation
+        // Last argument indicates if the expression is prefix (important for code generation
         // to perform operations in the right order)
         return new IncrExpression((Expression)visit(ctx.expression()), isDecrement, false);
     }
@@ -435,7 +435,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             return new StructAttrExpression(predot, ctx.expression(1).getText());
         }
         else {
-            // If neither above cases are mathced, the expression is illegal, and an error is raised
+            // If neither above cases matched, the expression is illegal, and an error is raised
             Reporter.ReportErrorAndExit(String.format(
                 "Line %s : %s.%s is not an attribute expression or a function call.",
                 ctx.getStart().getLine(), 
@@ -496,7 +496,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new ArrayBody(elements);
     }
 
-    // Struct Initialisation ( e.g. new Person('Kennith', 23) )
+    // Struct Initialisation ( e.g. new Person('Kenneth', 23) )
     // Get struct ID, visit arguments (expressions), and return the StructInitExpression
     @Override
     public StructInitExpression visitStruct_init(FearnGrammarParser.Struct_initContext ctx)
@@ -540,10 +540,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* TYPE SPECIFIERS
      * 
-     * These, syntaxtically, are used to indicate type. 
+     * These, syntactically, are used to indicate type. 
      * 
      * There are three sorts of type specifiers:
-     * -> Primitive: One of the 4 simple data types: int, flaot, str, bool
+     * -> Primitive: One of the 4 simple data types: int, float, str, bool
      * -> Struct: A struct instance, shown as `$IDENTIFIER`, where IDENTIFIER
      *    indicates the struct used
      * -> Array: An N-dimensional array, that stores primitives or struct instances
@@ -584,9 +584,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * New variables are declared at the start of the compound statement in 
      * which they're in scope. This function...
-     *  1)  Gets the identifer for the variable, its type specifier, and the 
+     *  1)  Gets the identifier for the variable, its type specifier, and the 
      *      initialisation expression, if present.
-     *  2)  Adds the identifer to the stack
+     *  2)  Adds the identifier to the stack
      *  3)  Adds a row for the variable to the local/global symbol table (this 
      *      will throw an error if another variable of the same name exists in 
      *      scope), by adding the row to the SymbolTable at the top of the 
@@ -597,8 +597,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx)
     {
-        String identifer = ctx.IDENTIFIER().getText();
-        symbolAnalysisStack.push(identifer);
+        String identifier = ctx.IDENTIFIER().getText();
+        symbolAnalysisStack.push(identifier);
         TypeSpecifier type_spec = (TypeSpecifier)visit(ctx.type_specifier());
 
         Expression init_expression = null;
@@ -610,12 +610,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         symbolTableStack.peek().addRow(
             new VariableRow(
-                identifer, 
+                identifier, 
                 type_spec
             )
         );
 
-        return new Declaration(identifer, type_spec, init_expression);
+        return new Declaration(identifier, type_spec, init_expression);
 
     }
 
@@ -731,7 +731,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      *  3)  Visits the iteration expression, run at the end of each iteration, if 
      *      present
      *  4)  Visits the compound statement, that is the body of the loop
-     *  5)  Returns an IterationStatment
+     *  5)  Returns an IterationStatement
      * 
      */
     @Override
@@ -801,9 +801,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      *      this table is used to get variable indexes during code generation, arguments
      *      have to be first.
      *  4)  Visits the body
-     *  5)  Pops the arguments form the symbol stack (they are added when the paramaters 
+     *  5)  Pops the arguments form the symbol stack (they are added when the parameters 
      *      are visited)
-     *  6)  Returns a Function object, retrieving the string identifer from the IDENTIFIER 
+     *  6)  Returns a Function object, retrieving the string identifier from the IDENTIFIER 
      *      token
      */
     @Override
@@ -849,7 +849,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     Parameter, in the form `IDENTIFIER : type_specifier`. 
     
     The function visits the type_specifier, gets the string identifier, and adds the parameter 
-    to the symbol stack, to ensure referecnes to the paramaters are detected as valid during 
+    to the symbol stack, to ensure references to the parameters are detected as valid during 
     traversal of the function body.
     
     */ 
@@ -866,7 +866,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * This function:
      *  1)  Visits all the declarations within the struct (its attributes)
-     *  2)  Gets the identifer string
+     *  2)  Gets the identifier string
      *  3)  Returns a Struct object
      */
     @Override
@@ -886,11 +886,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      * An Import Compiler is used to compile other fearn programs,
      * imported by the current program, and returns their symbol table,
-     * the rows of which atre added to the current global symbol table.
+     * the rows of which are added to the current global symbol table.
      * 
      * If an identifier is used, the import is from a standard library 
      * module (e.g. io). The Import Compiler will construct a symbol table
-     * for the functions contained within, and add tyhem to the global symbol
+     * for the functions contained within, and add them to the global symbol
      * table, so they can be used anywhere within the program.
      * 
      */
@@ -942,9 +942,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * This visits all imports, global declarations, structs, and functions.
      * 
      * For structs and functions, a new symbol table is added to the stack.
-     * This means newly-delcared symbols are added to this symbol table. It
+     * This means newly-declared symbols are added to this symbol table. It
      * is then popped off the stack, and stored within a row for the larger
-     * structurem, which is finally stored in the global symbol table (always
+     * structure, which is finally stored in the global symbol table (always
      * at the bottom of the stack).
      * 
      * The function returns a Program object, representing the root of the tree.

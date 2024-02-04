@@ -84,7 +84,7 @@ public class SymbolTable {
      * These are generated from TypeSpecifier objects - which are used by FearnC 
      * to describe data types.
      * 
-     * These type descriptor strings are used to specifiy the type of 
+     * These type descriptor strings are used to specify the type of 
      * elements to the JVM.
      * 
      */
@@ -207,7 +207,7 @@ public class SymbolTable {
 
     /* Gets the index of a variable in the table
      * 
-     * These indexes are used in Code Genration, as the JVM
+     * These indexes are used in Code Generation, as the JVM
      * stores local variable at indexes, separate to the stack.
      * 
      * Since each variable in a function's symbol table is stored
@@ -239,7 +239,7 @@ public class SymbolTable {
      * to define the types of its arguments, and its return type. 
      * 
      * Below, The parameter's types are all generated and appended to the descriptor,
-     * along with the descriptor for teh return type. If a function is void (return_type
+     * along with the descriptor for the return type. If a function is void (return_type
      * is null), `V` is used instead.
      */
 
@@ -336,7 +336,7 @@ public class SymbolTable {
 
     struct myStruct
     {
-        let num : int;
+        let x : int;
     }
     
     ... a class called `$myStruct` is generated (a `$` is added to differentiate 
@@ -386,7 +386,7 @@ public class SymbolTable {
         return null;
     }
 
-    // Get Struct's local Symbol Table (constaining its attributes)
+    // Get Struct's local Symbol Table (containing its attributes)
     public SymbolTable GetStructSymbolTable(String id) {
         
         try {

@@ -17,5 +17,20 @@
     "cSpell.enableFiletypes": [
         "antlr4"
     ],
-    "cSpell.language": "en,en-GB"
+    "cSpell.language": "en,en-GB",
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "java",
+        "antlr4"
+    ],
+    "spellright.parserByClass": {
+        "antlr4": {
+            "parser": "code"
+        }
+    }
 }

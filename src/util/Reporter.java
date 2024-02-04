@@ -11,7 +11,7 @@ import codegen.CodeGenerator;
  * ->   ReportErrorAndExit : Prints a red error message to
  *      the terminal, then exits the program. If a node has
  *      been passed, it also prints the node of the AST causing 
- *      the error, resonstructing the corresponding source code
+ *      the error, reconstructing the corresponding source code
  *      using ASTNode.toString() (DFT, adding to a string representing 
  *      the offending source code)
  * 

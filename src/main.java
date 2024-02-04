@@ -44,7 +44,7 @@ class FearnC
      * 2)   Raising an error if a source file has not been provided, storing its 
      *      path otherwise
      * 3)   Sets the global build path (a static property of the 
-     *      CodeGenerator class - as all files must bew generated in the 
+     *      CodeGenerator class - as all files must be generated in the 
      *      same place), and the program name of the initial script
      * 4)   Calls the Compile method
      * 5)   Assuming no errors have been raised during Compilation, prints a
@@ -95,7 +95,7 @@ class FearnC
      * The method responsible for conducting the compilation of the 
      * file the user has passed.
      * 
-     * 1)   Loads the source file, rasing an error if not found
+     * 1)   Loads the source file, raising an error if not found
      * 2)   Calls the ANTLR-Generated lexer/parser, to convert the program to
      *      a walkable parse tree
      * 3)   Calls the AST Constructor to walk the parse tree, generating the 

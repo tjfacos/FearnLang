@@ -10,7 +10,7 @@ import ast.type.TypeSpecifier;
  * Represents a function, within the global symbol table
  * Includes:
     ->  parameters - An list of Parameter objects, 
-        representing the function paramters
+        representing the function parameters
     ->  return_type - the typeSpecifier of the 
         value the function returns (null is the 
         function is void)
