@@ -2,8 +2,5 @@ import io
 
 fn main(args : str[]) => void
 {
-    for (let i : int = 0 ;; i++)
-    {
-        print(i);
-    }
+    print((str)(123 + 1));
 }

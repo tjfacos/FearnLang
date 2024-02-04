@@ -1,6 +1,5 @@
 clinit
 sv
-
 Fearn
 boolean
 enum
@@ -15,7 +14,6 @@ arraybody
 lexer
 i
 Ljava
-
 init
 globals
 decl

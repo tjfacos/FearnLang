@@ -2,17 +2,17 @@ package util;
 
 import org.antlr.v4.runtime.*;
 
+/* 
+ * FearnErrorLister.java
+ * 
+ * Utility class to catch ANTLR-generated parse errors,
+ * and passes them through to ReportErrorAndExit(), along
+ * with the line and column numbers, to help the developer 
+ * fix the error.
+ * 
+ */
+
 public class FearnErrorListener extends BaseErrorListener{
-    
-    /* 
-     * FearnErrorLister.java
-     * 
-     * Utility class to catch ANTLR-generated parse errors,
-     * and passes them through to ReportErrorAndExit(), along
-     * with the line and column numbers, to help the developer 
-     * fix the error.
-     * 
-     */
 
     @Override
     public void syntaxError(

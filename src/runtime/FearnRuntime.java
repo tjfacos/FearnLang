@@ -10,7 +10,7 @@ public class FearnRuntime {
      * 
      * Its purpose is to implement functions that are 
      * too unwieldy to implement manually in bytecode, 
-     * at runtime.
+     * at compile time.
      * 
      * This includes:
      * -> The implementation for mathematical exponentiation
