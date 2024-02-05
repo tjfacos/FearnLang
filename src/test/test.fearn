@@ -2,9 +2,46 @@ import io
 
 fn main(args : str[]) => void
 {
-    let x : int[][] = new int[][] {{1, 2, 3}, {4, 5, 6}};
+    let list : int[] = new int[args.length()];
 
-    print((str)x);
-    
+    for (let i : int = 0; i < args.length(); i++)
+    {
+        list[i] = (int)args[i];
+    }
+
+    print((str)list.stalinSort());
+
 }
 
+fn stalinSort(list : int[]) => int[]
+{
+    if (list.length() == 0)
+    {
+        return list;
+    }
+
+    let temp_list : int[] = new int[list.length()];
+    let temp_ptr : int = 1;
+    let last : int = list[0];
+    
+
+    temp_list[0] = last;
+
+    for (let i : int = 1; i < list.length(); i++)
+    {
+        if (list[i] >= last)
+        {
+            last = list[i];
+            temp_list[temp_ptr++] = list[i];
+        }
+    }
+
+    let final_list : int[] = new int[temp_ptr];
+    for (i = 0; i < temp_ptr; i++)
+    {
+        final_list[i] = temp_list[i];
+    }
+
+    return final_list;
+
+}
