@@ -488,9 +488,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         ArrayList<Expression> elements = new ArrayList<Expression>();
 
         // Visit each element in the array, and add it to the elements
-        for (int i = 0; i < ctx.expression().size() ; i++)
+        for (int i = 1; i < ctx.getChildCount() - 1; i += 2)
         {
-            elements.add((Expression)visit(ctx.expression(i)));
+            
+            elements.add((Expression)visit(ctx.getChild(i)));
         }
 
         return new ArrayBody(elements);

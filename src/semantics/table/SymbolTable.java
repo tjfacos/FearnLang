@@ -108,7 +108,7 @@ public class SymbolTable {
         
         else if (typeSpecifier.getClass() == ArraySpecifier.class)
         {
-            type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensions ] ).replace("\0", "[");
+            type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensionCount ] ).replace("\0", "[");
             type_descriptor += GenBasicDescriptor(((ArraySpecifier)typeSpecifier).element_type);
         }
 

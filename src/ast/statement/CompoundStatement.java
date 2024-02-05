@@ -50,7 +50,7 @@ public class CompoundStatement extends Statement {
          * 
          * includesJump and includesReturn are also set at this point.
          * 
-         * These exist both for validatation  and code generatiomn reasons:
+         * These exist both for validation  and code generation reasons:
          *  ->  If this CompoundStatement is the body of a function, includesReturn 
          *      must be true.
          *  ->  If this CompoundStatement is part of an if-else statement, includesJump 

@@ -74,10 +74,10 @@ public class IndexExpression extends Expression {
 
 
         ArraySpecifier seq_arr_spec = (ArraySpecifier)seq_type;
-        if (seq_arr_spec.dimensions == 1) {
+        if (seq_arr_spec.dimensionCount == 1) {
             expression_type = seq_arr_spec.element_type;
         } else {
-            expression_type = new ArraySpecifier(seq_arr_spec.element_type, seq_arr_spec.dimensions - 1);
+            expression_type = new ArraySpecifier(seq_arr_spec.element_type, seq_arr_spec.dimensionCount - 1);
         }
 
         return expression_type;
