@@ -5,8 +5,19 @@ import java.util.ArrayList;
 import ast.function.Function;
 import semantics.table.SymbolTable;
 
+/* Program.java
+ * 
+ * The root node of the AST.
+ *  ->  It contains global declarations, structs, and functions.
+ *  ->  Its validate() method simply calls the validate() methods for 
+ *      its children
+ *      ->  Function validations are have their local symbol table 
+ *          passed to them, from the global symbol table
+ * 
+ */
 public class Program extends ASTNode {
     
+
     public ArrayList<Declaration> global_declarations; 
     public ArrayList<Struct> structs; 
     public ArrayList<Function> functions;
@@ -26,15 +37,10 @@ public class Program extends ASTNode {
 
     public void validate(SymbolTable symbolTable) {
         
-        for (Declaration d : global_declarations    ) 
-        {
-            d.validate(symbolTable); 
-        }
-
-        for (Struct s : structs                     ) { s.validate(symbolTable); }
-        for (Function f : functions) { 
-            f.validate(symbolTable.GetFuncSymbolTable(f.identifier)); 
-        }
+        for (Declaration d : global_declarations) d.validate(symbolTable); 
+        for (Struct s : structs) s.validate(symbolTable);
+        for (Function f : functions) f.validate(symbolTable.GetFuncSymbolTable(f.identifier)); 
+        
     }
     
 

@@ -17,12 +17,19 @@ import semantics.table.*;
 import util.FearnErrorListener;
 import util.Reporter;
 
+/* FearnMethodVisitor.java
+ * 
+ * This contains methods to handle the importing of other Fearn Programs,
+ * and standard library modules.
+ */
 
 public class ImportCompiler {
 
     
     public String originProgramPath;
     
+    // This performs an identical process as Compile in main.java, with the 
+    // difference of also returning the symbol table.
     public SymbolTable Compile(String path) {
 
         path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
@@ -66,7 +73,6 @@ public class ImportCompiler {
         // Perform Type Analysis
         root.validate(symTable);
 
-
         cg.Generate(root, symTable);
 
         CodeGenerator.generatorStack.pop();
@@ -74,6 +80,9 @@ public class ImportCompiler {
         return CodeGenerator.GlobalSymbolTable;        
     }
 
+    // This method handles the importing of standard library modules
+    // Each module has a case in the below statement, and these cases
+    // build and return a SymbolTable for the functions that module contains
     public SymbolTable GetStdLib(String id) {
         
         SymbolTable table = new SymbolTable();
@@ -85,10 +94,18 @@ public class ImportCompiler {
             case "io":
 
                 // Add Print Function
+                
+                // Create new parameter list
                 params = new ArrayList<>();
+                
+                // Add string parameter
                 params.add(new Parameter(
                     "", new PrimitiveSpecifier(PrimitiveDataType.STR)
                 ));
+
+                // Add to symbol table, with identifier print, and null return 
+                // type and local symbol table (irrelevant as this function has 
+                // no Fearn implementation)
                 table.addRow(
                     new FunctionRow(
                         "print", 
@@ -97,13 +114,16 @@ public class ImportCompiler {
                         null
                     )
                 );
+
+                // Owner must be set to ensure the bytecode for calling this 
+                // function refers the the correct package and class
                 table.GetAllRows().getLast().owner = "FearnStdLib/io";
                 
                 // Add Input Function
-                params = new ArrayList<>();
-                params.add(new Parameter(
-                    "", new PrimitiveSpecifier(PrimitiveDataType.STR)
-                ));
+
+                // params remains the same (as both print and input take a single, 
+                // string argument)
+
                 table.addRow(
                     new FunctionRow(
                         "input", 
@@ -113,8 +133,9 @@ public class ImportCompiler {
                     )
                 );
                 table.GetAllRows().getLast().owner = "FearnStdLib/io";
+                
+                // Return Symbol Table to primary compilation process
                 return table;
-
 
             case "maths":
                 
@@ -129,6 +150,7 @@ public class ImportCompiler {
                     )
                 );
                 table.GetAllRows().getLast().owner = "FearnStdLib/maths";
+                
                 // Add Eulers() -> value of Euler's number
                 table.addRow(
                     new FunctionRow(
@@ -140,7 +162,7 @@ public class ImportCompiler {
                 );
                 table.GetAllRows().getLast().owner = "FearnStdLib/maths";
                 
-                // Add sine, cosine, and tangent functions
+                // Add sin, cos, and tan functions
                 params = new ArrayList<>();
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
                 table.addRow(

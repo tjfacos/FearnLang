@@ -18,3 +18,6 @@ init
 globals
 decl
 Eulers
+ints
+concat
+eq

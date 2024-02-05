@@ -250,7 +250,7 @@ public class BinaryExpression extends Expression {
                         case Div:
                         case Sub:
                         case Exponent:
-                            expression_type = op1_type; // This may cause errors, I dunno...
+                            expression_type = op1_type;
                             break;
                         default:
                             expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
@@ -271,7 +271,7 @@ public class BinaryExpression extends Expression {
                         op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.STR))
                     )
                 ) {
-                    expression_type = op1_type; // This may cause errors, I dunno...
+                    expression_type = op1_type;
                 } else {
                     Reporter.ReportErrorAndExit("Operands must be either (a) both ints, (b) both floats, or (c) both strings.", this);
                 }
@@ -280,7 +280,7 @@ public class BinaryExpression extends Expression {
             // Modulo only works on integers 
             case Mod:
                 if ( op1_type.equals(op2_type) && op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)) ) {
-                    expression_type = op1_type; // This may cause errors, I dunno...
+                    expression_type = op1_type;
                 } else {
                     Reporter.ReportErrorAndExit("Operands must both be ints.", this);
                 }
@@ -290,7 +290,7 @@ public class BinaryExpression extends Expression {
             case LogicalAnd:
             case LogicalOr:
                 if ( op1_type.equals(op2_type) && op1_type.equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)) ) {
-                    expression_type = op1_type; // This may cause errors, I dunno...
+                    expression_type = op1_type;
                 } else {
                     Reporter.ReportErrorAndExit("Operands must both be boolean values.", this);
                 }
@@ -307,7 +307,7 @@ public class BinaryExpression extends Expression {
                 break;
             
             default:
-                Reporter.ReportErrorAndExit("An Error has occured.", this);
+                Reporter.ReportErrorAndExit("An Error has occurred.", this);
                 break;
         
         }
