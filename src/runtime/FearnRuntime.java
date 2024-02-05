@@ -1,27 +1,26 @@
 import java.util.Arrays;
 
-public class FearnRuntime {
-    
-    /* 
-     * FearnRuntime.java
-     * 
-     * This file is part of the compiled .jar file
-     * that the compiler is distributed in.
-     * 
-     * Its purpose is to implement functions that are 
-     * too unwieldy to implement manually in bytecode, 
-     * at compile time.
-     * 
-     * This includes:
-     * -> The implementation for mathematical exponentiation
-     * -> Boolean functions to compare values
-     * -> Concatenation
-     * -> Casting functions
-     * -> The implementation for the two built-in functions, 
-     *    length() and slice()
-     * 
-     */
+/* 
+ * FearnRuntime.java
+ * 
+ * This file is part of the compiled .jar file
+ * that the compiler is distributed in.
+ * 
+ * Its purpose is to implement functions that are 
+ * too unwieldy to implement manually in bytecode, 
+ * at compile time.
+ * 
+ * This includes:
+ * -> The implementation for mathematical exponentiation
+ * -> Boolean functions to compare values
+ * -> Concatenation
+ * -> Casting functions
+ * -> The implementation for the two built-in functions, 
+ *    length() and slice()
+ * 
+ */
 
+public class FearnRuntime {
 
     /* Exponentiation
      * 
@@ -79,68 +78,23 @@ public class FearnRuntime {
         return op1.equals(op2);
     }
     
-    public static Boolean less(int op1, int op2)
-    {
-        return op1 < op2;
-    }
+    public static Boolean less(int op1, int op2) { return op1 < op2; }
+    public static Boolean less(double op1, double op2) { return op1 < op2; }
 
-    public static Boolean less(double op1, double op2)
-    {
-        return op1 < op2;
-    }
-
-
-    public static Boolean less_eq(int op1, int op2)
-    {
-        return op1 <= op2;
-    }
-
-    public static Boolean less_eq(double op1, double op2)
-    {
-        return op1 <= op2;
-    }
-    public static Boolean greater(int op1, int op2)
-    {
-        return op1 > op2;
-    }
-
-    public static Boolean greater(double op1, double op2)
-    {
-        return op1 > op2;
-    }
-    public static Boolean greater_eq(int op1, int op2)
-    {
-        return op1 >= op2;
-    }
-
-    public static Boolean greater_eq(double op1, double op2)
-    {
-        return op1 >= op2;
-    }
+    public static Boolean less_eq(int op1, int op2) { return op1 <= op2; }
+    public static Boolean less_eq(double op1, double op2) { return op1 <= op2; }
     
+    public static Boolean greater(int op1, int op2) { return op1 > op2; }
+    public static Boolean greater(double op1, double op2) { return op1 > op2; }
+
+    public static Boolean greater_eq(int op1, int op2) { return op1 >= op2; }
+    public static Boolean greater_eq(double op1, double op2) { return op1 >= op2; }
     
+    public static Boolean not(Boolean op) { return !op; }
+    public static Boolean and(Boolean a, Boolean b) { return a && b; }
+    public static Boolean or(Boolean a, Boolean b) { return a || b; }
 
-    public static Boolean not(Boolean op)
-    {
-        return !op;
-    }
-    
-    public static Boolean and(Boolean a, Boolean b)
-    {
-        return a && b;
-    }
-
-    public static Boolean or(Boolean a, Boolean b)
-    {
-        return a || b;
-    }
-
-
-    
-    public static String concat(String a, String b)
-    {
-        return a + b;
-    }
+    public static String concat(String a, String b) { return a + b; }
 
     // Casts an Java object to boolean, by comparing it to zero
     public static Boolean Obj2B(Object o)
@@ -159,8 +113,6 @@ public class FearnRuntime {
         }
     }
 
-
-
     /* 
     Sequence functions
     ->  These implement the two built-in 
@@ -175,8 +127,6 @@ public class FearnRuntime {
 
         return ((Object[])o).length;
     }
-
-    
     
     public static String slice(String seq, Integer start, Integer end)
     {

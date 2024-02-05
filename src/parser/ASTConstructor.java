@@ -768,23 +768,19 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     @Override
     public JumpStatement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx)
-    {
-        return new JumpStatement(JumpType.Continue);
-    }
+    { return new JumpStatement(JumpType.Continue); }
 	
 	@Override
     public JumpStatement visitBreak_stmt(FearnGrammarParser.Break_stmtContext ctx)
-    {
-        return new JumpStatement(JumpType.Break);
-    }
+    { return new JumpStatement(JumpType.Break); }
 	
 	@Override
     public ReturnStatement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx)
     {
-        Expression expr = null;
-        if (ctx.expression() != null) expr = (Expression)visit(ctx.expression());
-
-        return new ReturnStatement(JumpType.Return, expr);
+        return new ReturnStatement(
+            JumpType.Return, 
+            (ctx.expression() == null) ? null : (Expression)visit(ctx.expression())
+        );
     }
 	
     /* HIGH-LEVEL STRUCTURES */

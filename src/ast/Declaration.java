@@ -59,10 +59,10 @@ public class Declaration extends ASTNode {
     }
 
     // validate() compares the expression_type of the init_expression to the type of the variable
-    // If they don't match, an error is raise. Otherwise, declaration is valid and the method returns.
-    // The method will return immediately if init_expression is null, as a declaration without 
-    // initialisation cannot be invalid (at this stage, errors such as two variables in the same 
-    // function having the same name are caught by the SymbolTable during AST Construction)
+    // If they don't match, an error is raise. Otherwise, declaration is valid and the method 
+    // returns. The method will return immediately if init_expression is null, as a declaration 
+    // without initialisation cannot be invalid (at this stage, errors such as two variables in 
+    // the same function having the same name are caught by the SymbolTable during AST Construction)
     public void validate(SymbolTable symbolTable) {
         
         if (init_expression == null) return;

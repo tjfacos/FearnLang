@@ -5,8 +5,7 @@ package semantics.table;
 * 
 * Represents a struct, within the global symbol table
 * Includes:
-    ->  localSymbolTable - a table of the struct's 
-        attributes
+    ->  localSymbolTable - a table of the struct's attributes
 */
 
 public class StructRow extends Row {
@@ -21,5 +20,4 @@ public class StructRow extends Row {
         // Generate method descriptor for struct class's constructor
         descriptor = SymbolTable.GenStructDescriptor(symtab);
     }
-
 }

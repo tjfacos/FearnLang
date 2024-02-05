@@ -43,16 +43,21 @@ public class SymbolTable {
 
         for (Row r : Rows)
         {
-            if (new_row.getClass() == r.getClass() && r.identifier.equals(new_row.identifier))
-            {
-                Reporter.ReportErrorAndExit("Symbol " + new_row.identifier + " can only exist once within scope.", null);
+            if (
+                new_row.getClass() == r.getClass() 
+                && r.identifier.equals(new_row.identifier)
+            ) {
+                Reporter.ReportErrorAndExit(
+                    "Symbol " + new_row.identifier + " can only exist once within scope.", 
+                    null
+                );
             }
         }
 
         // Set owner
         // The owner represents the generated class the row belongs to
         // E.g. The owner of a function, defined in lib.test, will become
-        // a method in the 'lib' class, and so its owner is 'lib
+        // a method in the 'lib' class, and so its owner is 'lib'
         
         new_row.owner = CodeGenerator.generatorStack.peek().programName;
 
@@ -108,7 +113,7 @@ public class SymbolTable {
         
         else if (typeSpecifier.getClass() == ArraySpecifier.class)
         {
-            type_descriptor += new String( new char[ ((ArraySpecifier)typeSpecifier ).dimensionCount ] ).replace("\0", "[");
+            type_descriptor += "[".repeat(((ArraySpecifier)typeSpecifier ).dimensionCount);
             type_descriptor += GenBasicDescriptor(((ArraySpecifier)typeSpecifier).element_type);
         }
 
@@ -130,25 +135,20 @@ public class SymbolTable {
     
     // Private method to retrieve a row in the table, by performing a linear search
     // Throws an exception if it is not found
-    private Row GetRow(String id, Boolean isFunction, Boolean isStruct) throws NoSuchElementException
+    private Row GetRow(String id, Boolean isFunction, Boolean isStruct) 
+        throws NoSuchElementException
     {
         for (Row r : Rows)
         {
             
             if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
-            {
                 return r;
-            }
             
             else if (r.identifier.equals(id) && r instanceof StructRow && isStruct) 
-            { 
                 return r; 
-            }
-
+            
             else if (r.identifier.equals(id) && r instanceof VariableRow && !isFunction && !isStruct)
-            {
                 return r;
-            }
         }
 
         throw new NoSuchElementException(id);
@@ -247,19 +247,12 @@ public class SymbolTable {
     {
         String desc = "(";
         
-        for (Parameter p : params)
-        {
-            desc += GenBasicDescriptor(p.type);
-        }
+        for (Parameter p : params) desc += GenBasicDescriptor(p.type);
         
         desc += ")";
         
-        if (return_type == null)
-        {
-            desc += "V";
-        } else {
-            desc += GenBasicDescriptor(return_type);
-        }
+        if (return_type == null) desc += "V";
+        else desc += GenBasicDescriptor(return_type);
         
         return desc;
         
@@ -397,5 +390,4 @@ public class SymbolTable {
 
         return null;
     }
-    
 }

@@ -35,8 +35,13 @@ public class Function extends ASTNode {
     public CompoundStatement body;
 
     
-    public Function(String id, ArrayList<Parameter> params, TypeSpecifier rt, Boolean _void, CompoundStatement bod)
-    {
+    public Function(
+        String id, 
+        ArrayList<Parameter> params, 
+        TypeSpecifier rt, 
+        Boolean _void, 
+        CompoundStatement bod
+    ) {
        identifier = id;
        parameters = params;
        return_type = rt;
@@ -80,8 +85,10 @@ public class Function extends ASTNode {
         body.validate(symbolTable);
 
         if (!body.includesReturn && return_type != null)
-        {
-            Reporter.ReportErrorAndExit("Function " + identifier + " must include a return statement in its main body.", null);
-        }
+        Reporter.ReportErrorAndExit(
+            "Function " + identifier + " must include a return statement in its main body.", 
+            null
+        );
+        
     }
 }

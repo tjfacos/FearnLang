@@ -9,13 +9,10 @@ import ast.type.TypeSpecifier;
  * 
  * Represents a function, within the global symbol table
  * Includes:
-    ->  parameters - An list of Parameter objects, 
-        representing the function parameters
-    ->  return_type - the typeSpecifier of the 
-        value the function returns (null is the 
+    ->  parameters - A list of Parameter objects, representing the function parameters
+    ->  return_type - the typeSpecifier of the value the function returns (null is the 
         function is void)
-    ->  localSymbolTable - a table of the local 
-        variables that only exist within the 
+    ->  localSymbolTable - a table of the local variables that only exist within the 
         scope of the function
 */
 

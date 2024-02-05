@@ -46,6 +46,8 @@ public class FearnMethodVisitor extends MethodVisitor{
 
     }
 
+    // Java un-escapes escape characters read in by the parser,
+    // so this implementation of visitLdc re-escapes them
     @Override
     public void visitLdcInsn(Object obj)
     {

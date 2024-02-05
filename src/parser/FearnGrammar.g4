@@ -280,8 +280,6 @@ struct_init
     ;
 
 
-
-
 // Assignment expressions are used to change the value of a variable
 assign_expression
     : expression assignment_operator expression
@@ -293,13 +291,12 @@ assignment_operator
 
 
 
-
-
 /* 
 LEXER RULES 
 
-The following defines language-specific tokens, at aren't just simple words or punctation, and that have to match 
+The following defines language-specific tokens, at aren't just simple words or punctuation, and that have to match 
 a certain pattern, defined using regular expressions.
+
 */
 
 // Define Fragments, used in the below token rules

@@ -21,20 +21,14 @@ import codegen.CodeGenerator;
  *      function also exits FearnC.
  * 
  */
-
-
 public class Reporter {
+    private static String ANSI_RESET   = (char)27 + "[0m";
+    private static String ANSI_RED     = (char)27 + "[31m";
+    private static String ANSI_GREEN   = (char)27 + "[32m";
+    private static String ANSI_PURPLE  = (char)27 + "[35m";
+    private static String ANSI_BOLD    = (char)27 + "[1m";
 
-    static String ANSI_RESET   = (char)27 + "[0m";
-    static String ANSI_RED     = (char)27 + "[31m";
-    static String ANSI_GREEN   = (char)27 + "[32m";
-    static String ANSI_PURPLE  = (char)27 + "[35m";
-    
-    static String ANSI_BOLD    = (char)27 + "[1m";
-
-
-    
-    static public void ReportErrorAndExit(String err, ASTNode offendingNode)
+    public static void ReportErrorAndExit(String err, ASTNode offendingNode)
     {
         if (offendingNode == null)
         System.out.println(
@@ -59,12 +53,10 @@ public class Reporter {
                 ANSI_RESET
             )
         );
-        
-        
         System.exit(1);
     }
 
-    static public void ReportSuccess(String message, boolean exit)
+    public static void ReportSuccess(String message, boolean exit)
     {
         String colour = ANSI_PURPLE;
         if (exit) { colour = ANSI_GREEN; }
@@ -79,9 +71,6 @@ public class Reporter {
             )
         );
 
-        if (exit)
-        {
-            System.exit(0);
-        }
+        if (exit) System.exit(0);
     }
 }

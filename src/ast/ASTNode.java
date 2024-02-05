@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.*;
  *  ->  toString(): A abstract method to return a string representation of a 
  *      node. This is used when reporting errors, to show the offending source 
  *      code.
-*       ->  It was also heavily used during debugging to ensure programs 
+ *      ->  It was also heavily used during debugging to ensure programs 
  *          where parse correctly, and the AST was being properly constructed.
  */
 

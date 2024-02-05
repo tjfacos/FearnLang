@@ -28,7 +28,7 @@ public class FearnErrorListener extends BaseErrorListener{
 
         if (message.startsWith("no viable alternative at input"))
         {
-            message = "Unable to parse line. Check for missing characters, like semi-colons (;).";
+            message = "Unable to parse line. Check for missing characters, like semicolons (;).";
         }
 
         Reporter.ReportErrorAndExit(
