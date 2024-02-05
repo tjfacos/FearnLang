@@ -1,18 +1,14 @@
-// ANTLR4 Dependencies
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-// Generated ANTLR Dependencies
 import parser.*;
 import parser.gen.*;
 import semantics.table.SymbolTable;
 
-// Java IO Dependencies
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-// Local
 import util.*;
 import ast.ASTNode;
 import ast.Program;
