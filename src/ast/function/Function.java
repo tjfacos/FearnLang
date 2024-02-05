@@ -9,6 +9,21 @@ import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* Function.java
+ * 
+ * Represents a function in the AST
+ * 
+ * Fields:
+ *  ->  identifier: string name of function (used as method name in the generated
+ *      program class)
+ *  ->  parameters: A list of Parameter object, representing the values the 
+ *      function takes in, and their local identifier
+ *  ->  return_type: TypeSpecifier of the data value returned by the function (is 
+ *      null for a void function)
+ *  ->  is_void: A boolean flag, indicating if the function is void (returns no data)
+ */
+
+
 public class Function extends ASTNode {
     
     public String identifier;
@@ -32,8 +47,7 @@ public class Function extends ASTNode {
 
     @Override public String toString()
     {
-        String ret_type_str = "void";
-        if (return_type != null) {ret_type_str = return_type.toString();}
+        String ret_type_str = is_void ? "void" : return_type.toString();
         return String.format(
             "fn %s%s => %s {...}",  
             identifier,
@@ -42,7 +56,7 @@ public class Function extends ASTNode {
         );
     }
 
-    /* No Function.GenerateBytecode is provided, as the generation of 
+    /* No Function.GenerateBytecode() is provided, as the generation of 
      * functions using the method visitor is performed by CodeGenerator,
      * as the program's Class Writer is needed to add the method to the 
      * main program class (see CodeGenerator.java).
@@ -54,9 +68,11 @@ public class Function extends ASTNode {
          * the body, as return statements must return an expression 
          * the evaluates to the right type.
          * 
-         * The body is validated, and (assuming it is not void), must include
-         * a return statement (the type of expression returned is validated by 
-         * the return statement itself, using CurrentReturnType).
+         * The body is validated, and (assuming function is not void), 
+         * must include a return statement (the type of expression 
+         * returned is validated by the return statement itself, 
+         * using CurrentReturnType).
+         * 
          */
 
         CodeGenerator.CurrentReturnType = return_type;
