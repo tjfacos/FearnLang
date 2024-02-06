@@ -23,3 +23,6 @@ concat
 eq
 seq
 Ldc
+Attr
+Obj
+arr

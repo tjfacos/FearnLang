@@ -16,20 +16,31 @@ import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* FnCallExpression.java
+ * 
+ * Represents a Function Call in the AST. 
+ * 
+ * Fields:
+ *  ->  identifier: Function identifier 
+ *  ->  arguments: The expressions used as arguments in the function call
+ */
+
 public class FnCallExpression extends Expression {
     
     public String identifier;
     public ArrayList<Expression> arguments;
     
     // Flag used to indicate if a function is written in Universal Function Notation
-    // e.g. x.func()
+    // e.g. x.myFunction()
     // It is only used in toString()
-
     public Boolean isUFN = false;
 
+    // List of built-in functions
+    // These aren't added to the SymbolTable simply because they take
+    // multiple data types as input (e.g. length() take 1 argument, 
+    // which is either an array or a string)
     static List<String> builtins = Arrays.asList("length", "slice");
 
-    
     public FnCallExpression(String fn_name, ArrayList<Expression> args)
     {
         identifier = fn_name;
@@ -52,6 +63,17 @@ public class FnCallExpression extends Expression {
             return identifier + arguments.toString().replace("[", "(").replace("]", ")");
     }
     
+    /* To generate bytecode, generate all arguments.
+     * 
+     * Then, if the function call is one of the built-ins, set the descriptor to the 
+     * correct value, and call the method, using INVOKESTATIC and the FearnRuntime.
+     *  ->  If slice is used, returned array must be cast back, using the array's type 
+     *      descriptor
+     * 
+     * Otherwise, use INVOKESTATIC, using the identifier, descriptor, and owner from 
+     * the SymbolTable.
+     * 
+     */
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
@@ -114,6 +136,14 @@ public class FnCallExpression extends Expression {
 
     }
 
+    /* To validate...
+     *  ->  If the function is one of the built-ins, check the number of arguments and
+     *      their types, raising an error if necessary
+     *  ->  Otherwise, using the parameters from the SymbolTable to validate the 
+     *      arguments (number and types)
+     *  ->  Set expression_type to return type of function, and return this
+     * 
+     */
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         
@@ -176,8 +206,6 @@ public class FnCallExpression extends Expression {
                 break;
         }
 
-        // Handle Generic, user-defined functions
-
         ArrayList<TypeSpecifier> param_types = CodeGenerator.GlobalSymbolTable.GetFuncParameterSpecifiers(identifier);
 
         for (Expression arg : arguments)
@@ -187,14 +215,20 @@ public class FnCallExpression extends Expression {
 
         if (arguments.size() != param_types.size())
         {
-            Reporter.ReportErrorAndExit("Wrong number of arguments for " + identifier + " , expected" + param_types.size() + ".", this);
+            Reporter.ReportErrorAndExit(
+                "Wrong number of arguments for " + identifier + " , expected" + param_types.size(),
+                this
+            );
         }
 
         for (int i = 0; i < param_types.size(); i++)
         {
             if (!param_types.get(i).equals(arg_types.get(i)))
             {
-                Reporter.ReportErrorAndExit("Wrong argument type for " + arguments.get(i).toString() + ", expected " + param_types.get(i).toString(), this);
+                Reporter.ReportErrorAndExit(
+                    arguments.get(i).toString() + " is of the wrong type, expected " + param_types.get(i).toString(), 
+                    this
+                );
             }
         }
 

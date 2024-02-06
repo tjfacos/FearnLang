@@ -9,6 +9,15 @@ import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* CastExpression.java
+ * 
+ * Represents a Type Cast in the AST. 
+ * 
+ * Fields:
+ *  ->  target: The PrimitiveDataType being cast to 
+ *  ->  Operand: The expression to be cast
+ */
+
 public class CastExpression extends Expression {
     
     public PrimitiveDataType target;
@@ -26,6 +35,13 @@ public class CastExpression extends Expression {
         return "(" + target.name().toLowerCase() + ")" + Operand.toString();
     }
 
+    /* To generate bytecode, generate the operand, then...
+     *  ->  If targeting int, call the appropriate method based on operands 
+     *      expression_type, casting to Integer after
+     *  ->  If targeting float, follow a similar procedure
+     *  ->  If targeting str, call the Obj2Str method of the FearnRuntime
+     *  ->  If targeting bool, call the Obj2B method of the FearnRuntime
+     */
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
 
@@ -71,7 +87,7 @@ public class CastExpression extends Expression {
                 return;
 
             case STR:
-            mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2Str", "(Ljava/lang/Object;)Ljava/lang/String;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2Str", "(Ljava/lang/Object;)Ljava/lang/String;", false);
                 return;
             case BOOL:
                 mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2B", "(Ljava/lang/Object;)Ljava/lang/Boolean;", false);
@@ -80,6 +96,9 @@ public class CastExpression extends Expression {
 
     }
 
+    /* To validate, validate the operand, and check that, for the target type, the 
+     * operand.expression_type is one where that operation is valid.
+     */
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         // For Each target type, ensure the operand can be cast
@@ -111,7 +130,7 @@ public class CastExpression extends Expression {
                 } 
                 break;
             
-            case PrimitiveDataType.STR: // You can cast anything, inculding arrays and structs, to strings
+            case PrimitiveDataType.STR: // You can cast anything, including arrays and structs, to strings
                 expression_type = new PrimitiveSpecifier(PrimitiveDataType.STR); 
                 break;
             
@@ -128,9 +147,7 @@ public class CastExpression extends Expression {
                 } 
                 break;
 
-            default: // This should never run, but is here for completeness
-                Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to" + target.name(), this);
-                break;
+            default: break;
         }
 
         return expression_type;

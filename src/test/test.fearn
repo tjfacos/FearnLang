@@ -2,9 +2,10 @@ import io
 
 fn main(args : str[]) => void
 {
-    let list : int[][] = new int[][] {{1, 2, 1, 4}, {5, 6, 3, 9}};
+    let x : int;
+    let list : int[] = new int[] {5, 2, 1, 4, 5, 6, 3, 9};
 
-    print((str)list.stalinSort());
+    print((str)list.slice(0, 5).stalinSort());
 
 }
 

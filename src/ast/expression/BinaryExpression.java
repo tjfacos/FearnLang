@@ -10,6 +10,16 @@ import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* BinaryExpression.java
+ * 
+ * Represents a Binary Expression in the AST. 
+ * 
+ * Fields:
+ *  ->  Op1: Left operand 
+ *  ->  Op2: Right operand
+ *  ->  Operation: The operation to be performed
+ */
+
 public class BinaryExpression extends Expression {
     
     public Expression Op1;
@@ -51,6 +61,13 @@ public class BinaryExpression extends Expression {
 
         return String.format("%s %s %s", Op1.toString(), opString, Op2.toString());
     }
+
+    /* To generate bytecode, in general...
+     *  1)  Generate both Operands (casting them if necessary)
+     *  2)  For each type of operation, call the corresponding instruction (or FearnRuntime 
+     *      method)
+     *  3)  Cast the result back to an object if necessary
+     */
 
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
@@ -220,6 +237,13 @@ public class BinaryExpression extends Expression {
         }
     }
 
+    /* To validate...
+     *  1)  Get types for both operands
+     *  2)  Check they are valid types for the operation, and the same
+     *      ->  Raise errors otherwise
+     *  3)  Set expression_type to an appropriate TypeSpecifier, and 
+     *      return it
+     */
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         
