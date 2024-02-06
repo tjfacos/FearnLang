@@ -13,16 +13,26 @@ import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* ArrayInitExpression.java
+ * 
+ * Represents an Array Initialisation in the AST (e.g. new int[5]). 
+ * 
+ * Fields:
+ *  ->  type : TypeSpecifier for element types 
+ *  ->  dimensions: The expressions for the array dimensions (can be null if body provided)
+ *  ->  init_body: The body used to initialise the array (can be null if dimensions provided)
+ */
+
 public class ArrayInitExpression extends Expression {
     
     public TypeSpecifier type;
-    public ArrayList<Expression> dimenisons;
+    public ArrayList<Expression> dimensions;
     public ArrayBody init_body;
 
     public ArrayInitExpression(TypeSpecifier t, ArrayList<Expression> dims, ArrayBody ele)
     {
         type = t;
-        dimenisons = dims;
+        dimensions = dims;
         init_body = ele;
     }
 
@@ -30,11 +40,11 @@ public class ArrayInitExpression extends Expression {
     public String toString()
     {
         String s = type.toString();
-        if (dimenisons.get(0) == null)
+        if (dimensions.get(0) == null)
         {
-            s += "[]".repeat(dimenisons.size());
+            s += "[]".repeat(dimensions.size());
         } else {
-            for (Expression dim : dimenisons)
+            for (Expression dim : dimensions)
             {
                 s += '[' + dim.toString() + ']';
             }
@@ -46,6 +56,14 @@ public class ArrayInitExpression extends Expression {
     
     }
 
+    /* To generate bytecode for an Array Initialisation, the method...
+     *  1)  If a body has been provided, just generate that
+     *  2)  Otherwise, Generate the bytecode for each dimension, casting the values to 
+     *      primitive 'I'
+     *  3)  If the array is multi-dimensional, generate an array descriptor using 
+     *      SymbolTable, and use visitMultiANewArray, with the number of dimensions
+     *  4)  Otherwise, Use a new array, with the descriptor for an element
+     */
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
@@ -60,27 +78,42 @@ public class ArrayInitExpression extends Expression {
         else
         {
 
-            for (Expression dim : dimenisons)
+            for (Expression dim : dimensions)
             {
                 dim.GenerateBytecode(mv);
                 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
             }
 
-            if (dimenisons.size() > 1)
+            if (dimensions.size() > 1)
             {
-                String desc = SymbolTable.GenBasicDescriptor(new ArraySpecifier(type, dimenisons.size()));
-                mv.visitMultiANewArrayInsn(desc, dimenisons.size());
+                String desc = SymbolTable.GenBasicDescriptor(new ArraySpecifier(type, dimensions.size()));
+                mv.visitMultiANewArrayInsn(desc, dimensions.size());
                 return;
             } else {
                 String desc = SymbolTable.GenBasicDescriptor(type);
                 desc = desc.substring(1, desc.length() - 1 );
                 mv.visitTypeInsn(ANEWARRAY, desc);
             }
-
-
         }
     }
 
+    /* To validate an Array Initialisation, the method...
+     *  1)  If a body has been provided...
+     *      a)  Validate the body (this ensures the types of elements in the body 
+     *          is consistent)
+     *      b)  Check the type of elements in the body matches that of the array
+     *          ->  This is done by repeatedly accessing the element type of the body 
+     *              specifier, repeating for each dimension (e.g. for a 2D array, this 
+     *              runs twice), until the type of the actual elements is reached
+     *          ->  Raise error otherwise
+     *      c)  Check the dimensions are the same (a 3D body is used for a 3D array)
+     *      d)  Set expression_type to an ArraySpecifier
+     * 2) Otherwise...
+     *      a)  For each dimension, validate that they're of type int (raise error 
+     *          otherwise)
+     *      b)  Set expression_type to an ArraySpecifier
+     * 3) Return expression_type
+     */
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {        
         
@@ -100,7 +133,7 @@ public class ArrayInitExpression extends Expression {
                 Reporter.ReportErrorAndExit("Type of Elements in Array Body don't match the element type of the Array.", this);
             }
 
-            if (bodySpecifier.dimensions.size() != dimenisons.size())
+            if (bodySpecifier.dimensions.size() != dimensions.size())
             {
                 Reporter.ReportErrorAndExit("Dimensions of Array Body don't match dimensions of Array Initialisation.", this);
             }
@@ -108,7 +141,7 @@ public class ArrayInitExpression extends Expression {
             expression_type = new ArraySpecifier(type, bodySpecifier.dimensions.size());
         } else {
             
-            for (Expression e: dimenisons)
+            for (Expression e: dimensions)
             {
                 TypeSpecifier dim_type = e.validate(symTable);
                 if (!dim_type.equals(new PrimitiveSpecifier(PrimitiveDataType.INT)))
@@ -116,9 +149,8 @@ public class ArrayInitExpression extends Expression {
                     Reporter.ReportErrorAndExit("Dimensions of arrays must be of type int.", this);
                 }
             }
-            
-            
-            expression_type = new ArraySpecifier(type, dimenisons.size());
+              
+            expression_type = new ArraySpecifier(type, dimensions.size());
         }
                 
         // Return ArraySpecifier
