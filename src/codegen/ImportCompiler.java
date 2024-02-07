@@ -208,10 +208,11 @@ public class ImportCompiler {
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
                 table.addRow(
-                    new FunctionRow("randomFromRange", params, 
+                    new FunctionRow("randomInRange", params, 
                     new PrimitiveSpecifier(PrimitiveDataType.INT), null)
                 );
                 table.GetAllRows().getLast().owner = "FearnStdLib/RandomNumbers";
+                return table;
 
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);

@@ -1,11 +1,7 @@
 import io
-
-struct testStruct {
-    let num : int;
-    let flag : bool;
-}
+import random
 
 fn main(args : str[]) => void
 {
-    print((str)!(new testStruct(1, true).flag));
+    print((str)randomInRange(0, 15));
 }
