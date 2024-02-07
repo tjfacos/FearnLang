@@ -197,6 +197,25 @@ public class ImportCompiler {
 
                 return table;
 
+            case "random":
+                // Add random -> Random double between 0 and 1
+                params = new ArrayList<>();
+                table.addRow(
+                    new FunctionRow("random", params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), null)
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/RandomNumbers";
+
+                // Add randomFromRange -> Random integer from range
+                params = new ArrayList<>();
+                params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
+                params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
+                table.addRow(
+                    new FunctionRow("randomFromRange", params, 
+                    new PrimitiveSpecifier(PrimitiveDataType.INT), null)
+                );
+                table.GetAllRows().getLast().owner = "FearnStdLib/RandomNumbers";
+
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);
                 break;

@@ -10,6 +10,14 @@ import ast.expression.IncrExpression;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* ExpressionStatement.java
+ * 
+ * Represents an Expression Statement in the AST. It contains
+ *  ->  The expression
+ *  ->  isAssign: a boolean value indicating if the expression 
+ *      is an assignment
+ */
+
 public class ExpressionStatement extends Statement {
     public Expression expression;
     public Boolean isAssign;
@@ -25,6 +33,12 @@ public class ExpressionStatement extends Statement {
         return expression.toString() + ";";
     }
 
+    /* The GenerateBytecode method simply generates the bytecode for the expression.
+     * 
+     * If the expression doesn't evaluate to null (to evaluates to some data, still on 
+     * the stack), a POP instruction is added on the end to remove the value.
+     * 
+     */
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         
@@ -35,6 +49,13 @@ public class ExpressionStatement extends Statement {
         
     }
 
+    /* To validate, the expression is validated. The expression is also 
+     * checked to ensure it's valid as a statement, on its own. This means 
+     * it is either
+     *  ->  An Assignment
+     *  ->  A Function Call
+     *  ->  An Increment Expression
+     */
     public void validate(SymbolTable symbolTable) {
         
         if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))        

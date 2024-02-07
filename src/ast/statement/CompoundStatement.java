@@ -8,6 +8,15 @@ import ast.ASTNode;
 import ast.Declaration;
 import semantics.table.SymbolTable;
 
+/* CompoundStatement.java
+ * 
+ * Represents a compound statement, a collection of statements within curly brackets.
+ * 
+ * Contains nested_nodes, Statements and Declarations that exist within the scope of the 
+ * block. It also has boolean values includesJump and includesReturn.
+ */
+
+
 public class CompoundStatement extends Statement {
 
     public ArrayList<ASTNode> nested_nodes;

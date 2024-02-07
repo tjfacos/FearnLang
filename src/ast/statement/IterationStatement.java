@@ -14,6 +14,18 @@ import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* IterationStatement.java
+ * 
+ * Represents a for loop in the AST. 
+ * 
+ * The class contains an init_expression (an Expression or Declaration), a 
+ * continue_expression (A boolean expression, determining whether the loop 
+ * should run), and an iteration_expression (running at the end of each loop).
+ * 
+ * It also contains the loop body, which runs every iteration.
+ * 
+ */
+
 public class IterationStatement extends Statement {
 
     public ASTNode init_expression;
@@ -21,8 +33,9 @@ public class IterationStatement extends Statement {
     public Expression iteration_expression;
     public CompoundStatement body;
 
-    public IterationStatement(ASTNode init, Expression c_expr, Expression i_expr, CompoundStatement bod)
-    {
+    public IterationStatement(
+        ASTNode init, Expression c_expr, Expression i_expr, CompoundStatement bod
+    ) {
         init_expression = init;
         continue_expression = c_expr;
         iteration_expression = i_expr;
@@ -32,31 +45,39 @@ public class IterationStatement extends Statement {
     @Override public String toString()
     {
         String d, c, i;
-        if (init_expression == null) { d = "null"; } else { d = init_expression.toString(); }
-        if (continue_expression == null) { c = "null"; } else { c = continue_expression.toString(); }
-        if (iteration_expression == null) { i = "null"; } else { i = iteration_expression.toString(); }
-        
-        return String.format("for ( %s ; %s ; %s )",
-            d, c, i
-        );
+        if (init_expression == null) d = ""; else d = init_expression.toString();
+        if (continue_expression == null) c = ""; else c = continue_expression.toString();
+        if (iteration_expression == null) i = ""; else i = iteration_expression.toString();
+
+        return String.format("for ( %s ; %s ; %s )", d, c, i);
 
     }
 
     public void GenerateBytecode(MethodVisitor mv) {
         
-        /* This requires two labels, one at the top and another at the bottom.
+        /* This requires three labels, one at the top, one at the end of the body (before 
+         * the iteration statement), and another at the bottom. The second label is used 
+         * as a target for continue statements.
+         * 
+         * These labels are added to a stack, in the order (START, ITERATE, END), so they
+         * can be referenced by jump statements `continue` and `return`.
+         * 
          * First, generate the init_expression, and visit the start label. 
-         * Then, generate the continue expression, and IFEQ skip to the end label.
-         * Then, Generate the body, and the iteration statement. Finally, GOTO start.
+         * 
+         * Then, generate the continue expression, and IFEQ (if value at top of stack 
+         * equals 0 [false]) skip to the end label (don't run the body). Then, 
+         * Generate the body. Visit the second label, and generate iteration statement. 
+         * Finally, GOTO start.
+         * 
          * Visit the end label.
          * 
-         * After the start label, mv.visitFrame(Opcodes.F_APPEND,2, new Object[] {"java/lang/Integer", "java/lang/Integer"}, 0, null);
-            * This common procedure should be made a method of the abstract Statement class.
-            * Be sure to correct selectionStatement after you do this.
-         * After the second label, mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null) is needed
+         * After the start label, mv.visitFrame(Opcodes.F_FULL);
+         *  ->  This common procedure is a protected method of the Statement class.
+         *  ->  After the other labels, mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null) 
+         *      is needed (frame remains the same)
          * 
-         * Remember, all variables are initialised null at the start of any function, so the number of locals
-         * should never really change.
+         * Remember, all variables are initialised null at the start of any function, so 
+         * the number of locals should never really change.
          */
 
         Label startLoopLabel = new Label();
@@ -74,19 +95,14 @@ public class IterationStatement extends Statement {
             if (init_expression instanceof Expression)
             {
                 ((Expression)init_expression).GenerateBytecode(mv);
-
-                if (init_expression.getClass() != AssignExpression.class) mv.visitInsn(POP);
-            
-            } else {
-                ((Declaration)init_expression).GenerateBytecode(mv);
-            }
+                if (((Expression)init_expression).expression_type != null) mv.visitInsn(POP);
+            } else ((Declaration)init_expression).GenerateBytecode(mv);
         }
 
         // Visit start of loop
         mv.visitLabel(startLoopLabel);
 
         // Verify Frame State
-        
         mv.visitFrame(
             F_FULL, 
             numLocals, 
@@ -147,16 +163,17 @@ public class IterationStatement extends Statement {
     }
     
     public void validate(SymbolTable symbolTable) {
-        /* The init expression can be either an expression, or a declaration
-         * The continue expression must be a boolean value
-         * The iteration expression and body must also be visited
-         * It must be notes that any one of these, except the body, can be null
+        /*  ->  The init expression can be either an expression, or a declaration
+         *  ->  The continue expression must be a boolean value
+         *  ->  The iteration expression and body must also be visited
+         * 
+         * It must be noted that any one of these, except the continue expression 
+         * and body, can be null
          */
 
         // Increment Loop Depth, so jump statements like
         // break and continue nested within the body register as 
-        // valid.
-        
+        // valid when they are validated.
         CodeGenerator.loopDepth++;
 
         // If an initialisation expression is present, validate it
@@ -170,14 +187,13 @@ public class IterationStatement extends Statement {
             }
         }
 
-        // If the continue condition (loop continues until condition evaluates false),
-        // raise an error
-        if (continue_expression == null)
-        {
-            Reporter.ReportErrorAndExit("Iteration condition missing.", this);
-        }
+        // If the continue condition (loop continues until condition evaluates false)
+        // is null, raise an error
+        if (continue_expression == null) Reporter.ReportErrorAndExit(
+            "Iteration condition missing.", this
+        );
 
-        // Raise Error is the continue expression doesn evaluate to a boolean value
+        // Raise Error is the continue expression doesn't evaluate to a boolean value
         if (!continue_expression.validate(symbolTable).equals(new PrimitiveSpecifier(PrimitiveDataType.BOOL)))
         {
             Reporter.ReportErrorAndExit("Iteration condition must be a boolean value.", this);
@@ -193,7 +209,5 @@ public class IterationStatement extends Statement {
         // (outside a loop, jump statements like break and continue
         // are invalid).
         CodeGenerator.loopDepth--;
-
     }
-    
 }
