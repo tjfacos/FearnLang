@@ -5,6 +5,6 @@ fn main(args : str[]) => void
 {
     let user : $Person = new Person(args[0], (int)args[1]);
 
-    print(x.toString());
+    print(user.toString());
     
 }

@@ -11,6 +11,15 @@ import codegen.CodeGenerator;
 import semantics.table.SymbolTable;
 import util.Reporter;
 
+/* StructInitExpression.java
+ * 
+ * This represents an initialisation of a struct instance
+ * 
+ * Fields:
+ *  ->  name: The name of the struct being instantiated
+ *  ->  arguments: The expressions used for the struct's initial state
+ */
+
 public class StructInitExpression extends Expression {
     
     public String name;
@@ -25,9 +34,15 @@ public class StructInitExpression extends Expression {
     @Override
     public String toString()
     {
-        return "new " + name + arguments.toString().replace("[", "(").replace("]", ")");
+        return "new " + name + "(" + arguments.toString().substring(1, arguments.toString().length() - 1) + ")";
     }
 
+    /* To generate bytecode, the NEW instruction is used to create an instance of the 
+     * struct class ($name). This instance is duplicated, and the arguments are generated,
+     * leaving their values on top of the stack. Finally, the struct class's constructor is
+     * invoked, to set the state of the object. This requires the descriptor from the Global
+     * Symbol Table.
+     */
     @Override
     public void GenerateBytecode(MethodVisitor mv) {
         mv.visitTypeInsn(NEW, "$" + name);
@@ -45,6 +60,10 @@ public class StructInitExpression extends Expression {
         );
     }
 
+    /* To validate, the arguments are validated, to ensure they are the right type,
+     * and that there are the correct number. If so, a StructInstanceSpecifier is set
+     * to expression_type and returned.
+     */
     @Override 
     public TypeSpecifier validate(SymbolTable symTable) {
         
@@ -69,5 +88,4 @@ public class StructInitExpression extends Expression {
 
         return expression_type;
     }
-
 }

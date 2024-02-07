@@ -216,7 +216,7 @@ public class FnCallExpression extends Expression {
         if (arguments.size() != param_types.size())
         {
             Reporter.ReportErrorAndExit(
-                "Wrong number of arguments for " + identifier + " , expected" + param_types.size(),
+                "Wrong number of arguments for " + identifier + " , expected " + param_types.size(),
                 this
             );
         }

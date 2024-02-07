@@ -45,6 +45,7 @@ fn merge(arr : int[], l : int, m : int, r : int) => void
     // Initial index of merged subarray array
     let k : int = l;
     
+
     for (; i < n1 && j < n2; ) {
     
         if (L[i] <= R[j]) 

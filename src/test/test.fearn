@@ -2,9 +2,10 @@ import io
 
 struct testStruct {
     let num : int;
+    let flag : bool;
 }
 
 fn main(args : str[]) => void
 {
-    print(num);
+    print((str)!(new testStruct(1, true).flag));
 }
