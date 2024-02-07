@@ -25,9 +25,6 @@ import util.Reporter;
 
 public class ImportCompiler {
 
-    
-    public String originProgramPath;
-    
     // This performs an identical process as Compile in main.java, with the 
     // difference of also returning the symbol table.
     public SymbolTable Compile(String path) {
