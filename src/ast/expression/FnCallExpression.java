@@ -60,7 +60,7 @@ public class FnCallExpression extends Expression {
             return str_rep;
         }
         else 
-            return identifier + arguments.toString().replace("[", "(").replace("]", ")");
+            return identifier + "(" + arguments.toString().substring(1, arguments.toString().length() - 1) + ")";
     }
     
     /* To generate bytecode, generate all arguments.

@@ -31,20 +31,15 @@ public class ExpressionStatement extends Statement {
         expression.GenerateBytecode(mv);
         
         // If the expression evaluates to a value, pop from operand stack            
-        if (expression.expression_type != null)
-        {
-            mv.visitInsn(POP);
-        }
+        if (expression.expression_type != null) mv.visitInsn(POP);
         
     }
 
     public void validate(SymbolTable symbolTable) {
         
-        if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))
-        {
+        if(!isAssign && !(expression instanceof FnCallExpression || expression instanceof IncrExpression))        
             Reporter.ReportErrorAndExit("Invalid Statement.", this);
-        }
-
+        
         expression.validate(symbolTable);
     }
 }

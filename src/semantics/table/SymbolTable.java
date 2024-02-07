@@ -164,7 +164,10 @@ public class SymbolTable {
             else return ((VariableRow)row).dataType;
         } catch (Exception e)
         {
-            Reporter.ReportErrorAndExit("Type Specifier for " + id + " not found.", null);
+            Reporter.ReportErrorAndExit(
+                "Definition for " + id + " not provided in scope.", 
+                null
+            );
         }
 
         return null;

@@ -1,43 +1,10 @@
 import io
 
-fn main(args : str[]) => void
-{
-    let x : int;
-    let list : int[] = new int[] {5, 2, 1, 4, 5, 6, 3, 9};
-
-    print((str)list.slice(0, 5).stalinSort());
-
+struct testStruct {
+    let num : int;
 }
 
-fn stalinSort(list : int[]) => int[]
+fn main(args : str[]) => void
 {
-    if (list.length() == 0)
-    {
-        return list;
-    }
-
-    let temp_list : int[] = new int[list.length()];
-    let temp_ptr : int = 1;
-    let last : int = list[0];
-    
-
-    temp_list[0] = last;
-
-    for (let i : int = 1; i < list.length(); i++)
-    {
-        if (list[i] >= last)
-        {
-            last = list[i];
-            temp_list[temp_ptr++] = list[i];
-        }
-    }
-
-    let final_list : int[] = new int[temp_ptr];
-    for (i = 0; i < temp_ptr; i++)
-    {
-        final_list[i] = temp_list[i];
-    }
-
-    return final_list;
-
+    print(num);
 }

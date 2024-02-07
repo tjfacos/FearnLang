@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.*;
  *      their attributes, rather than addresses in memory. If the assertion
  *      that two ASTNodes are equal fails, the exception is caught and false
  *      is returned. Otherwise, method returns true.
- *  ->  toString(): A abstract method to return a string representation of a 
+ *  ->  toString(): An abstract method to return a string representation of a 
  *      node. This is used when reporting errors, to show the offending source 
  *      code.
  *      ->  It was also heavily used during debugging to ensure programs 

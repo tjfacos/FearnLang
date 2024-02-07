@@ -25,6 +25,9 @@ import semantics.table.SymbolTable;
  *              and the other an int)
  *  ->  GenerateBytecode(): Method that generates the bytecode that will leave the evaluated
  *      value of the expression on the top of the operand stack.
+ *      ->  This is always left as the Object version of the basic primitive type, to restrict
+ *      the number of unique instructions the compiler needs to use (JVM instruction are often 
+ *      typed, but objects only use one set)
  *  ->  expression_type : The TypeSpecifier of the data type an expression evaluates to. It 
  *      is set during validation, so nodes don't need to be repeatedly re-validated - and 
  *      the type can be accessed during code generation.

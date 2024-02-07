@@ -3,12 +3,24 @@ package ast.expression;
 import org.objectweb.asm.MethodVisitor;
 
 import ast.expression.AssignExpression.AssignmentOperator;
-import ast.statement.ExpressionStatement;
 import ast.type.PrimitiveSpecifier.PrimitiveDataType;
 import ast.type.PrimitiveSpecifier;
 import ast.type.TypeSpecifier;
 import semantics.table.SymbolTable;
 import util.Reporter;
+
+/* IncrExpression.java
+ * 
+ * Represents an Increment/Decrement Expression in the AST. 
+ * 
+ * Fields:
+ *  ->  expression: An assignable integer expression, to increment/decrement 
+ *  ->  isPrefix: Boolean flag, true if the expression is a prefix increment/decrement
+ *  ->  isDecrement: Boolean flag, true if expression is a Decrement
+ * 
+ *  ->  increment: private AssignExpression, used to generate the bytecode to 
+ *      increment/decrement the target expression
+ */
 
 public class IncrExpression extends Expression {
 
@@ -16,7 +28,7 @@ public class IncrExpression extends Expression {
     public Boolean isPrefix;
     public Boolean isDecrement;
 
-    ExpressionStatement incStatement;
+    private AssignExpression increment;
 
     public IncrExpression(Expression expr, Boolean isDec, Boolean isPre) {
         expression = expr;
@@ -37,32 +49,55 @@ public class IncrExpression extends Expression {
     
     }
 
+    /* To generate bytecode, the bytecode to load the expression and perform the increment 
+     * both need to be generated. The order in which this is done depends on whether the 
+     * expression is prefix.
+     */
     public void GenerateBytecode(MethodVisitor mv)
     {
+
         if (isPrefix)
         {
-            incStatement.GenerateBytecode(mv);
+            // Increment first, then load value to stack
+            increment.GenerateBytecode(mv);
             expression.GenerateBytecode(mv);
             return;
         }
         
+        // Load value to stack, then increment
         expression.GenerateBytecode(mv);
-        incStatement.GenerateBytecode(mv);
+        increment.GenerateBytecode(mv);
         return;
 
     }
     
+    /* To validate, ensure the expression is assignable. This means it is either
+     *  ->  A variable reference (a sort of Primary expression)
+     *  ->  An index expression (e.g. x[0])
+     *  ->  A reference to an attribute of a struct instance
+     * 
+     * Then, the expression is validated, and an error is raised if it's not of type int.
+     * 
+     * If the expression is valid, increment is set to a new AssignExpression, where the 
+     * operator is determined using the isDecrement property. If so, the expression uses -=,
+     * otherwise +=.  This expression is validated (no errors should be raised at this point, 
+     * but the nodes below need to configure themselves before generation). expression_type is
+     * set to int, and this is returned.
+     * 
+     */
     @SuppressWarnings("rawtypes")
     public TypeSpecifier validate(SymbolTable symTable)
     {
 
-        if (expression instanceof PrimaryExpression && ( (PrimaryExpression)expression ).type == ExprType.VariableReference) {}
-        else if (expression.getClass() == IndexExpression.class) {}
-        else if (expression.getClass() == StructAttrExpression.class) {}
-        else {
-            Reporter.ReportErrorAndExit("Cannot increment " + expression.toString() + ". Only int variables can be incremented/decremented.", this);
-        }
-
+        if (expression instanceof PrimaryExpression 
+            && ( (PrimaryExpression)expression ).type == ExprType.VariableReference) {}
+        else if (expression instanceof IndexExpression) {}
+        else if (expression instanceof StructAttrExpression) {}
+        else Reporter.ReportErrorAndExit(
+            "Cannot increment " + expression.toString() + ". Only int variables can be incremented/decremented.", 
+            this
+        );
+        
 
         TypeSpecifier expr_type = expression.validate(symTable);
         
@@ -71,18 +106,15 @@ public class IncrExpression extends Expression {
             Reporter.ReportErrorAndExit("Can only increment/decrement ints.", this);
         }
 
-        incStatement = new ExpressionStatement(
-            new AssignExpression(
-                expression, 
-                new PrimaryExpression<Integer>(1, ExprType.IntLiteral), 
-                isDecrement ? AssignmentOperator.SubEquals : AssignmentOperator.AddEquals
-            ), true
+        increment = new AssignExpression(
+            expression, 
+            new PrimaryExpression<Integer>(1, ExprType.IntLiteral), 
+            isDecrement ? AssignmentOperator.SubEquals : AssignmentOperator.AddEquals
         );
                 
-        incStatement.validate(symTable);
+        increment.validate(symTable);
         
         expression_type = expr_type;
         return expression_type;
     }
-            
 }
