@@ -82,6 +82,8 @@ public class ImportCompiler {
     // build and return a SymbolTable for the functions that module contains
     public SymbolTable GetStdLib(String id) {
         
+        CodeGenerator.generatorStack.push(new CodeGenerator());
+
         SymbolTable table = new SymbolTable();
 
         ArrayList<Parameter> params;
@@ -89,6 +91,10 @@ public class ImportCompiler {
         // Switch makes standard library easy to expand
         switch (id) {
             case "io":
+                // Set Program Name
+                // This sets the row's owner, ensuring the bytecode for calling these 
+                // function calls refer the the correct package and class
+                CodeGenerator.generatorStack.peek().programName = "FearnStdLib/io";
 
                 // Add Print Function
                 
@@ -111,10 +117,6 @@ public class ImportCompiler {
                         null
                     )
                 );
-
-                // Owner must be set to ensure the bytecode for calling this 
-                // function refers the the correct package and class
-                table.GetAllRows().getLast().owner = "FearnStdLib/io";
                 
                 // Add Input Function
 
@@ -129,13 +131,13 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/io";
                 
-                // Return Symbol Table to primary compilation process
-                return table;
+                break;
 
             case "maths":
                 
+            CodeGenerator.generatorStack.peek().programName =  "FearnStdLib/maths";
+
                 // Add PI() -> value of PI
                 params = new ArrayList<>(); 
                 table.addRow(
@@ -146,7 +148,6 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
                 
                 // Add Eulers() -> value of Euler's number
                 table.addRow(
@@ -157,7 +158,6 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
                 
                 // Add sin, cos, and tan functions
                 params = new ArrayList<>();
@@ -170,8 +170,7 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-                
+
                 table.addRow(
                     new FunctionRow(
                         "cos", 
@@ -180,8 +179,7 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
-                
+
                 table.addRow(
                     new FunctionRow(
                         "tan", 
@@ -190,18 +188,18 @@ public class ImportCompiler {
                         null
                     )
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/maths";
 
-                return table;
+                break;
 
             case "random":
+                CodeGenerator.generatorStack.peek().programName = "FearnStdLib/RandomNumbers";
+
                 // Add random -> Random double between 0 and 1
                 params = new ArrayList<>();
                 table.addRow(
                     new FunctionRow("random", params, 
                     new PrimitiveSpecifier(PrimitiveDataType.FLOAT), null)
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/RandomNumbers";
 
                 // Add randomFromRange -> Random integer from range
                 params = new ArrayList<>();
@@ -211,14 +209,18 @@ public class ImportCompiler {
                     new FunctionRow("randomInRange", params, 
                     new PrimitiveSpecifier(PrimitiveDataType.INT), null)
                 );
-                table.GetAllRows().getLast().owner = "FearnStdLib/RandomNumbers";
-                return table;
+
+                break;
 
             default:
                 Reporter.ReportErrorAndExit("Standard library " + id + " does not exist.", null);
                 break;
         }
 
+        // Pop Generator, to return to primary program
+        CodeGenerator.generatorStack.pop();
+
+        // Return Symbol Table to primary compilation process
         return table;
     }
 }

@@ -134,13 +134,14 @@ public class SymbolTable {
     }
     
     // Private method to retrieve a row in the table, by performing a linear search
+    //  ->  A linear search has to be used, as keeping the order of rows to that 
+    //      used in the program is important for using the right indexes.
     // Throws an exception if it is not found
     private Row GetRow(String id, Boolean isFunction, Boolean isStruct) 
         throws NoSuchElementException
     {
         for (Row r : Rows)
         {
-            
             if (r.identifier.equals(id) && r instanceof FunctionRow && isFunction)
                 return r;
             
