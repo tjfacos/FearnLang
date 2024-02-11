@@ -327,6 +327,6 @@ IDENTIFIER  :   L(L|D)*                     ;
 /* Ignore (certain) whitespace      */
 WS          :   ( ' ' | '\t' | '\n' | '\r' )+ -> skip   ;
 
-/* Ignore Comments */
+/* Ignore C-Style Comments */
 BLOCKCOMMENT: '/*' .*? '*/' -> skip                     ;
 LINECOMMENT : '//' ~[\r\n]* -> skip                     ;

@@ -58,22 +58,21 @@ public class Declaration extends ASTNode {
         }
     }
 
-    // validate() compares the expression_type of the init_expression to the type of the variable
-    // If they don't match, an error is raise. Otherwise, declaration is valid and the method 
-    // returns. The method will return immediately if init_expression is null, as a declaration 
-    // without initialisation cannot be invalid (at this stage, errors such as two variables in 
-    // the same function having the same name are caught by the SymbolTable during AST Construction)
+    // validate() compares the expression_type of the init_expression to the type of the 
+    // variable. If they don't match, an error is raise. Otherwise, declaration is valid 
+    // and the method returns. The method will return immediately if init_expression is 
+    // null, as a declaration without initialisation cannot be invalid (at this stage, 
+    // errors such as two variables in the same function having the same name are caught 
+    // by the SymbolTable during AST Construction)
     public void validate(SymbolTable symbolTable) {
-        
         if (init_expression == null) return;
-        
         TypeSpecifier exprType   = init_expression.validate(symbolTable);
-
         if (!type.equals(exprType))
         {
-            Reporter.ReportErrorAndExit("Cannot assign " + exprType.toString() + " to " + type.toString(), this);
+            Reporter.ReportErrorAndExit(
+                "Cannot assign " + exprType.toString() + " to " + type.toString(), 
+                this
+            );
         }
-
     }
-
 }
