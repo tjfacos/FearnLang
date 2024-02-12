@@ -17,7 +17,7 @@ import semantics.table.*;
 import util.FearnErrorListener;
 import util.Reporter;
 
-/* FearnMethodVisitor.java
+/* ImportCompiler.java
  * 
  * This contains methods to handle the importing of other Fearn Programs,
  * and standard library modules.

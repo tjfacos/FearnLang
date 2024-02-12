@@ -41,6 +41,5 @@ public class Struct extends ASTNode {
                 Reporter.ReportErrorAndExit(decl.toString() + ": Cannot assign default values to struct attributes.", null);
             }
         }
-    }
-    
+    }   
 }

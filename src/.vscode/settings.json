@@ -31,5 +31,8 @@
         "antlr4": {
             "parser": "code"
         }
-    }
+    },
+    "spellright.ignoreFiles": [
+        "**/gen/**"
+    ]
 }
