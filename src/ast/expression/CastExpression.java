@@ -40,6 +40,8 @@ public class CastExpression extends Expression {
      *      expression_type, casting to Integer after
      *  ->  If targeting float, follow a similar procedure
      *  ->  If targeting str, call the Obj2Str method of the FearnRuntime
+     *      (remember, generating the Operand's bytecode leaves an object 
+     *      of its value at runtime on top of the JVM's operand stack)
      *  ->  If targeting bool, call the Obj2B method of the FearnRuntime
      */
     @Override

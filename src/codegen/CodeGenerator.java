@@ -207,7 +207,11 @@ public class CodeGenerator {
      *  7)  Report Success
      */
 
-    private void GenerateProgram(ArrayList<Function> functions, ArrayList<Declaration> global_declarations, Path finalProgramPath) {
+    private void GenerateProgram(
+        ArrayList<Function> functions, 
+        ArrayList<Declaration> global_declarations, 
+        Path finalProgramPath
+    ) {
         
         // Create new class writer, to write program class
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);

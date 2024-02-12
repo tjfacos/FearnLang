@@ -3,5 +3,6 @@ import random
 
 fn main(args : str[]) => void
 {
-    print((str)randomInRange(0, 15));
+    new int[5]; // An array of 5 ints
+    new int[] {1, 2, 7, 9, -13}; // An array with an initial body
 }
