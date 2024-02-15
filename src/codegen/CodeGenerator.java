@@ -34,7 +34,7 @@ import java.util.Stack;
  *  ->  buildPath: The path to the build directory. This is set once,
  *      at the start of compilation, and used by every CodeGenerator 
  *      object, to ensure all classes are generated in the same place
- *  ->  generatorStack: A stack of generator objects, used to easily 
+ *  ->  GeneratorStack: A stack of generator objects, used to easily 
  *      reference the generator currently in use, specifically to ensure
  *      the correct program name is being used (each import will have its 
  *      own name, which becomes the name of the class generated to represent 
@@ -59,7 +59,7 @@ public class CodeGenerator {
     
     public static Path buildPath;
 
-    public static Stack<CodeGenerator> generatorStack = new Stack<>();
+    public static Stack<CodeGenerator> GeneratorStack = new Stack<>();
 
     public static SymbolTable GlobalSymbolTable;
     public static SymbolTable LocalSymbolTable;
@@ -256,7 +256,7 @@ public class CodeGenerator {
                 decl.init_expression.GenerateBytecode(sv);
                 sv.visitFieldInsn(
                     PUTSTATIC, 
-                    generatorStack.peek().programName, 
+                    GeneratorStack.peek().programName, 
                     decl.identifier, 
                     SymbolTable.GenBasicDescriptor(decl.type)
                 );
@@ -365,7 +365,7 @@ public class CodeGenerator {
         GlobalSymbolTable = symTab;
 
         // Get path to program class file
-        Path finalProgramPath = buildPath.resolve(generatorStack.peek().programName + ".class").toAbsolutePath();
+        Path finalProgramPath = buildPath.resolve(GeneratorStack.peek().programName + ".class").toAbsolutePath();
 
         // Create new build directory
         File dir = new File(buildPath.toString());

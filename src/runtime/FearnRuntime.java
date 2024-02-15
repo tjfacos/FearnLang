@@ -17,7 +17,6 @@ import java.util.Arrays;
  * -> Casting functions
  * -> The implementation for the two built-in functions, 
  *    length() and slice()
- * 
  */
 
 public class FearnRuntime {

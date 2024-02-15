@@ -48,7 +48,7 @@ public class ImportCompiler {
         
         cg.SetProgramName(path);
         
-        CodeGenerator.generatorStack.push(cg);
+        CodeGenerator.GeneratorStack.push(cg);
                
         FearnGrammarLexer lexer = new FearnGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -72,7 +72,7 @@ public class ImportCompiler {
 
         cg.Generate(root, symTable);
 
-        CodeGenerator.generatorStack.pop();
+        CodeGenerator.GeneratorStack.pop();
 
         return CodeGenerator.GlobalSymbolTable;        
     }
@@ -82,7 +82,7 @@ public class ImportCompiler {
     // build and return a SymbolTable for the functions that module contains
     public SymbolTable GetStdLib(String id) {
         
-        CodeGenerator.generatorStack.push(new CodeGenerator());
+        CodeGenerator.GeneratorStack.push(new CodeGenerator());
 
         SymbolTable table = new SymbolTable();
 
@@ -94,7 +94,7 @@ public class ImportCompiler {
                 // Set Program Name
                 // This sets the row's owner, ensuring the bytecode for calling these 
                 // function calls refer the the correct package and class
-                CodeGenerator.generatorStack.peek().programName = "FearnStdLib/io";
+                CodeGenerator.GeneratorStack.peek().programName = "FearnStdLib/io";
 
                 // Add Print Function
                 
@@ -136,7 +136,7 @@ public class ImportCompiler {
 
             case "maths":
                 
-            CodeGenerator.generatorStack.peek().programName =  "FearnStdLib/maths";
+            CodeGenerator.GeneratorStack.peek().programName =  "FearnStdLib/maths";
 
                 // Add PI() -> value of PI
                 params = new ArrayList<>(); 
@@ -192,7 +192,7 @@ public class ImportCompiler {
                 break;
 
             case "random":
-                CodeGenerator.generatorStack.peek().programName = "FearnStdLib/RandomNumbers";
+                CodeGenerator.GeneratorStack.peek().programName = "FearnStdLib/RandomNumbers";
 
                 // Add random -> Random double between 0 and 1
                 params = new ArrayList<>();
@@ -218,7 +218,7 @@ public class ImportCompiler {
         }
 
         // Pop Generator, to return to primary program
-        CodeGenerator.generatorStack.pop();
+        CodeGenerator.GeneratorStack.pop();
 
         // Return Symbol Table to primary compilation process
         return table;

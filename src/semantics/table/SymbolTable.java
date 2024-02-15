@@ -59,7 +59,7 @@ public class SymbolTable {
         // E.g. The owner of a function, defined in lib.test, will become
         // a method in the 'lib' class, and so its owner is 'lib'
         
-        new_row.owner = CodeGenerator.generatorStack.peek().programName;
+        new_row.owner = CodeGenerator.GeneratorStack.peek().programName;
 
         Rows.add(new_row);
     }

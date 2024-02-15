@@ -51,7 +51,7 @@ class FearnC
     public static void main(String[] args)
     {
         // Add initial code generator to stack
-        CodeGenerator.generatorStack.push(cg);
+        CodeGenerator.GeneratorStack.push(cg);
 
         // Raise error if no source file has been passed
         if ( args.length == 0) {
@@ -71,7 +71,7 @@ class FearnC
         Compile(sourceFileArgument);
         
         // Pop generator from stack, as it's no longer in use
-        CodeGenerator.generatorStack.pop();
+        CodeGenerator.GeneratorStack.pop();
 
         // Print green Success Message
         Path parent = Paths.get(sourceFileArgument).getParent();

@@ -107,7 +107,7 @@ public class AssignExpression extends Expression {
                 // Target is a Global Variable => PUTSTATIC
                 mv.visitFieldInsn(
                     PUTSTATIC, 
-                    CodeGenerator.generatorStack.peek().programName, 
+                    CodeGenerator.GeneratorStack.peek().programName, 
                     identifier,
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(identifier)
                 );
