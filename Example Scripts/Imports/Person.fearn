@@ -1,7 +1,16 @@
+/* Person.fearn : A file that is imported by main.fearn.
+ * As no main function is included, it cannot be used as
+ * a program on its own.
+ * 
+ * Demonstrates 1.8 (structs)
+ */
+
 struct Person {
     let name : str;
     let age : int;
 }
+
+let GLOBAL : str = "This is a global variable, defined in Person.fearn";
 
 fn toString(person : $Person) => str
 {

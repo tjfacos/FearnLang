@@ -1,0 +1,9 @@
+struct Person {
+    let name : str;
+    let age : int;
+}
+
+fn toString(person : $Person) => str
+{
+    return person.name + ", a " + (str)person.age + " year old.";
+}

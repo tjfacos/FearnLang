@@ -1,13 +1,19 @@
+/* HelloName.fearn : Print name to terminal
+ * Tests print(), input(), and length()
+ */ 
 import io
 
 fn main(args : str[]) => void
 {
+    // Declare string variable name
     let name: str;
     
     if (args.length() > 0)
     {
+        // If argument has been provided, assign name
         name = args[0];
     } else {
+        // Otherwise, get name from input
         name = input("What's your name : ");
     }
 

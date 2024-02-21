@@ -1,16 +1,11 @@
 import io
-import random
-
-import from "path/to/fearn/program"
-
-struct MyStruct {
-    let property1 : int;
-    let property2 : str[];
-}
+import from 'Person.fearn'
 
 fn main(args : str[]) => void
 {
-    let instance : $MyStruct = new MyStruct(5, new str[] {"HELLO", "WORLD"});
-    print((str)instance.property1);
-    print(instance.property2[1]);
+    let user : $Person = new Person(args[0], (int)args[1]);
+
+    print(user.toString());
+    print(user.name + "'s name is " + (str)user.name.length() + " characters long.");
+    
 }
