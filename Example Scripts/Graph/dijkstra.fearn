@@ -1,3 +1,8 @@
+/* dijkstra.fearn : Implements Dijkstra's Algorithm (shortest
+ * path) on the graph specified in graph.fearn (as a node list 
+ * and distance matrix).
+ */
+
 import io
 import from "graph.fearn"
 

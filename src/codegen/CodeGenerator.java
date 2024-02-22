@@ -358,11 +358,14 @@ public class CodeGenerator {
             
     }
 
-    // Generate Program, from AST root and SymbolTable
+    // Generate Program, from AST root and global SymbolTable
     public void Generate(Program root, SymbolTable symTab)
     {
 
         GlobalSymbolTable = symTab;
+
+        // Initialise LocalSymbolTable to an empty table
+        LocalSymbolTable = new SymbolTable();
 
         // Get path to program class file
         Path finalProgramPath = buildPath.resolve(GeneratorStack.peek().programName + ".class").toAbsolutePath();
@@ -380,7 +383,6 @@ public class CodeGenerator {
             root.global_declarations,
             finalProgramPath
         );
-
     }
 
 
