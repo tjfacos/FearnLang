@@ -39,19 +39,16 @@ public class CompoundStatement extends Statement {
          * by calling the common GenerateBytecode method
          * 
          * A small optimisation is performed here: if a JumpStatement is encountered,
-         * the code beyond is unreachable, and so is not generated.
+         * the remaining code beyond is unreachable, and so is not generated.
          * 
          */
-
         for (ASTNode node : nested_nodes)
         {
             if (node instanceof Declaration) ((Declaration)node).GenerateBytecode(mv);
             else ((Statement)node).GenerateBytecode(mv);
 
             if (node instanceof JumpStatement) return;
-        }
-
-        
+        }    
     }
     
     public void validate(SymbolTable symbolTable) {
