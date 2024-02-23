@@ -915,6 +915,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             if (row instanceof VariableRow)
             {
                 symbolAnalysisStack.push(row.identifier);
+            } else if (row instanceof StructRow)
+            {
+                for (Row var_row : ((StructRow)row).localSymbolTable.GetAllRows())
+                    symbolAnalysisStack.push(var_row.identifier);
             }
         }
         

@@ -1,11 +1,7 @@
-/* 
-
-GCD.fearn
-
-Implement's Euclid'd Algorithm to find the
-Greatest Common Divisor of two numbers, A and B.
-
-*/
+/* GCD.fearn : Implements Euclid'd Algorithm 
+ * recursively, to find the Greatest Common Divisor 
+ * of two numbers, A and B.
+ */
 
 import io
 
@@ -20,10 +16,7 @@ fn gcd(A : int, B : int) => int
     return gcd(B, A % B);
 }
 
-fn main() => void
+fn main(args: str[]) => void
 {
-    let A : int = (int)input("Enter A: ");
-    let B : int = (int)input("Enter B: ");
-    
-    print((str)gcd(A, B));
+    print((str)gcd((int)args[0], (int)args[1]));
 }

@@ -1,0 +1,121 @@
+/* dijkstra.fearn : Implements Dijkstra's Algorithm (shortest
+ * path) on the graph specified in graph.fearn (as a node list 
+ * and distance matrix).
+ */
+
+import io
+import from "graph.fearn"
+
+fn GetNode(id : str) => $Node
+{
+    for (let i : int = 0; i < nodes.length(); i++)
+    {
+        if (nodes[i].ID == id) { return nodes[i]; }
+    }
+
+    // This would cause an error if the node is not 
+    // found. It should never execute.
+    return nodes[i];
+}
+
+let frontier : $Node[] = new $Node[nodes.length()];
+let lengthOfFrontier : int = 0;
+
+fn AddToFrontier(node : $Node) => void 
+{
+    for (let i : int = 0; i < lengthOfFrontier; i++) {
+        if (frontier[i].index == node.index) { return; }
+    }
+    frontier[lengthOfFrontier++] = node;
+}
+
+fn RemoveFromFrontier(node : $Node) => void 
+{
+    let new_frontier : $Node[] = new $Node[nodes.length()];
+    let x : int = 0;
+
+    for (let i : int = 0; i < lengthOfFrontier; i++) {
+        if (frontier[i].index == node.index) { continue; }
+        new_frontier[x++] = frontier[i];
+    }
+
+    lengthOfFrontier--;
+    frontier = new_frontier;
+}
+
+fn GetNextNode() => $Node
+{
+    let next_node : $Node = frontier[0];
+    for (let i : int = 1; i < lengthOfFrontier; i++)
+    {
+        if (frontier[i].label < next_node.label)
+        {
+            next_node = frontier[i];
+        }
+    }
+    return next_node;
+}
+
+fn Dijkstra(start: str, target : str) => void
+{
+    let current : $Node = start.GetNode();
+    current.label = 0;
+    current.isFinal = true;
+
+    for (;current.ID != target;)
+    {
+        let neighbours : int[] = graph[current.index];
+        
+        // For each neighbour of the current node, update  
+        // labels and add to frontier
+        for (let i : int = 0; i < neighbours.length(); i++)
+        {
+            
+            if (neighbours[i] < 0) { continue; }
+
+            let neighbour : $Node = nodes[i];
+            if (neighbour.isFinal) { continue; }
+
+            let new_label : int = current.label + neighbours[i];
+
+            if (neighbour.label < 0 || new_label < neighbour.label)
+            {
+                neighbour.label = new_label;
+                neighbour.previous = current.ID;
+            }
+
+            neighbour.AddToFrontier();
+        }
+
+        if (lengthOfFrontier == 0) { return; }
+
+        let next_node : $Node = GetNextNode();
+        next_node.isFinal = true;
+        next_node.RemoveFromFrontier();
+        current = next_node;
+    }
+}
+
+fn GetPath(start : str, end : str) => str
+{
+    let path : str = end;
+    if (start != end)
+    {
+        path = GetPath(start, end.GetNode().previous) + " -> " + path;
+    }
+
+    return path;
+}
+
+fn main() => void
+{
+    let start : str = input("Enter Start : ");
+    let end : str = input("Enter End : ");
+    
+    Dijkstra(start, end);
+    
+    let path : str = GetPath(start, end);
+    path += " (Distance " + (str)end.GetNode().label + ")";
+    
+    print(path);
+}

@@ -1,3 +1,8 @@
+/* main.fearn: An example of importing global elements (structs, 
+ * functions, etc.) from a separate Fearn program. 
+ * Demonstrates Objective 1.10 (imports)
+ */
+
 import io
 import from 'Person.fearn'
 
@@ -6,5 +11,8 @@ fn main(args : str[]) => void
     let user : $Person = new Person(args[0], (int)args[1]);
 
     print(user.toString());
-    
+    print(user.name + "'s name is " + (str)user.name.length() 
+        + " characters long.");
+
+    print("Global Variable value: " + GLOBAL);
 }
