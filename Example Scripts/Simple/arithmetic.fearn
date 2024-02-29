@@ -1,8 +1,18 @@
+/* arithmetic.fearn : Demonstrates simple mathematical operations. */
+
 import io
 
 fn main() => void
 {
-    print((str)(2 ^ 4));
-    print((str)(2 * 4));
-    print((str)(2.0 / 4.0));
+    let a : float = (float)input("Enter A: ");
+    let b : float = (float)input("Enter B: ");
+
+    print("a + b : " + (str)(a + b));
+    print("a - b : " + (str)(a - b));
+    print("a * b : " + (str)(a * b));
+    print("a / b : " + (str)(a / b));
+    print("a ^ b : " + (str)(a ^ b));
+
+    print("a % b : " + (str)((int)a % (int)b));
+
 }
