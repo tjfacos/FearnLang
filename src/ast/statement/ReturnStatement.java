@@ -29,7 +29,7 @@ public class ReturnStatement extends JumpStatement {
 
     @Override public String toString()
     {
-        return "return " + expression == null ? "" : expression.toString() + ";";
+        return "return " + (expression == null ? "" : expression.toString()) + ";";
     }
 
     /* To generate bytecode, use RETURN instruction if there is no expression to return.

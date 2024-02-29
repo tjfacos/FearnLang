@@ -116,7 +116,7 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT);
                 } else {
-                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to int.", this);
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + " to int.", this);
                 } 
                 break;
             
@@ -128,7 +128,7 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT);
                 } else {
-                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to float.", this);
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + " to float.", this);
                 } 
                 break;
             
@@ -145,7 +145,7 @@ public class CastExpression extends Expression {
                 ) {
                     expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL);
                 } else {
-                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + "to bool.", this);
+                    Reporter.ReportErrorAndExit("Cannot perform cast from " + op_type.toString() + " to bool.", this);
                 } 
                 break;
 
