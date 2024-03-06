@@ -18,5 +18,6 @@ fn gcd(A : int, B : int) => int
 
 fn main(args: str[]) => void
 {
+    // Intentional Error (must print string)
     print((str)gcd((int)args[0], (int)args[1]));
 }

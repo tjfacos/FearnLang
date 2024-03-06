@@ -1,8 +1,6 @@
 import io
 
-struct Person {
-    let name : str;
-    let age : int;
+fn main() => void
+{
+    let user : $Person;
 }
-
-let user : $Person = new Person("Name", 10);
