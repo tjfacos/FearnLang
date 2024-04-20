@@ -1,3 +1,5 @@
 build/
 *.class
 .VSCodeCounter
+test/
+cmd/

@@ -1,6 +1,0 @@
-import io
-
-fn main() => void
-{
-    let user : $Person;
-}

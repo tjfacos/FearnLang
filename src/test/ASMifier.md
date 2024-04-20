@@ -1,1 +1,0 @@
-java jdk.internal.org.objectweb.asm.util.ASMifier test.class
