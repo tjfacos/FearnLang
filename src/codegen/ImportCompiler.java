@@ -25,8 +25,12 @@ import util.Reporter;
 
 public class ImportCompiler {
 
-    // This performs an identical process as Compile in main.java, with the 
-    // difference of also returning the symbol table.
+    /**
+     * Compiles a Fearn program from a file path, while also returning the symbol table.
+     * 
+     * @param path
+     * @return SymbolTable The symbol table of the imported program
+     */
     public SymbolTable Compile(String path) {
 
         path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
@@ -77,9 +81,13 @@ public class ImportCompiler {
         return CodeGenerator.GlobalSymbolTable;        
     }
 
-    // This method handles the importing of standard library modules
-    // Each module has a case in the below statement, and these cases
-    // build and return a SymbolTable for the functions that module contains
+    /**
+     * Get the standard library for a given identifier
+     * 
+     * 
+     * @param id The identifier of the standard library to import
+     * @return SymbolTable The symbol table of the standard library
+     */
     public SymbolTable GetStdLib(String id) {
         
         CodeGenerator.GeneratorStack.push(new CodeGenerator());

@@ -20,7 +20,7 @@ import codegen.*;
  * 
  * This is the compiler's main class, from which compilation begins.
  * 
-*/
+ */
 
 class FearnC
 {
@@ -31,10 +31,10 @@ class FearnC
     
     static CodeGenerator cg = new CodeGenerator();
     static String sourceFileArgument;
-
-    /* The main function is the first to be called.
+    
+    /**
+     * The driver function for the compiler, where execution starts.
      * 
-     * The function...
      * 1)   Adds the initial CodeGenerator (used to compile the script the 
      *      user first passes) to the generatorStack
      * 2)   Raising an error if a source file has not been provided, storing its 
@@ -46,8 +46,10 @@ class FearnC
      * 5)   Assuming no errors have been raised during Compilation, prints a
      *      success message, including a command-line instruction to run the 
      *      compiled program
+     * 
+     * @param args The command-line arguments, through which the source-code path
+     * is received
      */
-
     public static void main(String[] args)
     {
         // Add initial code generator to stack
@@ -86,8 +88,7 @@ class FearnC
         );
     }
        
-    /* Compile
-     * 
+    /** 
      * The method responsible for conducting the compilation of the 
      * file the user has passed.
      * 
@@ -105,9 +106,8 @@ class FearnC
      *      writing it into the build directory.
      * 7)   Pops the initial CodeGenerator off the stack.
      * 
+     * @param path The path to the source file
      */
-
-
     static void Compile(String path)
     {
 

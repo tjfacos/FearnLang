@@ -74,9 +74,9 @@ public class CodeGenerator {
     // for the program class (the .class file for the program, generated using ASM)
     public String programName;
     
-    /* GenerateStructs
-     * 
+    /** 
      * Method to generate struct class files, for each struct in a program. 
+     * 
      * The method iterates thorough each struct (in a provided ArrayList) ...
      *  1)  A new class writer object to created, to write the struct class
      *  2)  A method visitor for the constructor (cv) is created, to write 
@@ -90,6 +90,8 @@ public class CodeGenerator {
      *  6)  Output byte array, representing struct class, into a new .class file
      *      in the buildPath directory
      *  7)  Report successful generation of struct class file
+     * 
+     * @param structs A list of structs
      */
     private void GenerateStructs(ArrayList<Struct> structs)
     {
@@ -182,8 +184,7 @@ public class CodeGenerator {
         );   
     }
     
-    /* GenerateProgram
-     * 
+    /** 
      * Method to generate program class files 
      *  1)  Use a class writer to create a public, static class, representing the program
      *  2)  Create a static block (<clinit>), to define the default states of global variables
@@ -205,6 +206,10 @@ public class CodeGenerator {
      *          them to the actual class method
      *  6)  Write program class to .class file
      *  7)  Report Success
+     * 
+     * @param functions A list of functions
+     * @param global_declarations A list of global declarations
+     * @param finalProgramPath The path to the program class file
      */
 
     private void GenerateProgram(

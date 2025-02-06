@@ -32,6 +32,14 @@ import org.objectweb.asm.tree.*;
 
 public class CastOptimiser {
 
+    /**
+     * EliminateRedundantCasts
+     * 
+     * This method iterates through the bytecode instructions of a 
+     * MethodNode, and removes any redundant casts. 
+     * 
+     * @param node The MethodNode to optimise
+     */
     public static void EliminateRedundantCasts(MethodNode node)
     {
         // Iterate through each instruction in function's MethodNode
