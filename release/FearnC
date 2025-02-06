@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Get the directory where the script is located and construct absolute path to jar
+jarPath="$(dirname "$(realpath "$0")")/FearnC.jar"
+
+# Execute the jar with the first argument
+java -jar --enable-preview "$jarPath" "$1"

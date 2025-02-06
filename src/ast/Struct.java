@@ -33,6 +33,10 @@ public class Struct extends ASTNode {
         return String.format("struct %s {...}", identifier);
     }
 
+    /**
+     * Validate the struct definition
+     * @param symbolTable The symbol table to validate against
+     */
     public void validate(SymbolTable symbolTable) {
         for (Declaration decl : declarations)
         {

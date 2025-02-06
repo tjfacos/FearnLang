@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Check if no arguments were provided
+if [ $# -eq 0 ]; then
+    echo 'Usage: FearnRun "<program-name>" "<args>" ...'
+    exit 1
+fi
+
+# Execute java with all arguments passed through
+java --enable-preview "$@"
