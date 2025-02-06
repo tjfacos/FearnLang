@@ -3,3 +3,4 @@ build/
 .VSCodeCounter
 test/
 cmd/
+.vscode/
