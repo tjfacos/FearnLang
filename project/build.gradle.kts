@@ -22,7 +22,7 @@ dependencies {
     api(libs.org.assertj.assertj.core)
 }
 
-group = "io.github.tjfacos"
+group = "io.github.tjfacos.fearnlang"
 version = "1.0-SNAPSHOT"
 description = "fearnlang"
 
@@ -32,7 +32,7 @@ java {
 }
 
 application {
-    mainClass.set("io.github.tjfacos.FearnC")
+    mainClass.set("io.github.tjfacos.fearnlang.FearnC")
 }
 
 publishing {
