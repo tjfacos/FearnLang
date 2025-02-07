@@ -89,10 +89,10 @@ public class CastExpression extends Expression {
                 return;
 
             case STR:
-                mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2Str", "(Ljava/lang/Object;)Ljava/lang/String;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "Obj2Str", "(Ljava/lang/Object;)Ljava/lang/String;", false);
                 return;
             case BOOL:
-                mv.visitMethodInsn(INVOKESTATIC, "FearnRuntime", "Obj2B", "(Ljava/lang/Object;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "Obj2B", "(Ljava/lang/Object;)Ljava/lang/Boolean;", false);
                 return;
         }
 

@@ -102,7 +102,7 @@ public class ImportCompiler {
                 // Set Program Name
                 // This sets the row's owner, ensuring the bytecode for calling these 
                 // function calls refer the the correct package io.github.tjfacos.fearnlang.and class
-                CodeGenerator.GeneratorStack.peek().programName = "FearnStdLib/io";
+                CodeGenerator.GeneratorStack.peek().programName = "io/github/tjfacos/fearnlang/FearnStdLib/io";
 
                 // Add Print Function
                 
@@ -144,7 +144,7 @@ public class ImportCompiler {
 
             case "maths":
                 
-            CodeGenerator.GeneratorStack.peek().programName =  "FearnStdLib/maths";
+            CodeGenerator.GeneratorStack.peek().programName =  "io/github/tjfacos/fearnlang/FearnStdLib/maths";
 
                 // Add PI() -> value of PI
                 params = new ArrayList<>(); 
@@ -200,7 +200,7 @@ public class ImportCompiler {
                 break;
 
             case "random":
-                CodeGenerator.GeneratorStack.peek().programName = "FearnStdLib/RandomNumbers";
+                CodeGenerator.GeneratorStack.peek().programName = "io/github/tjfacos/fearnlang/FearnStdLib/RandomNumbers";
 
                 // Add random -> Random double between 0 and 1
                 params = new ArrayList<>();

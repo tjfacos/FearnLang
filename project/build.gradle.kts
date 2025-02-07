@@ -40,3 +40,28 @@ publishing {
         from(components["java"])
     }
 }
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+    
+    // Include all dependencies in the jar
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    
+    // Handles duplicate files in dependencies
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Custom task to copy the JAR to ../release directory and rename it
+tasks.register<Copy>("copyJarToRelease") {
+    dependsOn(tasks.jar)
+    from(tasks.jar)
+    into(layout.projectDirectory.file("../release"))
+    rename { "FearnC.jar" } // Rename the JAR file
+}
+
+// Ensure the copy task runs after the build
+tasks.build {
+    finalizedBy(tasks.named("copyJarToRelease"))
+}
