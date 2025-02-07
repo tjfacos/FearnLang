@@ -1,0 +1,36 @@
+{
+    "java.project.referencedLibraries": [
+        "/usr/local/lib/java/antlr-4.13.1-complete.jar",
+        "/usr/local/lib/java/asm-9.6.jar",
+        "/usr/local/lib/java/asm-tree-9.6.jar",
+        "/usr/local/lib/java/assertj-core-3.24.2.jar"
+    ],
+    "java.project.sourcePaths": [
+        ".",
+        "runtime"
+    ],
+    "java.project.explorer.showNonJavaResources": false,
+    "java.dependency.packagePresentation": "hierarchical",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
+    "cSpell.enableFiletypes": [
+        "antlr4"
+    ],
+    "cSpell.language": "en,en-GB",
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "latex",
+        "plaintext",
+        "java",
+        "antlr4"
+    ],
+    "spellright.parserByClass": {
+        "antlr4": {
+            "parser": "code"
+        }
+    },
+    "spellright.ignoreFiles": [
+        "**/gen/**"
+    ]
+}

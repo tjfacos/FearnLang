@@ -1,0 +1,6 @@
+build/
+*.class
+.VSCodeCounter
+test/
+cmd/
+.vscode/

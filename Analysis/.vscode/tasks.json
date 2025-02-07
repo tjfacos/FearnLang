@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "process",
+            "label": "Build Grammar",
+            "command": ".\\cmd\\GenANTLR.bat",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "type": "process",
+            "label": "Test ANTLR Grammar",
+            "command": "antlr4-parse",
+            "args": ["parser/FearnGrammar.g4", "${input:startToken}", "-gui", "test/test.fearn"],
+            "group": {
+              "kind": "test",
+              "isDefault": false
+            },
+        },
+        {
+            "type": "process",
+            "label": "Deploy Jar",
+            "command": "python3",
+            "args": [".vscode/DeployJar.py"],
+            "group": {
+              "kind": "build",
+              "isDefault": false
+            }
+        }
+
+    ],
+
+    "inputs":[
+        {
+            "type": "promptString",
+            "id": "startToken",
+            "description": "Enter Start Token",
+            "default": "program"
+        }
+    ]
+}
