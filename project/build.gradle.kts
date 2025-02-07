@@ -5,6 +5,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    application
 }
 
 repositories {
@@ -24,13 +25,15 @@ dependencies {
 group = "io.github.tjfacos"
 version = "1.0-SNAPSHOT"
 description = "fearnlang"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 java {
     sourceCompatibility = JavaVersion.VERSION_23
     targetCompatibility = JavaVersion.VERSION_23
 }
 
+application {
+    mainClass.set("io.github.tjfacos.FearnC")
+}
 
 publishing {
     publications.create<MavenPublication>("maven") {
