@@ -1,6 +1,6 @@
 Basic:
-* Do standard library imports in a less stupid way
 * HashMap for Symbol Tables
+* Do in-built function in a less dumb way
 
 NTS: TEST CHANGES TO DO WITH POINT 2 (fuck with imports)
 
@@ -13,3 +13,4 @@ Done:
 * Modify selection statements to allow any kind of statement, not just compound
 * Change the generator stack to only store the program name
 * Rationalise the compiling of imports, so there's only one compile method (probably using parameters)
+* Do standard library imports in a less stupid way

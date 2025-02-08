@@ -22,8 +22,8 @@ dependencies {
     // AssertJ for object assertions and comparison
     api(libs.org.assertj.assertj.core)
 
-    // Jackson for YAML parsing
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
+    // SnakeYAML for YAML parsing
+    implementation("org.yaml:snakeyaml:2.3")
 
 }
 
