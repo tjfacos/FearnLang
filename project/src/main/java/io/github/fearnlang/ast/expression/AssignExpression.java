@@ -7,6 +7,7 @@ import org.objectweb.asm.MethodVisitor;
 import io.github.fearnlang.ast.type.TypeSpecifier;
 import io.github.fearnlang.codegen.CodeGenerator;
 import io.github.fearnlang.semantics.table.SymbolTable;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 import io.github.fearnlang.util.Reporter;
 
 /* AssignExpression.java
@@ -100,7 +101,7 @@ public class AssignExpression extends Expression {
             PrimaryExpression<String> t = (PrimaryExpression<String>)target;
             String identifier = t.value.toString();
             
-            if (CodeGenerator.LocalSymbolTable.Contains(identifier)) { 
+            if (CodeGenerator.LocalSymbolTable.Contains(identifier, SymbolType.Variable)) { 
                 // Local Variable => ASTORE
                 mv.visitVarInsn(ASTORE, CodeGenerator.LocalSymbolTable.GetIndex(identifier));
             } else { 

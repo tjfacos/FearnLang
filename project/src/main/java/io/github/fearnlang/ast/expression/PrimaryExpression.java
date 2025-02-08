@@ -9,6 +9,7 @@ import io.github.fearnlang.ast.type.PrimitiveSpecifier;
 import io.github.fearnlang.ast.type.TypeSpecifier;
 import io.github.fearnlang.codegen.CodeGenerator;
 import io.github.fearnlang.semantics.table.SymbolTable;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 
 /* PrimaryExpression.java
  * 
@@ -63,7 +64,7 @@ public class PrimaryExpression<T> extends Expression {
 
             // Find index of variable (in THIS scope)
             // ALOAD <index>
-            if (CodeGenerator.LocalSymbolTable.Contains(this.value.toString()))
+            if (CodeGenerator.LocalSymbolTable.Contains(this.value.toString(), SymbolType.Variable))
             {
                 mv.visitVarInsn(ALOAD, CodeGenerator.LocalSymbolTable.GetIndex(this.value.toString()));
             }
@@ -73,7 +74,7 @@ public class PrimaryExpression<T> extends Expression {
             {
                 mv.visitFieldInsn(
                     GETSTATIC, 
-                    CodeGenerator.GlobalSymbolTable.GetOwner(this.value.toString(), false), 
+                    CodeGenerator.GlobalSymbolTable.GetOwner(this.value.toString(), SymbolType.Variable), 
                     this.value.toString(), 
                     CodeGenerator.GlobalSymbolTable.GetVarDescriptor(this.value.toString())
                 );
@@ -138,12 +139,12 @@ public class PrimaryExpression<T> extends Expression {
     @Override
     public TypeSpecifier validate(SymbolTable symTable) {
         
-        if ( type == ExprType.VariableReference && symTable.Contains(value.toString()))
+        if ( type == ExprType.VariableReference && symTable.Contains(value.toString(), SymbolType.Variable))
         {
-            expression_type = symTable.GetTypeSpecifier(value.toString(), false);
+            expression_type = symTable.GetTypeSpecifier(value.toString(), SymbolType.Variable);
         }
         else if ( type == ExprType.VariableReference ) {
-            expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(value.toString(), false);
+            expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(value.toString(), SymbolType.Variable);
         } else {
             switch (this.type) {
                 case IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;

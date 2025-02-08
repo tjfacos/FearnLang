@@ -3,6 +3,7 @@ package io.github.fearnlang.semantics.table;
 import java.util.ArrayList;
 import io.github.fearnlang.ast.function.*;
 import io.github.fearnlang.ast.type.TypeSpecifier;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 
 /* 
  * FunctionRow.java
@@ -23,7 +24,7 @@ public class FunctionRow extends Row {
     
     public FunctionRow(String identifier, ArrayList<Parameter> params, TypeSpecifier rt, SymbolTable local)
     {
-        super(identifier);
+        super(identifier, SymbolType.Function);
         parameters = params;
         return_type = rt;
 

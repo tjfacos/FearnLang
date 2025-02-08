@@ -1,6 +1,7 @@
 package io.github.fearnlang.semantics.table;
 
 import io.github.fearnlang.ast.type.TypeSpecifier;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 
 /* 
  * Variable.java
@@ -18,7 +19,7 @@ public class VariableRow extends Row {
 
     public VariableRow(String id, TypeSpecifier type)
     {
-        super(id);
+        super(id, SymbolType.Variable);
         dataType = type;
 
         // Generate type descriptor, representing variable's type 

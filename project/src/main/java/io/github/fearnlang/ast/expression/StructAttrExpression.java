@@ -7,6 +7,7 @@ import io.github.fearnlang.ast.type.StructInstanceSpecifier;
 import io.github.fearnlang.ast.type.TypeSpecifier;
 import io.github.fearnlang.codegen.CodeGenerator;
 import io.github.fearnlang.semantics.table.SymbolTable;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 import io.github.fearnlang.util.Reporter;
 
 /* StructAttrExpression.java
@@ -80,14 +81,14 @@ public class StructAttrExpression extends Expression {
 
         SymbolTable structTable = CodeGenerator.GlobalSymbolTable.GetStructSymbolTable(struct_name);
 
-        if (!structTable.Contains(attribute))
+        if (!structTable.Contains(attribute, SymbolType.Variable))
         {
             Reporter.ReportErrorAndExit(struct_name + " has no attribute " + attribute, this);
         }
 
         attr_descriptor = structTable.GetVarDescriptor(attribute);
 
-        expression_type = structTable.GetTypeSpecifier(attribute, false);
+        expression_type = structTable.GetTypeSpecifier(attribute, SymbolType.Variable);
 
         return expression_type;
 

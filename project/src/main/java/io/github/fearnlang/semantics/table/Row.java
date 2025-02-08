@@ -1,5 +1,7 @@
 package io.github.fearnlang.semantics.table;
 
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
+
 /* 
  * Row.java
  * 
@@ -14,11 +16,13 @@ public abstract class Row {
     
     public String identifier;
     public String descriptor;
+    public SymbolType type;
 
     public String owner = null;
 
-    public Row(String id)
+    public Row(String id, SymbolType t)
     {
         identifier = id;
+        type = t;
     }
 }

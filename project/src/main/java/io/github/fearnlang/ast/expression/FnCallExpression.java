@@ -14,6 +14,7 @@ import io.github.fearnlang.ast.type.PrimitiveSpecifier;
 import io.github.fearnlang.ast.type.TypeSpecifier;
 import io.github.fearnlang.codegen.CodeGenerator;
 import io.github.fearnlang.semantics.table.SymbolTable;
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 import io.github.fearnlang.util.Reporter;
 
 /** 
@@ -110,7 +111,7 @@ public class FnCallExpression extends Expression {
 
         mv.visitMethodInsn(
                 INVOKESTATIC,
-                CodeGenerator.GlobalSymbolTable.GetOwner(identifier, true),
+                CodeGenerator.GlobalSymbolTable.GetOwner(identifier, SymbolType.Function),
                 identifier,
                 desc,
                 false);
@@ -198,7 +199,7 @@ public class FnCallExpression extends Expression {
             }
         }
 
-        expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(identifier, true);
+        expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(identifier, SymbolType.Function);
         return expression_type;
     }
 

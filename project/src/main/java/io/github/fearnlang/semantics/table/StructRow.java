@@ -1,5 +1,7 @@
 package io.github.fearnlang.semantics.table;
 
+import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
+
 /* 
 * StructRow.java
 * 
@@ -14,7 +16,7 @@ public class StructRow extends Row {
     
     public StructRow(String id, SymbolTable symtab)
     {
-        super(id);
+        super(id, SymbolType.Struct);
         localSymbolTable = symtab;
 
         // Generate method descriptor for struct class's constructor
