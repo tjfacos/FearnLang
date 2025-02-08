@@ -34,7 +34,7 @@ public class Reporter {
         System.out.println(
             String.format(
                 "FearnC (%s): %s%sERROR: %s %s", 
-                CodeGenerator.GeneratorStack.peek().programName,
+                CodeGenerator.ProgramNameStack.peek(),
                 ANSI_BOLD,
                 ANSI_RED,
                 err,
@@ -45,7 +45,7 @@ public class Reporter {
         System.out.println(
             String.format(
                 "FearnC (%s): %s%sERROR: %s - %s %s", 
-                CodeGenerator.GeneratorStack.peek().programName,
+                CodeGenerator.ProgramNameStack.peek(),
                 ANSI_BOLD,
                 ANSI_RED,
                 offendingNode.toString(),

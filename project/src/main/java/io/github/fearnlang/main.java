@@ -30,10 +30,6 @@ class FearnC
     public static CommonTokenStream tokens;
     public static FearnGrammarParser parser;
     
-    
-    static CodeGenerator cg = new CodeGenerator();
-    static String sourceFileArgument;
-    
     /**
      * The driver function for the compiler, where execution starts.
      * 
@@ -54,37 +50,39 @@ class FearnC
      */
     public static void main(String[] args)
     {
-        // Add initial code generator to stack
-        CodeGenerator.GeneratorStack.push(cg);
+        
+        String path = args[0];
+        
+        String programName = Paths.get(path).getFileName().toString().replace(".fearn", "");
+        Path buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
+
+
+
+        // Add program name to stack (used for error messages and code generation for class names)
+        CodeGenerator.ProgramNameStack.push(programName);
+
+        // Add build path to stack (used for code generation)
+        CodeGenerator.setBuildPath(buildPath);
 
         // Raise error if no source file has been passed
         if ( args.length == 0) {
             Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
-    
-        // Set Build Path and Program name for generator
-        
-        // Build Path describes where to put all generated class file, and 
-        // is the same for all generators
-
-        sourceFileArgument = args[0];
-        cg.SetBuildPath(sourceFileArgument);
-        cg.SetProgramName(sourceFileArgument);
 
         // Compile source file
-        Compile(sourceFileArgument);
+        Compile(path);
         
         // Pop generator from stack, as it's no longer in use
-        CodeGenerator.GeneratorStack.pop();
+        CodeGenerator.ProgramNameStack.pop();
 
         // Print green Success Message
-        Path parent = Paths.get(sourceFileArgument).getParent();
+        Path parent = Paths.get(path).getParent();
         parent = parent == null ? Paths.get("build") : parent.resolve("build");
         Reporter.ReportSuccess(
             String.format(
                 "Compilation Successful! \n\t -> Run `cd %s ; FearnRun %s [args...]` to run Program", 
                 parent.toString(),
-                Paths.get(sourceFileArgument).getFileName().toString().replace(".fearn", "")
+                Paths.get(path).getFileName().toString().replace(".fearn", "")
             ), 
             true
         );
@@ -117,13 +115,13 @@ class FearnC
         CharStream input = null;
         
         try {
-            input = CharStreams.fromStream(new FileInputStream(sourceFileArgument));
+            input = CharStreams.fromStream(new FileInputStream(path));
         } catch (Exception e) {
-            Reporter.ReportErrorAndExit("FILE " + sourceFileArgument + " NOT FOUND", null);
+            Reporter.ReportErrorAndExit("FILE " + path + " NOT FOUND", null);
         }
 
         // FearnRuntime.fearn is prohibited, as the resulting class would conflict with the runtime
-        if (sourceFileArgument.endsWith("FearnRuntime.fearn") )
+        if (path.endsWith("FearnRuntime.fearn") )
         {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
@@ -154,7 +152,7 @@ class FearnC
         root.validate(symTable);
 
         // Generate program and struct class files
-        cg.Generate(root, symTable);
+        CodeGenerator.Generate(root, symTable);
     }
   
 };

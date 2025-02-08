@@ -1,6 +1,7 @@
 package io.github.fearnlang.codegen;
 
 import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.antlr.v4.runtime.*;
@@ -34,7 +35,7 @@ public class ImportCompiler {
      */
     public SymbolTable Compile(String path) {
 
-        path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
+        path = CodeGenerator.getBuildPath().getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
 
         CharStream input = null;
 
@@ -48,11 +49,10 @@ public class ImportCompiler {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
 
-        CodeGenerator cg = new CodeGenerator();
+      
+        String programName = Paths.get(path).getFileName().toString().replace(".fearn", "");
 
-        cg.SetProgramName(path);
-
-        CodeGenerator.GeneratorStack.push(cg);
+        CodeGenerator.ProgramNameStack.push(programName);
 
         FearnGrammarLexer lexer = new FearnGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -74,9 +74,9 @@ public class ImportCompiler {
         // Perform Type Analysis
         root.validate(symTable);
 
-        cg.Generate(root, symTable);
+        CodeGenerator.Generate(root, symTable);
 
-        CodeGenerator.GeneratorStack.pop();
+        CodeGenerator.ProgramNameStack.pop();
 
         return CodeGenerator.GlobalSymbolTable;
     }
@@ -90,8 +90,6 @@ public class ImportCompiler {
      */
     public SymbolTable GetStdLib(String id) {
 
-        CodeGenerator.GeneratorStack.push(new CodeGenerator());
-
         SymbolTable table = new SymbolTable();
 
         ArrayList<Parameter> params;
@@ -102,7 +100,7 @@ public class ImportCompiler {
                 // Set Program Name
                 // This sets the row's owner, ensuring the bytecode for calling these
                 // function calls refer the the correct package io.github.fearnlang.and class
-                CodeGenerator.GeneratorStack.peek().programName = "io/github/fearnlang/FearnStdLib/io";
+                CodeGenerator.ProgramNameStack.push("io/github/fearnlang/FearnStdLib/io");
 
                 // Add Print Function
 
@@ -139,7 +137,7 @@ public class ImportCompiler {
 
             case "maths":
 
-                CodeGenerator.GeneratorStack.peek().programName = "io/github/fearnlang/FearnStdLib/maths";
+                CodeGenerator.ProgramNameStack.push("io/github/fearnlang/FearnStdLib/maths");
 
                 // Add PI() -> value of PI
                 params = new ArrayList<>();
@@ -185,8 +183,7 @@ public class ImportCompiler {
                 break;
 
             case "random":
-                CodeGenerator.GeneratorStack
-                        .peek().programName = "io/github/fearnlang/FearnStdLib/RandomNumbers";
+            CodeGenerator.ProgramNameStack.push("io/github/fearnlang/FearnStdLib/RandomNumbers");
 
                 // Add random -> Random double between 0 and 1
                 params = new ArrayList<>();
@@ -210,7 +207,7 @@ public class ImportCompiler {
         }
 
         // Pop Generator, to return to primary program
-        CodeGenerator.GeneratorStack.pop();
+        CodeGenerator.ProgramNameStack.pop();
 
         // Return Symbol Table to primary compilation process
         return table;
