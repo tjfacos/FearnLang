@@ -1,5 +1,4 @@
 Basic:
-* Rationalise the compiling of imports, so there's only one compile method (probably using parameters)
 * Do standard library imports in a less stupid way
 * HashMap for Symbol Tables
 
@@ -13,3 +12,4 @@ Done:
 * Migrate to gradle
 * Modify selection statements to allow any kind of statement, not just compound
 * Change the generator stack to only store the program name
+* Rationalise the compiling of imports, so there's only one compile method (probably using parameters)
