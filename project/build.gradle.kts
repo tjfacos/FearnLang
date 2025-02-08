@@ -12,10 +12,19 @@ repositories {
 }
 
 dependencies {
+    // ASM for bytecode manipulation
     api(libs.org.ow2.asm.asm)
     api(libs.org.ow2.asm.asm.tree)
+
+    // ANTLR for parsing
     api(libs.org.antlr.antlr4)
+
+    // AssertJ for object assertions and comparison
     api(libs.org.assertj.assertj.core)
+
+    // Jackson for YAML parsing
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
+
 }
 
 group = "io.github.fearnlang"
@@ -37,6 +46,7 @@ publishing {
     }
 }
 
+// Define the task to generate the JAR file
 tasks.jar {
     manifest {
         attributes["Main-Class"] = application.mainClass.get()

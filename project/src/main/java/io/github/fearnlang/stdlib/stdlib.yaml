@@ -1,0 +1,46 @@
+io:
+  program_name: "io/github/fearnlang/stdlib/io"
+  functions:
+    print:
+      name: "print"
+      params: [string]
+      return: void
+    input:
+      name: "input"
+      params: [string]
+      return: string
+maths:
+  program_name: "io/github/fearnlang/stdlib/maths"
+  functions:
+    sin:
+      name: "sin"
+      params: [float]
+      return: float
+    cos:
+      name: "cos"
+      params: [float]
+      return: float
+    tan:  
+      name: "tan"
+      params: [float]
+      return: float
+    PI:
+      name: "PI"
+      params: []
+      return: float
+    E:
+      name: "E"
+      params: []
+      return: float
+random:
+  program_name: "io/github/fearnlang/stdlib/random"
+  functions:
+    rand:
+      name: "rand"
+      params: []
+      return: float
+    randInRange:
+      name: "randomInRange"
+      params: [float, float]
+      return: float
+    

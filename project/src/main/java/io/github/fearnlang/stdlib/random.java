@@ -2,13 +2,13 @@ package io.github.fearnlang.stdlib;
 
 import java.util.Random;
 
-public class RandomNumbers {
+public class random {
 
     /**
      * Returns a random double between 0 and 1
      * @return A random double between 0 and 1
      */
-    public static Double random() {
+    public static Double rand() {
         return Math.random();
     }
 
@@ -18,7 +18,7 @@ public class RandomNumbers {
      * @param UB The upper bound
      * @return
      */
-    public static Integer randomInRange(Integer LB, Integer UB) {
+    public static Integer randInRange(Integer LB, Integer UB) {
         return LB + new Random().nextInt(UB - LB);
     }
 }

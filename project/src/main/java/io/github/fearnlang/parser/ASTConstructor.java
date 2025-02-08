@@ -7,6 +7,7 @@ import io.github.fearnlang.FearnC;
 
 import io.github.fearnlang.parser.gen.*;
 import io.github.fearnlang.semantics.table.*;
+import io.github.fearnlang.stdlib.ImportStdLib;
 import io.github.fearnlang.util.*;
 
 import io.github.fearnlang.ast.*;
@@ -1087,7 +1088,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                     FearnC.Compile(ctx.STR_LIT().toString(), true));
         } else {
             symbolTableStack.peek().addRowsFromTable(
-                    FearnC.GetStdLib(ctx.IDENTIFIER().toString()));
+                    ImportStdLib.GetStdLib(ctx.IDENTIFIER().toString()));
         }
 
         // All new symbols from the import are added to the
