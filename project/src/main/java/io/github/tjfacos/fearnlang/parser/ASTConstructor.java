@@ -97,7 +97,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * is out of scope.
      * 
      * @param ctx The parse tree
-     * @return A Primary Expression represention the reference.
+     * @return A PrimaryExpression represention the reference.
      */
     @Override
     public Expression visitId_expr(FearnGrammarParser.Id_exprContext ctx) {
@@ -117,7 +117,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a primitive literal.
      * 
      * @param ctx The parse tree
-     * @return An expression representing the literal
+     * @return An Expression representing the literal
      */
     @Override
     public Expression visitLiteral(FearnGrammarParser.LiteralContext ctx) {
@@ -151,7 +151,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * expressions simply return whatever's in the brackets.
      * 
      * @param ctx The parse tree
-     * @return The expression resulting from visiting the bracketed expression
+     * @return The Expression resulting from visiting the bracketed expression
      */
     @Override
     public Expression visitBrac_expr(FearnGrammarParser.Brac_exprContext ctx) {
@@ -174,7 +174,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a multiplicative Expression ( a (*|/|%) b ).
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitMult_expr(FearnGrammarParser.Mult_exprContext ctx) {
@@ -206,7 +206,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits an Additive Expression (a (+|-) b )
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitAdd_expr(FearnGrammarParser.Add_exprContext ctx) {
@@ -235,7 +235,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits an Exponential Expression (a ^ b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitExp_expr(FearnGrammarParser.Exp_exprContext ctx) {
@@ -249,7 +249,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean less-than operation (a < b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitLess_expr(FearnGrammarParser.Less_exprContext ctx) {
@@ -263,7 +263,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean greater-than operation (a > b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitGreater_expr(FearnGrammarParser.Greater_exprContext ctx) {
@@ -277,7 +277,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean less-equal operation (a <= b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitLess_eq_expr(FearnGrammarParser.Less_eq_exprContext ctx) {
@@ -291,7 +291,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean greater-equal operation (a >= b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitGreater_eq_expr(FearnGrammarParser.Greater_eq_exprContext ctx) {
@@ -305,7 +305,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean equality operation (a == b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitEq_expr(FearnGrammarParser.Eq_exprContext ctx) {
@@ -319,7 +319,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean non-equality operation (a != b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitNot_eq_expr(FearnGrammarParser.Not_eq_exprContext ctx) {
@@ -333,7 +333,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean AND operation (a && b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitAnd_expr(FearnGrammarParser.And_exprContext ctx) {
@@ -347,7 +347,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean OR operation (a || b)
      * 
      * @param ctx The parse tree
-     * @return A binary expression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified operation.
      */
     @Override
     public BinaryExpression visitOr_expr(FearnGrammarParser.Or_exprContext ctx) {
@@ -363,7 +363,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary negation operation (-a)
      * 
      * @param ctx The parse tree
-     * @return A unary expression, characterised by the operand and the operation 
+     * @return A UnaryExpression, characterised by the operand and the operation 
      */
     @Override
     public UnaryExpression visitU_minus_expr(FearnGrammarParser.U_minus_exprContext ctx) {
@@ -376,7 +376,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary boolean NOT operation (!a)
      * 
      * @param ctx The parse tree
-     * @return A unary expression, characterised by the operand and the operation 
+     * @return A UnaryExpression, characterised by the operand and the operation 
      */
     @Override
     public UnaryExpression visitU_not_expr(FearnGrammarParser.U_not_exprContext ctx) {
@@ -389,7 +389,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary postfix increment/decrement operation (a-- | a++)
      * 
      * @param ctx The parse tree
-     * @return A unary expression, characterised by the operand and the operation 
+     * @return A IncrExpression, characterised by the operand and the operation 
      */
     @Override
     public IncrExpression visitPost_inc_expr(FearnGrammarParser.Post_inc_exprContext ctx) {
@@ -410,7 +410,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary prefix increment/decrement operation (--a | ++a)
      * 
      * @param ctx The parse tree
-     * @return A unary expression, characterised by the operand and the operation 
+     * @return A IncrExpression, characterised by the operand and the operation 
      */
     @Override
     public IncrExpression visitPre_inc_expr(FearnGrammarParser.Pre_inc_exprContext ctx) {
@@ -422,13 +422,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new IncrExpression((Expression) visit(ctx.expression()), isDecrement, true);
     }
 
-    // Cast Expressions (Casting data to a primitive data type)
-    // Utilises the PrimitiveDataType enum (see PrimitiveExpression)
     /**
      * Visits a cast expression (casting data to a primitive type) (e.g. (int)"12" )
      * 
      * @param ctx The parse tree
-     * @return A unary expression, characterised by the operand and the operation 
+     * @return A CastExpression, characterised by the operand expression and the target data type 
      */
     @Override
     public CastExpression visitCast_expr(FearnGrammarParser.Cast_exprContext ctx) {
