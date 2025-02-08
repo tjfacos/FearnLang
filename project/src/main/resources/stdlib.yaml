@@ -28,8 +28,8 @@ maths:
       name: "PI"
       params: []
       return: float
-    E:
-      name: "E"
+    Eulers:
+      name: "Eulers"
       params: []
       return: float
 random:
@@ -40,7 +40,7 @@ random:
       params: []
       return: float
     randInRange:
-      name: "randomInRange"
-      params: [float, float]
-      return: float
+      name: "randInRange"
+      params: [int, int]
+      return: int
     

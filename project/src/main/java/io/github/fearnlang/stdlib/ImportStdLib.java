@@ -58,8 +58,10 @@ public class ImportStdLib {
 
         CodeGenerator.ProgramNameStack.push(lib.get("program_name").toString());
 
-        for (String func_name : lib.keySet()) {
-            Map<String, Object> func = (Map<String, Object>) lib.get(func_name);
+        Map<String, Object> functions = (Map<String, Object>) lib.get("functions");
+
+        for (String func_name : functions.keySet()) {
+            Map<String, Object> func = (Map<String, Object>) functions.get(func_name);
 
             params = new ArrayList<>();
             ArrayList<String> param_list = (ArrayList<String>) func.get("params");
