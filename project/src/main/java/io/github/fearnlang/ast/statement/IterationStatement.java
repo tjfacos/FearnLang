@@ -31,10 +31,10 @@ public class IterationStatement extends Statement {
     public ASTNode init_expression;
     public Expression continue_expression;
     public Expression iteration_expression;
-    public CompoundStatement body;
+    public Statement body;
 
     public IterationStatement(
-        ASTNode init, Expression c_expr, Expression i_expr, CompoundStatement bod
+        ASTNode init, Expression c_expr, Expression i_expr, Statement bod
     ) {
         init_expression = init;
         continue_expression = c_expr;

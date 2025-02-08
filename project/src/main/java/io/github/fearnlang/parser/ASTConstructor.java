@@ -871,7 +871,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         return new SelectionStatement(
                 (Expression) visit(ctx.expression()),
-                (CompoundStatement) visit(ctx.compound_statement()),
+                (Statement) visit(ctx.statement()),
                 null);
     }
 
@@ -888,7 +888,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         return new SelectionStatement(
                 (Expression) visit(ctx.expression()),
-                (CompoundStatement) visit(ctx.compound_statement(0)),
+                (Statement) visit(ctx.statement(0)),
                 (Statement) visit(ctx.getChild(ctx.getChildCount() - 1)));
     }
 
@@ -917,7 +917,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression iter_expr = null;
 
         // Loop body (executed each iteration)
-        CompoundStatement body = null;
+        Statement body = null;
 
         if (!ctx.init_expression().getText().equals(";"))
             init = visit(ctx.init_expression().getChild(0)); // Either an Expression or a Declaration
@@ -927,7 +927,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         if (ctx.iteration_expression().getChildCount() > 0)
             iter_expr = (Expression) visit(ctx.iteration_expression().getChild(0));
 
-        body = (CompoundStatement) visit(ctx.compound_statement());
+        body = (Statement) visit(ctx.statement());
 
         return new IterationStatement(init, cont_expr, iter_expr, body);
 

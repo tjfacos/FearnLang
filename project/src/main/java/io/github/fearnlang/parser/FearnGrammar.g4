@@ -22,6 +22,10 @@ Some rules have labels next to them ( indicted with #). These
 instruct ANTLR to generate the custom walker class with separate
 visit methods and contexts for each 
 
+
+NTS: To generate parser, in src/main/java/io/github/fearnlang/parser, run:
+
+`antlr4 -o gen -package io.github.fearnlang.parser.gen -visitor FearnGrammar.g4`
 */
 
 
@@ -156,15 +160,15 @@ expression_statement
 //  ->  A single if, where the body is only run if the condition is met
 //  ->  An if-else chain, where another body/selection is run if the first doesn't
 selection_statement
-    : 'if' '(' expression ')' compound_statement                                                        # single_if
-    | 'if' '(' expression ')' compound_statement 'else' (compound_statement | selection_statement)      # if_else
+    : 'if' '(' expression ')' statement                                                        # single_if
+    | 'if' '(' expression ')' statement 'else' statement                                       # if_else
     ;
 
 // Fearn doesn't support while loops, but does feature a highly permissive for loop,
 // which can perform the same purpose. The following few rules all the user to create 
 // a loop, in the form `for (int i = 0; i < 10; i++) {...}`
 iteration_statement
-    : 'for' '(' init_expression continue_condition iteration_expression ')' compound_statement
+    : 'for' '(' init_expression continue_condition iteration_expression ')' statement
     ;
 
 // The initialisation can be a declaration, expression, or assignment

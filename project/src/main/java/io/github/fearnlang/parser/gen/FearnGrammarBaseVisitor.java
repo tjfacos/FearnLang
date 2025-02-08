@@ -1,4 +1,4 @@
-// Generated from FearnGrammar.g4 by ANTLR 4.13.1
+// Generated from FearnGrammar.g4 by ANTLR 4.13.2
 package io.github.fearnlang.parser.gen;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
