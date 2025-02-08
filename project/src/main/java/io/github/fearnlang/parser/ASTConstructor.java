@@ -748,22 +748,6 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new StructInstanceSpecifier(ctx.IDENTIFIER().getText());
     }
 
-    /*
-     * DECLARATIONS
-     * 
-     * New variables are declared at the start of the compound statement in
-     * which they're in scope. This function...
-     * 1) Gets the identifier for the variable, its type specifier, and the
-     * initialisation expression, if present.
-     * 2) Adds the identifier to the stack
-     * 3) Adds a row for the variable to the local/global symbol table (this
-     * will throw an error if another variable of the same name exists in
-     * scope), by adding the row to the SymbolTable at the top of the
-     * symbolTableStack
-     * 4) Returns a Declaration object
-     * 
-     */
-
     /**
      * Visits a declaration (e.g. int x = 3; float y; str z = "Hello, World!")
      * 

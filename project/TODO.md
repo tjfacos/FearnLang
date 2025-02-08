@@ -7,3 +7,6 @@ Basic:
 Optimisation:
 * Constant folding
 * Constant propogation
+
+Done:
+* Migrate to gradle
