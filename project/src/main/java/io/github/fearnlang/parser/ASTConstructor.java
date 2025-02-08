@@ -147,7 +147,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Bracket expression.
      * 
      * Bracket expressions, ( expression ), are basically used to clarify
-     * precedence. Since this is natural as part of a tree, bracket 
+     * precedence. Since this is natural as part of a tree, bracket
      * expressions simply return whatever's in the brackets.
      * 
      * @param ctx The parse tree
@@ -174,7 +174,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a multiplicative Expression ( a (*|/|%) b ).
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitMult_expr(FearnGrammarParser.Mult_exprContext ctx) {
@@ -206,7 +207,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits an Additive Expression (a (+|-) b )
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitAdd_expr(FearnGrammarParser.Add_exprContext ctx) {
@@ -235,7 +237,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits an Exponential Expression (a ^ b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitExp_expr(FearnGrammarParser.Exp_exprContext ctx) {
@@ -249,7 +252,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean less-than operation (a < b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitLess_expr(FearnGrammarParser.Less_exprContext ctx) {
@@ -263,7 +267,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean greater-than operation (a > b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitGreater_expr(FearnGrammarParser.Greater_exprContext ctx) {
@@ -277,7 +282,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean less-equal operation (a <= b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitLess_eq_expr(FearnGrammarParser.Less_eq_exprContext ctx) {
@@ -291,7 +297,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean greater-equal operation (a >= b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitGreater_eq_expr(FearnGrammarParser.Greater_eq_exprContext ctx) {
@@ -305,7 +312,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean equality operation (a == b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitEq_expr(FearnGrammarParser.Eq_exprContext ctx) {
@@ -319,7 +327,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean non-equality operation (a != b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitNot_eq_expr(FearnGrammarParser.Not_eq_exprContext ctx) {
@@ -333,7 +342,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean AND operation (a && b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitAnd_expr(FearnGrammarParser.And_exprContext ctx) {
@@ -347,7 +357,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a Boolean OR operation (a || b)
      * 
      * @param ctx The parse tree
-     * @return A BinaryExpression between the two operands, using the specified operation.
+     * @return A BinaryExpression between the two operands, using the specified
+     *         operation.
      */
     @Override
     public BinaryExpression visitOr_expr(FearnGrammarParser.Or_exprContext ctx) {
@@ -358,12 +369,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     }
 
     /* UNARY OPERATIONS (1 operand) */
-    
+
     /**
      * Visits a unary negation operation (-a)
      * 
      * @param ctx The parse tree
-     * @return A UnaryExpression, characterised by the operand and the operation 
+     * @return A UnaryExpression, characterised by the operand and the operation
      */
     @Override
     public UnaryExpression visitU_minus_expr(FearnGrammarParser.U_minus_exprContext ctx) {
@@ -376,7 +387,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary boolean NOT operation (!a)
      * 
      * @param ctx The parse tree
-     * @return A UnaryExpression, characterised by the operand and the operation 
+     * @return A UnaryExpression, characterised by the operand and the operation
      */
     @Override
     public UnaryExpression visitU_not_expr(FearnGrammarParser.U_not_exprContext ctx) {
@@ -389,7 +400,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary postfix increment/decrement operation (a-- | a++)
      * 
      * @param ctx The parse tree
-     * @return A IncrExpression, characterised by the operand and the operation 
+     * @return A IncrExpression, characterised by the operand and the operation
      */
     @Override
     public IncrExpression visitPost_inc_expr(FearnGrammarParser.Post_inc_exprContext ctx) {
@@ -410,7 +421,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a unary prefix increment/decrement operation (--a | ++a)
      * 
      * @param ctx The parse tree
-     * @return A IncrExpression, characterised by the operand and the operation 
+     * @return A IncrExpression, characterised by the operand and the operation
      */
     @Override
     public IncrExpression visitPre_inc_expr(FearnGrammarParser.Pre_inc_exprContext ctx) {
@@ -426,7 +437,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * Visits a cast expression (casting data to a primitive type) (e.g. (int)"12" )
      * 
      * @param ctx The parse tree
-     * @return A CastExpression, characterised by the operand expression and the target data type 
+     * @return A CastExpression, characterised by the operand expression and the
+     *         target data type
      */
     @Override
     public CastExpression visitCast_expr(FearnGrammarParser.Cast_exprContext ctx) {
@@ -452,7 +464,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new CastExpression((Expression) visit(ctx.expression()), targetType);
     }
 
-    // Index Expression ( e.g. myArray[0] )
+    /**
+     * Visits an index expression (e.g. arr[x] )
+     * 
+     * @param ctx The parse tree
+     * @return An IndexExpression, characterised by the indexable expression and the
+     *         index expression
+     */
     @Override
     public IndexExpression visitIndex_expr(FearnGrammarParser.Index_exprContext ctx) {
         return new IndexExpression(
@@ -462,9 +480,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* MISCELLANEOUS EXPRESSIONS */
 
-    // Function Calls
-    // -> Returns a FnCallExpression object, with the functions string identifier,
-    // and expression arguments
+    /**
+     * Visits a function call expression (e.g. foo(1, 2, 3) )
+     * 
+     * @param ctx The parse tree
+     * @return A FnCallExpression, characterised by the function identifier
+     *         and the argument expressions (as an ArrayList)
+     */
     @Override
     public FnCallExpression visitFn_call_expr(FearnGrammarParser.Fn_call_exprContext ctx) {
         String function_name = ctx.IDENTIFIER().getText();
@@ -479,7 +501,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new FnCallExpression(function_name, args);
     }
 
-    // Dot Expressions (e.g. x.y ) /
+    /**
+     * Visits a dot expression (e.g. x.y ). Dot expressions can be used
+     * to access struct attributes, or to call functions.
+     * 
+     * @param ctx The parse tree
+     * @return A StructAttrExpression, if the expression is an attribute
+     *         access, or a FnCallExpression, if it is a function call
+     */
     @SuppressWarnings("rawtypes")
     @Override
     public Expression visitDot_expr(FearnGrammarParser.Dot_exprContext ctx) {
@@ -528,7 +557,15 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         }
     }
 
-    // Array Initialisation (e.g. new int[] {1, 2, 3, 7, 123 } / new str[5])
+    /**
+     * Visits an array initialisation expression (e.g. new int[] {1, 2, 3, 7, 123 }
+     * / new str[5])
+     * 
+     * @param ctx The parse tree
+     * @return An ArrayInitExpression, characterised by the type of the array
+     *         elements, dimesions of the array, and the initial array body
+     *         (if present)
+     */
     @Override
     public ArrayInitExpression visitArray_init(FearnGrammarParser.Array_initContext ctx) {
         // Get type of the elements (either primitive or struct instances)
@@ -560,7 +597,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new ArrayInitExpression(type, dims, init);
     }
 
-    // ArrayBody (e.g. { 1 , 2 })
+    /**
+     * Visits an array body (e.g. {1, 2, 3, 4, 5} )
+     * 
+     * @param ctx The parse tree
+     * @return An ArrayBody object, characterised by the elements of the array
+     */
     @Override
     public Expression visitArray_body(FearnGrammarParser.Array_bodyContext ctx) {
         ArrayList<Expression> elements = new ArrayList<Expression>();
@@ -574,9 +616,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new ArrayBody(elements);
     }
 
-    // Struct Initialisation ( e.g. new Person('Kenneth', 23) )
-    // Get struct ID, visit arguments (expressions), and return the
-    // StructInitExpression
+    /**
+     * Visits a struct initialisation expression (e.g. new Person('Kenneth', 23) )
+     * 
+     * @param ctx The parse tree
+     * @return A StructInitExpression, characterised by the struct ID and the
+     *         arguments
+     */
     @Override
     public StructInitExpression visitStruct_init(FearnGrammarParser.Struct_initContext ctx) {
         String struct_id = ctx.IDENTIFIER().getText();
@@ -590,7 +636,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new StructInitExpression(struct_id, args);
     }
 
-    /* Assignment Expressions (e.g. x = y; x += 3; y %= 2) */
+    /**
+     * Visits an assignment expression (e.g. x = y; x += 3; y %= 2)
+     * 
+     * @param ctx The parse tree
+     * @return An AssignExpression, characterised by the target expression,
+     *         the new value to assign to it, and the operation being performed.
+     */
     @Override
     public AssignExpression visitAssign_expression(FearnGrammarParser.Assign_expressionContext ctx) {
         // Visit target (what you're assigning a value to), and expression (the new
@@ -641,6 +693,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      */
 
+    /**
+     * Visits a primitive type specifier (e.g. int, float, str, bool)
+     * 
+     * @param ctx The parse tree
+     * @return A PrimitiveSpecifier object, characterised by the primitive data type
+     */
+    @Override
     public PrimitiveSpecifier visitType_specifier_primitive(FearnGrammarParser.Type_specifier_primitiveContext ctx) {
         PrimitiveDataType type = null;
 
@@ -663,12 +722,28 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     }
 
+    /**
+     * Visits an array type specifier (e.g. int[], str[][], float[][][] )
+     * 
+     * @param ctx The parse tree
+     * @return An ArraySpecifier object, characterised by the type of the array, and
+     *         its dimensions (e.g. 3-dimensional)
+     */
+    @Override
     public ArraySpecifier visitType_specifier_arr(FearnGrammarParser.Type_specifier_arrContext ctx) {
         TypeSpecifier type = (TypeSpecifier) visit(ctx.getChild(0));
         Integer dims = ctx.getChildCount() - 1;
         return new ArraySpecifier(type, dims);
     }
 
+    /**
+     * Visits a struct type specifier (e.g. $Person, $Employee, $Car )
+     * 
+     * @param ctx The parse tree
+     * @return A StructInstanceSpecifier object, characterised by the struct
+     *         identifer
+     */
+    @Override
     public StructInstanceSpecifier visitType_specifier_struct(FearnGrammarParser.Type_specifier_structContext ctx) {
         return new StructInstanceSpecifier(ctx.IDENTIFIER().getText());
     }
@@ -689,6 +764,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      */
 
+    /**
+     * Visits a declaration (e.g. int x = 3; float y; str z = "Hello, World!")
+     * 
+     * This method not only constructs a Declaration object, but also pushes the
+     * variable's identifier to the symbol stack.
+     * This is so that, should the variable be referenced later in the program, it
+     * can be checked to see if it is in scope.
+     * 
+     * It also adds the variable to the symbol table, so that it can be checked for
+     * redeclaration and referenced later.
+     * 
+     * @param ctx The parse tree
+     * @return A Declaration object, characterised by the identifier, type
+     *         specifier, and initialisation expression (if present)
+     */
+    @Override
     public Declaration visitDeclaration(FearnGrammarParser.DeclarationContext ctx) {
         String identifier = ctx.IDENTIFIER().getText();
         symbolAnalysisStack.push(identifier);
@@ -711,19 +802,22 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* STATEMENTS */
 
-    /*
-     * COMPOUND STATEMENTS
+    /**
+     * Visits a compound statement (e.g. { int x = 3; float y; x += 3; } )
      * 
-     * A collection of statements, surrounded by curly braces.
-     * 
-     * This function:
+     * This method:
      * 1) Records the number of symbols in the stack initially
      * 2) Visits all nested declarations and statements
      * 4) Removes any new symbols added to the stack during the traversal
      * of its subtree (by popping the stack for the difference between
-     * the new size of the stack, and the initial number). This is done
-     * because said variables declared within the statement are out of
+     * the new size of the stack, and the initial number).
+     * 
+     * This is done because said variables declared within the statement are out of
      * scope beyond it.
+     * 
+     * @param ctx The parse tree
+     * @return A CompoundStatement object, characterised by the list of ASTNodes
+     *         that it contains.
      */
     @Override
     public CompoundStatement visitCompound_statement(FearnGrammarParser.Compound_statementContext ctx) {
@@ -745,22 +839,25 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     }
 
-    /*
-     * EXPRESSION STATEMENTS
+    /**
+     * Visits a simple expression statement (e.g. x + 3; foo(1, 2, 3); )
      * 
-     * Simply a simple expression or assignment expression. The expressions are
-     * visited, and
-     * the resulting Expression object is used to return an ExpressionStatement.
-     * 
-     * The boolean flag at the end indicates the ExpressStatement is an assignment
-     * expression
-     * if true.
+     * @param ctx The parse tree
+     * @return An ExpressionStatement object, characterised by the expression, and a
+     *         flag indicting it is not an assignment expression
      */
     @Override
     public ExpressionStatement visitSimple_expr_stmt(FearnGrammarParser.Simple_expr_stmtContext ctx) {
         return new ExpressionStatement((Expression) visit(ctx.expression()), false);
     }
 
+    /**
+     * Visits an assignment expression statement (e.g. x = 3; y += 2; )
+     * 
+     * @param ctx The parse tree
+     * @return An ExpressionStatement object, characterised by the expression, and a
+     *         flag indicting it is an assignment expression
+     */
     @Override
     public ExpressionStatement visitAssign_expr_stmt(FearnGrammarParser.Assign_expr_stmtContext ctx) {
         return new ExpressionStatement((Expression) visit(ctx.assign_expression()), true);
@@ -778,6 +875,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * 
      */
 
+    /**
+     * Visits a single if statement (e.g. if (x > 3) { x += 3; } )
+     * 
+     * @param ctx The parse tree
+     * @return A SelectionStatement object, characterised by the condition
+     *         expression and the statement body
+     */
     @Override
     public SelectionStatement visitSingle_if(FearnGrammarParser.Single_ifContext ctx) {
 
@@ -787,6 +891,14 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 null);
     }
 
+    /**
+     * Visits an if-else statement (e.g. if (x > 3) { x += 3; } else { x -= 3; } )
+     * 
+     * @param ctx The parse tree
+     * @return A SelectionStatement object, characterised by the condition
+     *         expression, the if branch body, and the else branch (either a
+     *         compound statement or another selection statement)
+     */
     @Override
     public SelectionStatement visitIf_else(FearnGrammarParser.If_elseContext ctx) {
 
@@ -796,29 +908,31 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
                 (Statement) visit(ctx.getChild(ctx.getChildCount() - 1)));
     }
 
-    /*
-     * ITERATION STATEMENTS
+    /**
+     * Visits a for loop statement (e.g. for (int i = 0; i < 10; i++) { x += 3; } )
      * 
-     * Statements used for loops (for loops, to be precise - Fearn doesn't
-     * support while loop, but the syntax for for loops is permissive enough
-     * for it to be used as a while loop)
+     * Fearn doesn't support while loop, but the for loop syntax is permissive
+     * enough for it to be used as a while loop.
      * 
-     * This function:
-     * 1) Visits the initialisation expression/declaration (run before the loop),
-     * if present
-     * 2) Visits the continue expression (a boolean expression that must evaluate
-     * to true for the loop body to run)
-     * 3) Visits the iteration expression, run at the end of each iteration, if
-     * present
-     * 4) Visits the compound statement, that is the body of the loop
-     * 5) Returns an IterationStatement
-     * 
+     * @param ctx The parse tree
+     * @return An IterationStatement object, characterised by the initialisation
+     *         expression (if present), the continue expression, the iteration
+     *         expression, and the loop body
      */
     @Override
     public IterationStatement visitIteration_statement(FearnGrammarParser.Iteration_statementContext ctx) {
+
+        // Initialisation expression/declaration
         ASTNode init = null;
+
+        // Continue expression (a boolean expression that must evaluate to true for the
+        // loop body to run)
         Expression cont_expr = null;
+
+        // Iteration expression (run at the end of each iteration)
         Expression iter_expr = null;
+
+        // Loop body (executed each iteration)
         CompoundStatement body = null;
 
         if (!ctx.init_expression().getText().equals(";"))
@@ -835,29 +949,34 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     }
 
-    /*
-     * JUMP STATEMENTS
+    /**
+     * Visits a continue statement (e.g. continue; )
      * 
-     * Statements used to jump around a program (return, break, and continue)
-     * 
-     * Each one returns a JumpStatement, with return statements returning the
-     * subclass ReturnStatement, which allows an expression for the statement to
-     * return to be passed.
-     * 
-     * Jump Statements use the enum JumpType to differentiate themselves.
-     * 
+     * @param ctx The parse tree
+     * @return A JumpStatement object, characterised by the JumpType Continue
      */
-
     @Override
     public JumpStatement visitCont_stmt(FearnGrammarParser.Cont_stmtContext ctx) {
         return new JumpStatement(JumpType.Continue);
     }
 
+    /**
+     * Visits a break statement (e.g. break; )
+     * 
+     * @param ctx The parse tree
+     * @return A JumpStatement object, characterised by the JumpType Break
+     */
     @Override
     public JumpStatement visitBreak_stmt(FearnGrammarParser.Break_stmtContext ctx) {
         return new JumpStatement(JumpType.Break);
     }
 
+    /**
+     * Visits a return statement (e.g. return 3; )
+     * 
+     * @param ctx The parse tree
+     * @return A ReturnStatement object, characterised by the return expression
+     */
     @Override
     public ReturnStatement visitReturn_stmt(FearnGrammarParser.Return_stmtContext ctx) {
         return new ReturnStatement(
@@ -867,12 +986,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     /* HIGH-LEVEL STRUCTURES */
 
-    /*
-     * FUNCTION DEFINITIONS
+    /**
+     * Visits a function definition (e.g. fn foo(x: int, y: float) => float { return
+     * x + y; } )
      * 
-     * In the form `fn IDENTIFIER(parameter*) => return_type_specifier`
-     * 
-     * This function:
+     * This method:
      * 1) Determines if the function returns void, by checking for a type_specifier
      * 2) Visits the return type specifier if present
      * 3) Visits the parameters, adding them to a list. These are added to the
@@ -882,11 +1000,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * have to be first.
      * 4) Visits the body
      * 5) Pops the arguments form the symbol stack (they are added when the
-     * parameters
-     * are visited)
+     * parameters are visited)
      * 6) Returns a Function object, retrieving the string identifier from the
-     * IDENTIFIER
-     * token
+     * IDENTIFIER token
+     * 
+     * @param ctx The parse tree
+     * @return A Function object, characterised by the function identifier, the list
+     *         of parameters, the return type specifier, and the function body
      */
     @Override
     public Function visitFunction(FearnGrammarParser.FunctionContext ctx) {
@@ -923,16 +1043,16 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new Function(ctx.IDENTIFIER().getText(), parameters, return_type, is_void, body);
     }
 
-    /*
+    /**
+     * Visits a parameter (e.g. x: int, y: float)
      * 
-     * Parameter, in the form `IDENTIFIER : type_specifier`.
+     * In addition to returning a Parameter object, this method also pushes the
+     * identifier of the argument to the stack. This is so that, should the argument
+     * be referenced later in the program, it can be checked to see if it is in
+     * scope.
      * 
-     * The function visits the type_specifier, gets the string identifier, and adds
-     * the parameter
-     * to the symbol stack, to ensure references to the parameters are detected as
-     * valid during
-     * traversal of the function body.
-     * 
+     * @param ctx The parse tree
+     * @return A Parameter object, characterised by the identifier and the type
      */
     @Override
     public Parameter visitParameter(FearnGrammarParser.ParameterContext ctx) {
@@ -940,15 +1060,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new Parameter(ctx.IDENTIFIER().getText(), (TypeSpecifier) visit(ctx.type_specifier()));
     }
 
-    /*
-     * STRUCT DEFINITIONS
+    /**
+     * Visits a struct definition (e.g. struct Person { int age; str name; } )
      * 
-     * In the form `struct IDENTIFIER {declaration*}`
+     * @param ctx The parse tree
+     * @return A Struct object, characterised by the struct identifier and the list
+     *         of attributes (declarations) of the struct.
      * 
-     * This function:
-     * 1) Visits all the declarations within the struct (its attributes)
-     * 2) Gets the identifier string
-     * 3) Returns a Struct object
      */
     @Override
     public Struct visitStruct_def(FearnGrammarParser.Struct_defContext ctx) {
@@ -960,8 +1078,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         return new Struct(ctx.IDENTIFIER().getText(), decl);
     }
 
-    /*
-     * IMPORTS
+    /**
+     * Visits an import statement (e.g. import "path/to/module.fearn", import io)
      * 
      * An Import Compiler is used to compile other fearn programs,
      * imported by the current program, and returns their symbol table,
@@ -971,6 +1089,9 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * module (e.g. io). The Import Compiler will construct a symbol table
      * for the functions contained within, and add them to the global symbol
      * table, so they can be used anywhere within the program.
+     * 
+     * @param ctx The parse tree
+     * @return null
      * 
      */
     @Override
@@ -1013,8 +1134,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
     public Stack<SymbolTable> symbolTableStack = new Stack<SymbolTable>();
 
-    /*
-     * Program (root of AST)
+    /**
+     * Visits the root of the AST (the program)
      * 
      * This visits all imports, global declarations, structs, and functions.
      * 
@@ -1024,9 +1145,10 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * structure, which is finally stored in the global symbol table (always
      * at the bottom of the stack).
      * 
-     * The function returns a Program object, representing the root of the tree.
+     * @param ctx The parse tree
+     * @return A Program object, characterised by the global declarations, structs, and functions
+     * 
      */
-
     @Override
     public Program visitProgram(FearnGrammarParser.ProgramContext ctx) {
 
