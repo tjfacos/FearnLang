@@ -1,4 +1,4 @@
-package io.github.fearnlang.FearnStdLib;
+package io.github.fearnlang.stdlib;
 
 import java.util.Scanner;
 

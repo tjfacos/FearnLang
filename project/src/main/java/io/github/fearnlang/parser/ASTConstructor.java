@@ -3,6 +3,8 @@ package io.github.fearnlang.parser;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import io.github.fearnlang.FearnC;
+
 import io.github.fearnlang.parser.gen.*;
 import io.github.fearnlang.semantics.table.*;
 import io.github.fearnlang.util.*;
@@ -15,7 +17,6 @@ import io.github.fearnlang.ast.function.Function;
 import io.github.fearnlang.ast.function.Parameter;
 import io.github.fearnlang.ast.type.ArraySpecifier;
 import io.github.fearnlang.ast.type.PrimitiveSpecifier.PrimitiveDataType;
-import io.github.fearnlang.codegen.ImportCompiler;
 import io.github.fearnlang.ast.type.PrimitiveSpecifier;
 import io.github.fearnlang.ast.type.StructInstanceSpecifier;
 import io.github.fearnlang.ast.type.TypeSpecifier;
@@ -1081,14 +1082,12 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitModule_import(FearnGrammarParser.Module_importContext ctx) {
 
-        ImportCompiler comp = new ImportCompiler();
-
         if (ctx.IDENTIFIER() == null) {
             symbolTableStack.peek().addRowsFromTable(
-                    comp.Compile(ctx.STR_LIT().toString()));
+                    FearnC.Compile(ctx.STR_LIT().toString(), true));
         } else {
             symbolTableStack.peek().addRowsFromTable(
-                    comp.GetStdLib(ctx.IDENTIFIER().toString()));
+                    FearnC.GetStdLib(ctx.IDENTIFIER().toString()));
         }
 
         // All new symbols from the import are added to the
