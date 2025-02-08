@@ -134,7 +134,7 @@ public class BinaryExpression extends Expression {
                     mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
                     return;
                 } else { // String Concatenation
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "concat", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "concat", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;", false);
                     return;
                 }
             
@@ -174,42 +174,42 @@ public class BinaryExpression extends Expression {
                 
             case Exponent:
                 if (t == "int") {
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "exp", "(II)Ljava/lang/Integer;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "exp", "(II)Ljava/lang/Integer;", false);
                     return;
                 } else { // Floats
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "exp", "(DD)Ljava/lang/Double;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "exp", "(DD)Ljava/lang/Double;", false);
                     return;
                 }            
             case Less:
                 if (t == "int") {
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "less", "(II)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "less", "(II)Ljava/lang/Boolean;", false);
                     return;
                 } else { // Floats
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "less", "(DD)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "less", "(DD)Ljava/lang/Boolean;", false);
                     return;
                 }            
             case LessEq:
                 if (t == "int") {
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "less_eq", "(II)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "less_eq", "(II)Ljava/lang/Boolean;", false);
                     return;
                 } else { // Floats
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "less_eq", "(DD)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "less_eq", "(DD)Ljava/lang/Boolean;", false);
                     return;
                 }            
             case Greater:
                 if (t == "int") {
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "greater", "(II)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "greater", "(II)Ljava/lang/Boolean;", false);
                     return;
                 } else { // Floats
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "greater", "(DD)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "greater", "(DD)Ljava/lang/Boolean;", false);
                     return;
                 }            
             case GreaterEq:
                 if (t == "int") {
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "greater_eq", "(II)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "greater_eq", "(II)Ljava/lang/Boolean;", false);
                     return;
                 } else { // Floats
-                    mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "greater_eq", "(DD)Ljava/lang/Boolean;", false);
+                    mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "greater_eq", "(DD)Ljava/lang/Boolean;", false);
                     return;
                 }
                 
@@ -219,17 +219,17 @@ public class BinaryExpression extends Expression {
                 mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
                 return;
             case LogicalAnd:
-                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "and", "(Ljava/lang/Boolean;Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "and", "(Ljava/lang/Boolean;Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
                 return;
             case LogicalOr:
-                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "or", "(Ljava/lang/Boolean;Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "or", "(Ljava/lang/Boolean;Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
                 return;
             case Eq:
-                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "equals", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "equals", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Boolean;", false);
                 return;
             case NotEq:
-                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "equals", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Boolean;", false);
-                mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "equals", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Boolean;", false);
+                mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
                 return;
             default:
                 Reporter.ReportErrorAndExit("Error in Generating Binary Expression.", null);

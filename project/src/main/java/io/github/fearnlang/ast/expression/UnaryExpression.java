@@ -80,7 +80,7 @@ public class UnaryExpression extends Expression {
             }
 
         } else { // operator == ExprType.LogicalNot
-            mv.visitMethodInsn(INVOKESTATIC, "io/github/tjfacos/fearnlang/runtime/FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
+            mv.visitMethodInsn(INVOKESTATIC, "io/github/fearnlang/runtime/FearnRuntime", "not", "(Ljava/lang/Boolean;)Ljava/lang/Boolean;", false);
         }
     }
 

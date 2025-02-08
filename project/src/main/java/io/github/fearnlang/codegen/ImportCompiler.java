@@ -26,7 +26,8 @@ import io.github.fearnlang.util.Reporter;
 public class ImportCompiler {
 
     /**
-     * Compiles a Fearn program from a file path, while also returning the symbol table.
+     * Compiles a Fearn program from a file path, while also returning the symbol
+     * table.
      * 
      * @param path
      * @return SymbolTable The symbol table of the imported program
@@ -36,24 +37,23 @@ public class ImportCompiler {
         path = CodeGenerator.buildPath.getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
 
         CharStream input = null;
-        
+
         try {
             input = CharStreams.fromStream(new FileInputStream(path));
         } catch (Exception e) {
             Reporter.ReportErrorAndExit("IMPORTED FILE " + path + " NOT FOUND", null);
         }
 
-        if (path.endsWith("FearnRuntime.fearn") )
-        {
+        if (path.endsWith("FearnRuntime.fearn")) {
             Reporter.ReportErrorAndExit("FILENAME FearnRuntime.fearn IS FORBIDDEN.", null);
         }
-        
+
         CodeGenerator cg = new CodeGenerator();
-        
+
         cg.SetProgramName(path);
-        
+
         CodeGenerator.GeneratorStack.push(cg);
-               
+
         FearnGrammarLexer lexer = new FearnGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         FearnGrammarParser parser = new FearnGrammarParser(tokens);
@@ -66,7 +66,7 @@ public class ImportCompiler {
         ASTConstructor astConstructor = new ASTConstructor();
         ASTNode AST = astConstructor.visit(parseTree);
 
-        Program root = (Program)AST;
+        Program root = (Program) AST;
         SymbolTable symTable = astConstructor.symbolTableStack.pop();
 
         CodeGenerator.GlobalSymbolTable = symTable;
@@ -78,7 +78,7 @@ public class ImportCompiler {
 
         CodeGenerator.GeneratorStack.pop();
 
-        return CodeGenerator.GlobalSymbolTable;        
+        return CodeGenerator.GlobalSymbolTable;
     }
 
     /**
@@ -89,7 +89,7 @@ public class ImportCompiler {
      * @return SymbolTable The symbol table of the standard library
      */
     public SymbolTable GetStdLib(String id) {
-        
+
         CodeGenerator.GeneratorStack.push(new CodeGenerator());
 
         SymbolTable table = new SymbolTable();
@@ -100,123 +100,107 @@ public class ImportCompiler {
         switch (id) {
             case "io":
                 // Set Program Name
-                // This sets the row's owner, ensuring the bytecode for calling these 
+                // This sets the row's owner, ensuring the bytecode for calling these
                 // function calls refer the the correct package io.github.fearnlang.and class
-                CodeGenerator.GeneratorStack.peek().programName = "io/github/tjfacos/fearnlang/FearnStdLib/io";
+                CodeGenerator.GeneratorStack.peek().programName = "io/github/fearnlang/FearnStdLib/io";
 
                 // Add Print Function
-                
+
                 // Create new parameter list
                 params = new ArrayList<>();
-                
+
                 // Add string parameter
                 params.add(new Parameter(
-                    "", new PrimitiveSpecifier(PrimitiveDataType.STR)
-                ));
+                        "", new PrimitiveSpecifier(PrimitiveDataType.STR)));
 
-                // Add to symbol table, with identifier print, and null return 
-                // type and local symbol table (irrelevant as this function has 
+                // Add to symbol table, with identifier print, and null return
+                // type and local symbol table (irrelevant as this function has
                 // no Fearn implementation)
                 table.addRow(
-                    new FunctionRow(
-                        "print", 
-                        params, 
-                        null, 
-                        null
-                    )
-                );
-                
+                        new FunctionRow(
+                                "print",
+                                params,
+                                null,
+                                null));
+
                 // Add Input Function
 
-                // params remains the same (as both print and input take a single, 
+                // params remains the same (as both print and input take a single,
                 // string argument)
 
                 table.addRow(
-                    new FunctionRow(
-                        "input", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.STR), 
-                        null
-                    )
-                );
-                
+                        new FunctionRow(
+                                "input",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.STR),
+                                null));
+
                 break;
 
             case "maths":
-                
-            CodeGenerator.GeneratorStack.peek().programName =  "io/github/tjfacos/fearnlang/FearnStdLib/maths";
+
+                CodeGenerator.GeneratorStack.peek().programName = "io/github/fearnlang/FearnStdLib/maths";
 
                 // Add PI() -> value of PI
-                params = new ArrayList<>(); 
+                params = new ArrayList<>();
                 table.addRow(
-                    new FunctionRow(
-                        "PI", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                        null
-                    )
-                );
-                
+                        new FunctionRow(
+                                "PI",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
+                                null));
+
                 // Add Eulers() -> value of Euler's number
                 table.addRow(
-                    new FunctionRow(
-                        "Eulers", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                        null
-                    )
-                );
-                
+                        new FunctionRow(
+                                "Eulers",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
+                                null));
+
                 // Add sin, cos, and tan functions
                 params = new ArrayList<>();
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
                 table.addRow(
-                    new FunctionRow(
-                        "sin", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                        null
-                    )
-                );
+                        new FunctionRow(
+                                "sin",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
+                                null));
 
                 table.addRow(
-                    new FunctionRow(
-                        "cos", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                        null
-                    )
-                );
+                        new FunctionRow(
+                                "cos",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
+                                null));
 
                 table.addRow(
-                    new FunctionRow(
-                        "tan", 
-                        params, 
-                        new PrimitiveSpecifier(PrimitiveDataType.FLOAT), 
-                        null
-                    )
-                );
+                        new FunctionRow(
+                                "tan",
+                                params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
+                                null));
 
                 break;
 
             case "random":
-                CodeGenerator.GeneratorStack.peek().programName = "io/github/tjfacos/fearnlang/FearnStdLib/RandomNumbers";
+                CodeGenerator.GeneratorStack
+                        .peek().programName = "io/github/fearnlang/FearnStdLib/RandomNumbers";
 
                 // Add random -> Random double between 0 and 1
                 params = new ArrayList<>();
                 table.addRow(
-                    new FunctionRow("random", params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.FLOAT), null)
-                );
+                        new FunctionRow("random", params,
+                                new PrimitiveSpecifier(PrimitiveDataType.FLOAT), null));
 
                 // Add randomFromRange -> Random integer from range
                 params = new ArrayList<>();
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
                 params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
                 table.addRow(
-                    new FunctionRow("randomInRange", params, 
-                    new PrimitiveSpecifier(PrimitiveDataType.INT), null)
-                );
+                        new FunctionRow("randomInRange", params,
+                                new PrimitiveSpecifier(PrimitiveDataType.INT), null));
 
                 break;
 

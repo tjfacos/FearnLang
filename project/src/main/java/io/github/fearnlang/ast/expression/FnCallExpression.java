@@ -109,7 +109,7 @@ public class FnCallExpression extends Expression {
         {
             mv.visitMethodInsn(
                 INVOKESTATIC, 
-                "io/github/tjfacos/fearnlang/runtime/FearnRuntime", 
+                "io/github/fearnlang/runtime/FearnRuntime", 
                 identifier, 
                 desc, 
                 false
