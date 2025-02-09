@@ -77,8 +77,7 @@ public class ImportStdLib {
                             func_name,
                             params,
                             stringSpecifierMap.get((String) func.get("return")),
-                            null),
-                    false);
+                            null));
         }
 
         CodeGenerator.ProgramNameStack.pop();

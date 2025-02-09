@@ -30,11 +30,13 @@ public class Reporter {
 
     public static void ReportErrorAndExit(String err, ASTNode offendingNode)
     {
+        String program_name = CodeGenerator.ProgramNameStack.empty() ? "unknown" : CodeGenerator.ProgramNameStack.peek();
+
         if (offendingNode == null)
         System.out.println(
             String.format(
                 "FearnC (%s): %s%sERROR: %s %s", 
-                CodeGenerator.ProgramNameStack.peek(),
+                program_name,
                 ANSI_BOLD,
                 ANSI_RED,
                 err,
@@ -45,7 +47,7 @@ public class Reporter {
         System.out.println(
             String.format(
                 "FearnC (%s): %s%sERROR: %s - %s %s", 
-                CodeGenerator.ProgramNameStack.peek(),
+                program_name,
                 ANSI_BOLD,
                 ANSI_RED,
                 offendingNode.toString(),

@@ -16,6 +16,7 @@ import io.github.fearnlang.semantics.table.SymbolTable.SymbolType;
 public class VariableRow extends Row {
     
     TypeSpecifier dataType;
+    protected Integer index = null;
 
     public VariableRow(String id, TypeSpecifier type)
     {

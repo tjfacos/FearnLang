@@ -780,8 +780,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         symbolTableStack.peek().addRow(
                 new VariableRow(
                         identifier,
-                        type_spec),
-                false);
+                        type_spec));
 
         return new Declaration(identifier, type_spec, init_expression);
 
@@ -1015,8 +1014,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             symbolTableStack.peek().addRow(
                     new VariableRow(
                             param.identifier,
-                            param.type),
-                    false);
+                            param.type));
 
             // Add to parameters
             parameters.add(param);
@@ -1095,11 +1093,11 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
 
         // All new symbols from the import are added to the
         // symbol stack
-        for (Row row : symbolTableStack.peek().GetAllRows()) {
+        for (Row row : symbolTableStack.peek().AllRows()) {
             if (row instanceof VariableRow) {
                 symbolAnalysisStack.push(row.identifier);
             } else if (row instanceof StructRow) {
-                for (Row var_row : ((StructRow) row).localSymbolTable.GetAllRows())
+                for (Row var_row : ((StructRow) row).localSymbolTable.AllRows())
                     symbolAnalysisStack.push(var_row.identifier);
             }
         }
@@ -1162,7 +1160,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             SymbolTable local_syms = symbolTableStack.pop();
 
             symbolTableStack.peek().addRow(
-                    new StructRow(struct.identifier, local_syms), false);
+                    new StructRow(struct.identifier, local_syms));
         }
 
         for (int i = 0; i < ctx.function().size(); i++) {
@@ -1174,7 +1172,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             SymbolTable local_syms = symbolTableStack.pop();
 
             symbolTableStack.peek().addRow(
-                    new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms), false);
+                    new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms));
         }
 
         return new Program(global_declarations, functions, structs);

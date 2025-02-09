@@ -252,9 +252,10 @@ public class CodeGenerator {
             null
         );
         
+        MethodNode state_node = new MethodNode();
         
         // Begin Defining Code
-        sv.visitCode();
+        state_node.visitCode();
         
         // Add Global Declarations as public fields
         global_declarations.forEach(
@@ -269,8 +270,8 @@ public class CodeGenerator {
 
                 if (decl.init_expression == null) { return; }
                 
-                decl.init_expression.GenerateBytecode(sv);
-                sv.visitFieldInsn(
+                decl.init_expression.GenerateBytecode(state_node);
+                state_node.visitFieldInsn(
                     PUTSTATIC, 
                     ProgramNameStack.peek(), 
                     decl.identifier, 
@@ -280,12 +281,17 @@ public class CodeGenerator {
         );
         
         // Add return instruction
-        sv.visitInsn(RETURN);
+        state_node.visitInsn(RETURN);
 
         // End Static Block Generation
-        sv.visitMaxs(0, 0);
-        sv.visitEnd();
+        state_node.visitMaxs(0, 0);
+        state_node.visitEnd();
 
+        // Eliminate redundant casting
+        CastOptimiser.EliminateRedundantCasts(state_node);
+
+        // Write all instructions to method visitor
+        state_node.accept(sv);
 
         // Generate Default Constructor
         MethodVisitor cv = classWriter.visitMethod(

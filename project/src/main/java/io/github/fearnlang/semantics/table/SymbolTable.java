@@ -36,6 +36,8 @@ public class SymbolTable {
     // This is used to maintain the order of rows in the table
     private LinkedHashMap<String, Row> Rows = new LinkedHashMap<>();
 
+    private boolean isGenerating;
+
     // Method to generate a key for a row in the table
     static private String Key(String identifier, SymbolType type) {
         return type.toString() + "." + identifier;
@@ -52,7 +54,7 @@ public class SymbolTable {
      * 
      * @param new_row
      */
-    public void addRow(Row new_row, Boolean noOverrideOwner) {
+    public void addRow(Row new_row) {
         // Add a Single Row object, checking there's no clash
         // with rows already in the table
 
@@ -71,9 +73,7 @@ public class SymbolTable {
         // The owner represents the generated class the row belongs to
         // E.g. The owner of a function, defined in lib.test, will become
         // a method in the 'lib' class, and so its owner is 'lib'
-
-        if (!noOverrideOwner)
-            new_row.owner = CodeGenerator.ProgramNameStack.peek();
+        new_row.owner = CodeGenerator.ProgramNameStack.peek();
 
         Rows.put(key, new_row);
     }
@@ -84,16 +84,15 @@ public class SymbolTable {
      * @param table
      */
     public void addRowsFromTable(SymbolTable table) {
-        for (Row r : table.GetAllRows())
-            addRow(r, true);
+        Rows.putAll(table.Rows);
     }
 
     /**
-     * Returns all rows in the table
+     * Returns the rows in the table
      * 
      * @return An ArrayList of all rows in the table
      */
-    public ArrayList<Row> GetAllRows() {
+    public ArrayList<Row> AllRows() {
         return new ArrayList<Row>(Rows.values());
     }
 
@@ -248,30 +247,42 @@ public class SymbolTable {
      * These indexes are used in Code Generation, as the JVM
      * stores local variable at indexes, separate to the stack.
      * 
-     * Since each variable in a function's symbol table is stored
-     * at a different index, starting from 0, the index in the table is
-     * used as the index for the local variable in the stack frame, at
-     * runtime.
-     * 
      * @param id The identifier of the variable
      * @return The index of the variable in the table
      */
     public Integer GetIndex(String id) {
 
-        String key = Key(id, SymbolType.Variable);
-
-        int i = 0;
-
-        for (String k : Rows.keySet()) {
-            if (k.equals(key))
-                return i;
-            else
-                i++;
+        // If this is the first call for an index, generation has begun
+        // Calculate the variable indices 
+        if (!isGenerating) {
+            CalculateIndices();
+            isGenerating = true;
         }
 
-        Reporter.ReportErrorAndExit("BUILD ERROR : Unknown Variable " + id, null);
+        try {
+            // Return the variable's index
+            return ((VariableRow) GetRow(id, SymbolType.Variable)).index;
+        } catch (Exception e) {
+            // If the row was not found, report a build error to the user
+            Reporter.ReportErrorAndExit("BUILD ERROR : Unknown Variable " + id, null);
+        }
 
         return null;
+    }
+
+    /**
+     * Calculates the index of all variable rows in the table
+     * 
+     * Since a LinkedHashMap 
+     * 
+     */
+    private void CalculateIndices() {
+        int i = 0;
+        for (Row row : Rows.values()) {
+            if (row instanceof VariableRow) {
+                ((VariableRow) row).index = i++;
+            }
+        }
     }
 
     /* Function Methods */
@@ -423,6 +434,7 @@ public class SymbolTable {
 
     /**
      * Get the TypeSpecifiers of all variables in a table
+     * 
      * @return An ArrayList of TypeSpecifier objects
      */
     public ArrayList<TypeSpecifier> GetAllVarTypeSpecifiers() {
@@ -439,6 +451,7 @@ public class SymbolTable {
 
     /**
      * Get the method descriptor for the constructor of a struct
+     * 
      * @param id The identifier of the struct
      * @return The method descriptor
      */

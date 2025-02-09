@@ -43,15 +43,15 @@ public class FearnC {
 
         String path = args[0];
 
+        // Raise error if no source file has been passed
+        if (path.length() == 0) {
+            Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
+        }
+
         Path buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
 
         // Add build path to stack (used for code generation)
         CodeGenerator.setBuildPath(buildPath);
-
-        // Raise error if no source file has been passed
-        if (args.length == 0) {
-            Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
-        }
 
         // Compile source file
         Compile(path, false);
