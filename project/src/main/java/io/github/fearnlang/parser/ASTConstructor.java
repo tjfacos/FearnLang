@@ -780,7 +780,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         symbolTableStack.peek().addRow(
                 new VariableRow(
                         identifier,
-                        type_spec));
+                        type_spec),
+                false);
 
         return new Declaration(identifier, type_spec, init_expression);
 
@@ -1014,7 +1015,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             symbolTableStack.peek().addRow(
                     new VariableRow(
                             param.identifier,
-                            param.type));
+                            param.type),
+                    false);
 
             // Add to parameters
             parameters.add(param);
@@ -1130,7 +1132,8 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      * at the bottom of the stack).
      * 
      * @param ctx The parse tree
-     * @return A Program object, characterised by the global declarations, structs, and functions
+     * @return A Program object, characterised by the global declarations, structs,
+     *         and functions
      * 
      */
     @Override
@@ -1159,7 +1162,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             SymbolTable local_syms = symbolTableStack.pop();
 
             symbolTableStack.peek().addRow(
-                    new StructRow(struct.identifier, local_syms));
+                    new StructRow(struct.identifier, local_syms), false);
         }
 
         for (int i = 0; i < ctx.function().size(); i++) {
@@ -1171,7 +1174,7 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
             SymbolTable local_syms = symbolTableStack.pop();
 
             symbolTableStack.peek().addRow(
-                    new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms));
+                    new FunctionRow(func.identifier, func.parameters, func.return_type, local_syms), false);
         }
 
         return new Program(global_declarations, functions, structs);

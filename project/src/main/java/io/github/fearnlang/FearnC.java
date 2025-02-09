@@ -43,12 +43,7 @@ public class FearnC {
 
         String path = args[0];
 
-        String programName = Paths.get(path).getFileName().toString().replace(".fearn", "");
         Path buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
-
-        // Add program name to stack (used for error messages and code generation for
-        // class names)
-        CodeGenerator.ProgramNameStack.push(programName);
 
         // Add build path to stack (used for code generation)
         CodeGenerator.setBuildPath(buildPath);
@@ -60,9 +55,6 @@ public class FearnC {
 
         // Compile source file
         Compile(path, false);
-
-        // Pop generator from stack, as it's no longer in use
-        CodeGenerator.ProgramNameStack.pop();
 
         // Print green Success Message
         Path parent = Paths.get(path).getParent();

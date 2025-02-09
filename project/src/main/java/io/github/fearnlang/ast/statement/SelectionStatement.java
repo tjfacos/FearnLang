@@ -98,8 +98,10 @@ public class SelectionStatement extends Statement {
         if_branch.GenerateBytecode(mv);
 
         // Only GOTO end if no jump statement exists within the if_branch body
-        if (if_branch instanceof CompoundStatement && !((CompoundStatement) if_branch).includesJump || !(if_branch instanceof JumpStatement))
-            mv.visitJumpInsn(GOTO, end_label);
+        if (
+            !(if_branch instanceof JumpStatement) 
+            && !(if_branch instanceof CompoundStatement && ((CompoundStatement)if_branch).includesJump)
+        ) mv.visitJumpInsn(GOTO, end_label);
 
         // If an else branch exists, Generate its bytecode here
         if (else_branch != null) {

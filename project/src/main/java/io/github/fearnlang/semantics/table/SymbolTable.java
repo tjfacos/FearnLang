@@ -52,7 +52,7 @@ public class SymbolTable {
      * 
      * @param new_row
      */
-    public void addRow(Row new_row) {
+    public void addRow(Row new_row, Boolean noOverrideOwner) {
         // Add a Single Row object, checking there's no clash
         // with rows already in the table
 
@@ -72,7 +72,8 @@ public class SymbolTable {
         // E.g. The owner of a function, defined in lib.test, will become
         // a method in the 'lib' class, and so its owner is 'lib'
 
-        new_row.owner = CodeGenerator.ProgramNameStack.peek();
+        if (!noOverrideOwner)
+            new_row.owner = CodeGenerator.ProgramNameStack.peek();
 
         Rows.put(key, new_row);
     }
@@ -84,7 +85,7 @@ public class SymbolTable {
      */
     public void addRowsFromTable(SymbolTable table) {
         for (Row r : table.GetAllRows())
-            addRow(r);
+            addRow(r, true);
     }
 
     /**

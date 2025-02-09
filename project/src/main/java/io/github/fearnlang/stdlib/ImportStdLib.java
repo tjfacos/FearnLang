@@ -76,131 +76,14 @@ public class ImportStdLib {
                     new FunctionRow(
                             func_name,
                             params,
-                            stringSpecifierMap.get((String)func.get("return")),
-                            null));
+                            stringSpecifierMap.get((String) func.get("return")),
+                            null),
+                    false);
         }
 
         CodeGenerator.ProgramNameStack.pop();
 
         return table;
 
-        // // Switch makes standard library easy to expand
-        // switch (id) {
-        // case "io" -> {
-        // // Set Program Name
-        // // This sets the row's owner, ensuring the bytecode for calling these
-        // // function calls refer the the correct package io.github.fearnlang.and class
-        // CodeGenerator.ProgramNameStack.push("io/github/fearnlang/stdlib/io");
-
-        // // Add Print Function
-
-        // // Create new parameter list
-        // params = new ArrayList<>();
-
-        // // Add string parameter
-        // params.add(new Parameter(
-        // "", new PrimitiveSpecifier(PrimitiveDataType.STR)));
-
-        // // Add to symbol table, with identifier print, and null return
-        // // type and local symbol table (irrelevant as this function has
-        // // no Fearn implementation)
-        // table.addRow(
-        // new FunctionRow(
-        // "print",
-        // params,
-        // null,
-        // null));
-
-        // // Add Input Function
-
-        // // params remains the same (as both print and input take a single,
-        // // string argument)
-
-        // table.addRow(
-        // new FunctionRow(
-        // "input",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.STR),
-        // null));
-
-        // }
-
-        // case "maths" -> {
-
-        // CodeGenerator.ProgramNameStack.push("io/github/fearnlang/stdlib/maths");
-
-        // // Add PI() -> value of PI
-        // params = new ArrayList<>();
-        // table.addRow(
-        // new FunctionRow(
-        // "PI",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
-        // null));
-
-        // // Add Eulers() -> value of Euler's number
-        // table.addRow(
-        // new FunctionRow(
-        // "Eulers",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
-        // null));
-
-        // // Add sin, cos, and tan functions
-        // params = new ArrayList<>();
-        // params.add(new Parameter("", new
-        // PrimitiveSpecifier(PrimitiveDataType.FLOAT)));
-        // table.addRow(
-        // new FunctionRow(
-        // "sin",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
-        // null));
-
-        // table.addRow(
-        // new FunctionRow(
-        // "cos",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
-        // null));
-
-        // table.addRow(
-        // new FunctionRow(
-        // "tan",
-        // params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT),
-        // null));
-
-        // }
-
-        // case "random" -> {
-        // CodeGenerator.ProgramNameStack.push("io/github/fearnlang/stdlib/RandomNumbers");
-
-        // // Add random -> Random double between 0 and 1
-        // params = new ArrayList<>();
-        // table.addRow(
-        // new FunctionRow("random", params,
-        // new PrimitiveSpecifier(PrimitiveDataType.FLOAT), null));
-
-        // // Add randomFromRange -> Random integer from range
-        // params = new ArrayList<>();
-        // params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
-        // params.add(new Parameter("", new PrimitiveSpecifier(PrimitiveDataType.INT)));
-        // table.addRow(
-        // new FunctionRow("randomInRange", params,
-        // new PrimitiveSpecifier(PrimitiveDataType.INT), null));
-
-        // }
-
-        // default -> Reporter.ReportErrorAndExit("Standard library " + id + " does not
-        // exist.", null);
-
-        // }
-
-        // // Pop Generator, to return to primary program
-        // CodeGenerator.ProgramNameStack.pop();
-
-        // // Return Symbol Table to primary compilation process
-        // return table;
     }
 }
