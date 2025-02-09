@@ -10,6 +10,8 @@ import io.github.fearnlang.semantics.table.SymbolTable;
 import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Stack;
+
 import io.github.fearnlang.util.*;
 import io.github.fearnlang.ast.ASTNode;
 import io.github.fearnlang.ast.Program;
@@ -48,7 +50,11 @@ public class FearnC {
             Reporter.ReportErrorAndExit("NO SOURCE FILE", null);
         }
 
+        // Get build path
         Path buildPath = Paths.get(path).toAbsolutePath().getParent().resolve("build");
+        
+        // Get absolute path to source file
+        path = Paths.get(path).toAbsolutePath().toString();
 
         // Add build path to stack (used for code generation)
         CodeGenerator.setBuildPath(buildPath);
@@ -66,6 +72,8 @@ public class FearnC {
                         Paths.get(path).getFileName().toString().replace(".fearn", "")),
                 true);
     }
+
+    private static Stack<String> programPathStack = new Stack<String>();
 
     /**
      * The method responsible for conducting the compilation of the
@@ -89,10 +97,18 @@ public class FearnC {
      */
     public static SymbolTable Compile(String path, Boolean isImport) {
 
+        
         // If the file is an import, transform the path to an absolute path pointing to
         // the correct imported source file
         if (isImport) {
             path = CodeGenerator.getBuildPath().getParent().resolve(path.replaceAll("(\'|\")", "")).toString();
+        }
+        
+        // Check for circular imports
+        if (programPathStack.contains(path)) {
+            Reporter.ReportErrorAndExit("Circular Import Detected! : " + path, null);
+        } else {
+            programPathStack.push(path);
         }
 
         // Read source file
@@ -147,6 +163,9 @@ public class FearnC {
 
         // Pop program name from stack
         CodeGenerator.ProgramNameStack.pop();
+
+        // Pop program path from stack
+        programPathStack.pop();
 
         // Return the global symbol table (the symbol table of the program just
         // compiled)
