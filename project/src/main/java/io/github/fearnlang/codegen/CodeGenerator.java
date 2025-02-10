@@ -112,7 +112,7 @@ public class CodeGenerator {
                 ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 
                 classWriter.visit(
-                    V19, 
+                    V21, 
                     // Defines access
                     ACC_PUBLIC | ACC_SUPER, 
                     // Define class name 
@@ -234,7 +234,7 @@ public class CodeGenerator {
 
         // Class is a public, static class, with its name being the programName
         classWriter.visit(
-            V19,
+            V21,
             ACC_PUBLIC | ACC_SUPER,
             ProgramNameStack.peek(),
             null, 
