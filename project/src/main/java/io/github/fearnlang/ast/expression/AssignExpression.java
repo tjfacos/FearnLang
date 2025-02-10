@@ -49,16 +49,15 @@ public class AssignExpression extends Expression {
     @Override 
     public String toString()
     {
-        String opString = null;
 
-        switch (operator) {
-            case Equals     : opString = "="    ; break;
-            case AddEquals  : opString = "+="   ; break;
-            case SubEquals  : opString = "-="   ; break;
-            case MultEquals : opString = "*="   ; break;
-            case DivEquals  : opString = "/="   ; break;
-            case ModEquals  : opString = "%="   ; break;
-        }
+        String opString = switch (operator) {
+            case Equals     -> "=";
+            case AddEquals  -> "+=";
+            case SubEquals  -> "-=";
+            case MultEquals -> "*=";
+            case DivEquals  -> "/=";
+            case ModEquals  -> "%=";
+        };
 
         return target.toString() + " " + opString + " " + expression.toString();
     }
@@ -216,16 +215,15 @@ public class AssignExpression extends Expression {
             @Override
             public String toString() {
 
-                String opString = null;
+                String opString = switch (Operation) {
+                    case ExprType.Add -> "+=";
+                    case ExprType.Sub  -> "-=";
+                    case ExprType.Mult -> "*=";
+                    case ExprType.Div  -> "/=";
+                    case ExprType.Mod  -> "%=";
+                    default -> null;
 
-                switch (Operation) {
-                    case ExprType.Add   : opString = "+="; break;
-                    case ExprType.Sub   : opString = "-="; break;
-                    case ExprType.Mult  : opString = "*="; break;
-                    case ExprType.Div   : opString = "/="; break;
-                    case ExprType.Mod   : opString = "%="; break;
-                    default: break;
-                }
+                };
 
                 return String.format("%s %s %s", Op1.toString(), opString, Op2.toString());
 
@@ -233,24 +231,13 @@ public class AssignExpression extends Expression {
 
         }
 
-        switch (operator) {
-            case Equals:
-                return;
-            case AddEquals:
-                expression = new OpEqualsExpr(target, expression, ExprType.Add);
-                return;
-            case SubEquals:
-                expression = new OpEqualsExpr(target, expression, ExprType.Sub);
-                return;
-            case MultEquals:
-                expression = new OpEqualsExpr(target, expression, ExprType.Mult);
-                return;
-            case DivEquals:
-                expression = new OpEqualsExpr(target, expression, ExprType.Div);
-                return;
-            case ModEquals:
-                expression = new OpEqualsExpr(target, expression, ExprType.Mod);
-                return;
-        }
+        expression = switch (operator) {
+            case Equals -> expression;
+            case AddEquals -> new OpEqualsExpr(target, expression, ExprType.Add);
+            case SubEquals -> new OpEqualsExpr(target, expression, ExprType.Sub);
+            case MultEquals -> new OpEqualsExpr(target, expression, ExprType.Mult);
+            case DivEquals -> new OpEqualsExpr(target, expression, ExprType.Div);
+            case ModEquals -> new OpEqualsExpr(target, expression, ExprType.Mod);
+        };
     }
 }

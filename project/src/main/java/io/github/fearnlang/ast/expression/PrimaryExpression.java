@@ -146,13 +146,13 @@ public class PrimaryExpression<T> extends Expression {
         else if ( type == ExprType.VariableReference ) {
             expression_type = CodeGenerator.GlobalSymbolTable.GetTypeSpecifier(value.toString(), SymbolType.Variable);
         } else {
-            switch (this.type) {
-                case IntLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.INT    ); break;
-                case FloatLiteral  : expression_type = new PrimitiveSpecifier(PrimitiveDataType.FLOAT  ); break;
-                case StrLiteral    : expression_type = new PrimitiveSpecifier(PrimitiveDataType.STR    ); break;
-                case BoolLiteral   : expression_type = new PrimitiveSpecifier(PrimitiveDataType.BOOL   ); break;
-                default: break;
-            }
+            expression_type = switch (this.type) {
+                case IntLiteral     -> new PrimitiveSpecifier(PrimitiveDataType.INT    );
+                case FloatLiteral   -> new PrimitiveSpecifier(PrimitiveDataType.FLOAT  );
+                case StrLiteral     -> new PrimitiveSpecifier(PrimitiveDataType.STR    );
+                case BoolLiteral    -> new PrimitiveSpecifier(PrimitiveDataType.BOOL   );
+                default             -> null;
+            };
         }
 
         return expression_type;

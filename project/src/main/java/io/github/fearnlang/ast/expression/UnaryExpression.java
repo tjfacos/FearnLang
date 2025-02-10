@@ -35,17 +35,11 @@ public class UnaryExpression extends Expression {
     @Override
     public String toString()
     {
-        String opString = null;
-
-        switch (operator) {
-            case Negate:
-                opString = "-";
-                break;
-            case LogicalNot:
-                opString = "!";
-            default:
-                break;
-        }
+        String opString = switch (operator) {
+            case Negate -> "-";
+            case LogicalNot -> "!";
+            default -> null;
+        };
 
         return opString + operand.toString();
     }

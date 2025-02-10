@@ -37,27 +37,23 @@ public class BinaryExpression extends Expression {
     public String toString()
     {
 
-        String opString = null;
-
-        switch (Operation) {
-            
-            case Add        : opString = "+" ;  break;
-            case Sub        : opString = "-" ;  break;
-            case Mult       : opString = "*" ;  break;
-            case Div        : opString = "/" ;  break;
-            case Mod        : opString = "%" ;  break;
-            case Exponent   : opString = "^" ;  break;
-            case Less       : opString = "<" ;  break;
-            case Greater    : opString = ">" ;  break;
-            case LessEq     : opString = "<=";  break;
-            case GreaterEq  : opString = ">=";  break;
-            case LogicalAnd : opString = "&&";  break;
-            case LogicalOr  : opString = "||";  break;
-            case Eq         : opString = "==";  break;
-            case NotEq      : opString = "!=";  break;
-            
-            default: break;
-        }
+        String opString = switch (Operation) {
+            case Add        -> "+" ;
+            case Sub        -> "-" ;
+            case Mult       -> "*" ;
+            case Div        -> "/" ;
+            case Mod        -> "%" ;
+            case Exponent   -> "^" ;
+            case Less       -> "<" ;
+            case Greater    -> ">" ;
+            case LessEq     -> "<=";
+            case GreaterEq  -> ">=";
+            case LogicalAnd -> "&&";
+            case LogicalOr  -> "||";
+            case Eq         -> "==";
+            case NotEq      -> "!=";
+            default         -> null;
+        };
 
         return String.format("%s %s %s", Op1.toString(), opString, Op2.toString());
     }

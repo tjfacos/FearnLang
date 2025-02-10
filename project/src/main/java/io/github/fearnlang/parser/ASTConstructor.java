@@ -653,30 +653,15 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
         Expression expression = (Expression) visit(ctx.expression(1));
 
         // Set operator (an enum value - see AssignmentExpression)
-        AssignmentOperator op = null;
-
-        switch (ctx.assignment_operator().getText()) {
-            case "=":
-                op = AssignmentOperator.Equals;
-                break;
-            case "+=":
-                op = AssignmentOperator.AddEquals;
-                break;
-            case "-=":
-                op = AssignmentOperator.SubEquals;
-                break;
-            case "*=":
-                op = AssignmentOperator.MultEquals;
-                break;
-            case "/=":
-                op = AssignmentOperator.DivEquals;
-                break;
-            case "%=":
-                op = AssignmentOperator.ModEquals;
-                break;
-            default:
-                break;
-        }
+        AssignmentOperator op = switch (ctx.assignment_operator().getText()) {
+            case "="    -> AssignmentOperator.Equals;
+            case "+="   -> AssignmentOperator.AddEquals;
+            case "-="   -> AssignmentOperator.SubEquals;
+            case "*="   -> AssignmentOperator.MultEquals;
+            case "/="   -> AssignmentOperator.DivEquals;
+            case "%="   -> AssignmentOperator.ModEquals;
+            default -> null;
+        };
 
         return new AssignExpression(target, expression, op);
 
@@ -703,22 +688,13 @@ public class ASTConstructor extends FearnGrammarBaseVisitor<ASTNode> {
      */
     @Override
     public PrimitiveSpecifier visitType_specifier_primitive(FearnGrammarParser.Type_specifier_primitiveContext ctx) {
-        PrimitiveDataType type = null;
-
-        switch (ctx.getText()) {
-            case "int":
-                type = PrimitiveDataType.INT;
-                break;
-            case "float":
-                type = PrimitiveDataType.FLOAT;
-                break;
-            case "str":
-                type = PrimitiveDataType.STR;
-                break;
-            case "bool":
-                type = PrimitiveDataType.BOOL;
-                break;
-        }
+        PrimitiveDataType type = switch (ctx.getText()) {
+            case "int"   -> PrimitiveDataType.INT;
+            case "float" -> PrimitiveDataType.FLOAT;
+            case "str"   -> PrimitiveDataType.STR;
+            case "bool"  -> PrimitiveDataType.BOOL;
+            default -> null;
+        };
 
         return new PrimitiveSpecifier(type);
 

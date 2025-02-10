@@ -120,22 +120,13 @@ public class SymbolTable {
 
         // Generate the type descriptor for a primitive type
         if (typeSpecifier.getClass() == PrimitiveSpecifier.class) {
-            switch (((PrimitiveSpecifier) typeSpecifier).element_type) {
-                case INT:
-                    type_descriptor += "Ljava/lang/Integer;";
-                    break;
-                case FLOAT:
-                    type_descriptor += "Ljava/lang/Double;";
-                    break;
-                case STR:
-                    type_descriptor += "Ljava/lang/String;";
-                    break;
-                case BOOL:
-                    type_descriptor += "Ljava/lang/Boolean;";
-                    break;
-                default:
-                    break;
-            }
+            type_descriptor += switch (((PrimitiveSpecifier) typeSpecifier).element_type) {
+                case INT ->  "Ljava/lang/Integer;";
+                case FLOAT -> "Ljava/lang/Double;";
+                case STR -> "Ljava/lang/String;";
+                case BOOL -> "Ljava/lang/Boolean;";
+                default -> null;
+            };
         }
 
         // Generate the type descriptor for an array
