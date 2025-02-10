@@ -33,11 +33,12 @@ import io.github.fearnlang.semantics.table.SymbolTable;
  *      the type can be accessed during code generation.
  */
 
-
 public abstract class Expression extends ASTNode {
 
-    public static enum ExprType 
-    {
+    /**
+     * Represents the type of an expression
+     */
+    public static enum ExprType {
         // MISC
         FuncCall,
         StructAttribute,
@@ -45,24 +46,23 @@ public abstract class Expression extends ASTNode {
         StructInit,
         ArrayInit,
         Index,
-        
-        
+
         // PRIMARY
         VariableReference,
         IntLiteral,
         FloatLiteral,
         BoolLiteral,
         StrLiteral,
-        
+
         // UNARY
         Negate,
         LogicalNot,
         Increment,
-    
+
         // BINARY
         Eq,
         NotEq,
-        
+
         Less,
         Greater,
         LessEq,
@@ -77,10 +77,31 @@ public abstract class Expression extends ASTNode {
         Sub
     }
 
-    @Override public abstract String toString();
-    
+    @Override
+    public abstract String toString();
+
+    /**
+     * Generates the bytecode for the expression, by having
+     * the method visitor visit the relevant instructions.
+     * 
+     * @param mv The method visitor for this part of the program
+     */
     public abstract void GenerateBytecode(MethodVisitor mv);
+
+    /**
+     * Validates the expression, enforcing the correct types throughout.
+     * 
+     * If there's any issues with the expression (e.g. a sub-expression is of the
+     * wrong type, there are too many sub expressions, etc.) then the program will
+     * exit, reporting an error to the user.
+     * 
+     * @param symTable The local SymbolTable to validate against
+     * @return The TypeSpecifier of the value of this expression, once evaluated
+     */
     public abstract TypeSpecifier validate(SymbolTable symTable);
-    
+
+    /**
+     * The TypeSpecifier of the value of this expression, once evaluated
+     */
     public TypeSpecifier expression_type;
 }
