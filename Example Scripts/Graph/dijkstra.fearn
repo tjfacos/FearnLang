@@ -9,10 +9,9 @@ import from "graph.fearn"
 fn GetNode(id : str) => $Node
 {
     for (let i : int = 0; i < nodes.length(); i++)
-    {
-        if (nodes[i].ID == id) { return nodes[i]; }
-    }
-
+        if (nodes[i].ID == id)
+            return nodes[i];
+    
     // This would cause an error if the node is not 
     // found. It should never execute.
     return nodes[i];
@@ -23,9 +22,10 @@ let lengthOfFrontier : int = 0;
 
 fn AddToFrontier(node : $Node) => void 
 {
-    for (let i : int = 0; i < lengthOfFrontier; i++) {
-        if (frontier[i].index == node.index) { return; }
-    }
+    for (let i : int = 0; i < lengthOfFrontier; i++)
+        if (frontier[i].index == node.index) 
+            return;
+    
     frontier[lengthOfFrontier++] = node;
 }
 
@@ -35,7 +35,8 @@ fn RemoveFromFrontier(node : $Node) => void
     let x : int = 0;
 
     for (let i : int = 0; i < lengthOfFrontier; i++) {
-        if (frontier[i].index == node.index) { continue; }
+        if (frontier[i].index == node.index) 
+            continue;
         new_frontier[x++] = frontier[i];
     }
 
@@ -47,12 +48,8 @@ fn GetNextNode() => $Node
 {
     let next_node : $Node = frontier[0];
     for (let i : int = 1; i < lengthOfFrontier; i++)
-    {
         if (frontier[i].label < next_node.label)
-        {
             next_node = frontier[i];
-        }
-    }
     return next_node;
 }
 
@@ -71,15 +68,21 @@ fn Dijkstra(start: str, target : str) => void
         for (let i : int = 0; i < neighbours.length(); i++)
         {
             
-            if (neighbours[i] < 0) { continue; }
+            // No connection
+            if (neighbours[i] < 0) 
+                continue;
 
+            // Check if already final
             let neighbour : $Node = nodes[i];
-            if (neighbour.isFinal) { continue; }
+            if (neighbour.isFinal) 
+                continue;
 
+            // Calculate potential new label
             let new_label : int = current.label + neighbours[i];
 
-            if (neighbour.label < 0 || new_label < neighbour.label)
-            {
+            // If the new_label is less that the old one (or no label had yet been defined)
+            // set neighbour's label to the new label
+            if (neighbour.label < 0 || new_label < neighbour.label) {
                 neighbour.label = new_label;
                 neighbour.previous = current.ID;
             }
@@ -87,7 +90,7 @@ fn Dijkstra(start: str, target : str) => void
             neighbour.AddToFrontier();
         }
 
-        if (lengthOfFrontier == 0) { return; }
+        if (lengthOfFrontier == 0) return;
 
         let next_node : $Node = GetNextNode();
         next_node.isFinal = true;
@@ -100,9 +103,7 @@ fn GetPath(start : str, end : str) => str
 {
     let path : str = end;
     if (start != end)
-    {
         path = GetPath(start, end.GetNode().previous) + " -> " + path;
-    }
 
     return path;
 }

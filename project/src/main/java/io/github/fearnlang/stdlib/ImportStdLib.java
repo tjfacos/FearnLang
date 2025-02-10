@@ -16,14 +16,10 @@ import io.github.fearnlang.semantics.table.SymbolTable;
 import io.github.fearnlang.util.Reporter;
 
 public class ImportStdLib {
+    
     /**
-     * Get the standard library for a given identifier
-     * 
-     * 
-     * @param id The identifier of the standard library to import
-     * @return SymbolTable The symbol table of the standard library
+     * Map which relates the string names of types to a PrimitiveSpecifier
      */
-
     private static Map<String, PrimitiveSpecifier> stringSpecifierMap = new HashMap<String, PrimitiveSpecifier>() {
         {
             put("string", new PrimitiveSpecifier(PrimitiveDataType.STR));
@@ -33,7 +29,13 @@ public class ImportStdLib {
             put("void", null);
         }
     };
-
+    
+    /**
+     * Get the standard library for a given identifier
+     * 
+     * @param id The identifier of the standard library to import
+     * @return SymbolTable The symbol table of the standard library
+     */
     @SuppressWarnings("unchecked")
     public static SymbolTable GetStdLib(String id) {
 
