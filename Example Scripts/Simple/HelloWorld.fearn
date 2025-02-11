@@ -4,4 +4,6 @@
 import io
 
 // Main procedure (where execution starts)
-fn main(args : str[]) => void { print("Hello, World!"); }
+fn main(args : str[]) => void { 
+    print("Hello, World!"); 
+}

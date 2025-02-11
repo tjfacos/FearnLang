@@ -1,0 +1,5 @@
+import io
+
+struct test {
+    let x : int;
+}
